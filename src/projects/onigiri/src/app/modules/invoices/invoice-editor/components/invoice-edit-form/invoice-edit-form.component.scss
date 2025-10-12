@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+
+label {
+  display: block;
+}
+
+
+.inv-section {
+
+  background-color: #fff;
+  margin-top: 30px;
+  border-radius: var(--border-radius);
+
+  &:not(.no-padding) {
+    padding: 30px 40px;
+  }
+
+  &--title {
+    display: grid;
+    grid-template-columns: 100px 1fr 200px;
+    gap: 30px;
+    align-items: center;
+  }
+
+  &--notes {
+    display: flex;
+    justify-content: stretch;
+    gap: 40px
+  }
+}
+
+.logo-wrap {
+  width: 100px;
+  height: 100px;
+}
+
+.payment-option {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 20px;
+  border-radius: 5px;
+
+  background-color: var(--color-grey-200);
+
+  cursor: pointer;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+
+  &--enabled {
+    outline: 1px solid var(--color-green-800);
+  }
+
+}

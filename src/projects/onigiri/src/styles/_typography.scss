@@ -1,0 +1,80 @@
+@mixin o-font {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+}
+
+:root {
+  @include o-font();
+}
+
+.o-logo-text {
+  font-family: "Rubik", sans-serif;
+  font-weight: 600;
+}
+
+h1,
+.o-font-h1 {
+  @include o-font();
+  font-weight: 700;
+  font-size: 32px;
+  line-height: normal;
+}
+
+h2,
+.o-font-h2 {
+  @include o-font();
+  font-weight: 700;
+  font-size: 26px;
+  line-height: normal;
+}
+
+h3,
+.o-font-h3 {
+  @include o-font();
+  font-weight: 700;
+  font-size: 20px;
+  line-height: normal;
+}
+
+h4,
+.o-font-h4 {
+  @include o-font();
+  font-weight: 700;
+  font-size: 16px;
+  line-height: normal;
+}
+
+.o-text-main {
+  @include o-font();
+  font-weight: 400;
+  font-size: 15px;
+  line-height: normal;
+}
+
+.o-text-secondary {
+  @include o-font();
+  font-weight: 600;
+  font-size: 14px;
+  line-height: normal;
+}
+
+.o-text-tooltip {
+  @include o-font();
+  font-size: 12px;
+}
+
+.o-validation-error {
+  @include o-font();
+  font-size: 12px;
+  width: 100%;
+  color: var(--color-red-600);
+}
+
+// PrimeNG override
+.p-component {
+  @include o-font();
+}
+
+.font-extrabold {
+  font-weight: 800;
+}

@@ -1,0 +1,10 @@
+<div class="color-select-panel">
+  @for (item of bgOptions; track $index) {
+  <div class="color-select-panel__item"
+       [style.--bg-option]="item"
+       [class.color-select-panel__item--selected]="item === pageDataStore.selectedBGColor()"
+       (click)="onSelectBackground(item)">
+    <span class="color-select-panel__item-color"></span>
+  </div>
+  }
+</div>

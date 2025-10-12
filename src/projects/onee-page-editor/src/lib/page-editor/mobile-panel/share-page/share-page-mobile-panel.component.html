@@ -1,0 +1,25 @@
+@let btnStatus = copyLinkStatus();
+
+<div class="tile-mobile-editor__header">
+  <div class="font-bold">Share page</div>
+
+  <button mobileEditorClose
+          class="o-button o-button--black w-min">Close</button>
+</div>
+
+<div class="tile-mobile-editor__body o-px-20 o-pb-30">
+
+  <div class="link-data flex justify-content-between align-items-center w-full o-mb-20">
+    <span class="o-color-grey-600 o-text-main">https://onee.page/{{pageData.key()}}</span>
+  </div>
+
+  <button class="copy-link-btn o-button"
+          [class.copy-link-btn--copied]="btnStatus === 'copied'"
+          (click)="onCopyLink()">
+    <o-icon [key]="btnStatus === 'not_copied' ? 'link' : 'check'"
+            style="margin-right: 10px;" />
+    <span class="o-text-main font-bold">{{btnStatus === 'not_copied' ? 'Copy Link' : 'Copied' }}</span>
+  </button>
+
+
+</div>

@@ -1,0 +1,185 @@
+<div class="o-dialog">
+
+  <div class="o-dialog__closing">
+    <div class="o-dialog__close-icon"
+         (click)="onCancel()">
+      <o-icon key="close" />
+    </div>
+  </div>
+
+  <div class="o-dialog__body">
+
+    <div class="o-dialog__content">
+      <div class="w-full flex align-items-center justify-content-center">
+        <div class="logo flex align-items-center justify-content-center">
+          <svg version="2.0"
+               class="logo__img">
+            <use xlink:href="#onigiri_logo_svg" />
+          </svg>
+
+          <span class="logo__text o-logo-text o-color-grey-1000">
+            ONIGIRI
+          </span>
+        </div>
+      </div>
+
+      <h3 class="o-mt-20 text-center o-color-grey-800">Simple and convenient invoicing & business management for
+        freelancers</h3>
+
+      <div class="o-mt-40">
+        <p-carousel [value]="slides"
+                    [showNavigators]="false"
+                    (onPage)="onSlideChanged($event)">
+          <ng-template let-slide
+                       pTemplate="item">
+            <div class="flex o-c-gap-20">
+              <div class="flex flex-column justify-content-center">
+                <o-icon key="arrow-back"
+                        class="slide-nav-icon"
+                        [class.slide-nav-icon--disabled]="!canMoveBack()"
+                        (click)="showPrevSlide($event)" />
+              </div>
+
+              <div class="feature-card">
+                <div class="feature-card__img w-full flex justify-content-start">
+                  <svg version="2.0">
+                    <use [attr.xlink:href]="slide.left.img" />
+                  </svg>
+                </div>
+                <p class="o-font-h3 o-mt-40">{{slide.left.title}}</p>
+                <p class="o-text-main o-mt-20">{{slide.left.description}}</p>
+              </div>
+
+              <div class="feature-card">
+                <div class="feature-card__img">
+                  <svg version="2.0">
+                    <use [attr.xlink:href]="slide.right.img" />
+                  </svg>
+                </div>
+                <p class="o-font-h3 o-mt-40">{{slide.right.title}}</p>
+                <p class="o-text-main o-mt-20">{{slide.right.description}}</p>
+              </div>
+
+              <div class="flex flex-column justify-content-center">
+                <o-icon key="arrow-forward"
+                        class="slide-nav-icon"
+                        [class.slide-nav-icon--disabled]="!canMoveForward()"
+                        (click)="showNextSlide($event)" />
+              </div>
+            </div>
+
+
+          </ng-template>
+
+          <!-- <ng-template let-slide
+                       pTemplate="previousicon">
+            <o-icon key="arrow-back"></o-icon>
+          </ng-template>
+
+          <ng-template let-slide
+                       pTemplate="nexticon">
+            <o-icon key="arrow-forward"></o-icon>
+          </ng-template> -->
+
+        </p-carousel>
+      </div>
+
+    </div>
+
+    <div class="o-dialog__footer justify-content-center o-mt-40">
+      <o-button class="move-to-oni-btn"
+                style="width: 200px;"
+                (onClick)="onMoveToOnigiri()">Explore Onigiri & Start 7 Days Free Trial</o-button>
+    </div>
+
+  </div>
+
+</div>
+
+<svg style="display: none"
+     version="2.0">
+
+
+  <symbol id="invoicing_img"
+          viewBox="0 0 48 50"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+    <path d="M28.7998 1H9.5998C8.32677 1 7.10587 1.50571 6.20569 2.40589C5.30552 3.30606 4.7998 4.52696 4.7998 5.8V44.2C4.7998 45.473 5.30552 46.6939 6.20569 47.5941C7.10587 48.4943 8.32677 49 9.5998 49H38.3998C39.6728 49 40.8937 48.4943 41.7939 47.5941C42.6941 46.6939 43.1998 45.473 43.1998 44.2V15.4M28.7998 1L43.1998 15.4M28.7998 1V15.4H43.1998M33.5998 27.4H14.3998M33.5998 37H14.3998M19.1998 17.8H14.3998"
+          stroke="#666666"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+    <path d="M28.7998 1H9.5998C8.32677 1 7.10587 1.50571 6.20569 2.40589C5.30552 3.30606 4.7998 4.52696 4.7998 5.8V44.2C4.7998 45.473 5.30552 46.6939 6.20569 47.5941C7.10587 48.4943 8.32677 49 9.5998 49H38.3998C39.6728 49 40.8937 48.4943 41.7939 47.5941C42.6941 46.6939 43.1998 45.473 43.1998 44.2V15.4M28.7998 1L43.1998 15.4M28.7998 1V15.4H43.1998M33.5998 27.4H14.3998M33.5998 37H14.3998M19.1998 17.8H14.3998"
+          stroke="black"
+          stroke-opacity="0.2"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+    <path d="M28.7998 1H9.5998C8.32677 1 7.10587 1.50571 6.20569 2.40589C5.30552 3.30606 4.7998 4.52696 4.7998 5.8V44.2C4.7998 45.473 5.30552 46.6939 6.20569 47.5941C7.10587 48.4943 8.32677 49 9.5998 49H38.3998C39.6728 49 40.8937 48.4943 41.7939 47.5941C42.6941 46.6939 43.1998 45.473 43.1998 44.2V15.4M28.7998 1L43.1998 15.4M28.7998 1V15.4H43.1998M33.5998 27.4H14.3998M33.5998 37H14.3998M19.1998 17.8H14.3998"
+          stroke="black"
+          stroke-opacity="0.2"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+    <path d="M28.7998 1H9.5998C8.32677 1 7.10587 1.50571 6.20569 2.40589C5.30552 3.30606 4.7998 4.52696 4.7998 5.8V44.2C4.7998 45.473 5.30552 46.6939 6.20569 47.5941C7.10587 48.4943 8.32677 49 9.5998 49H38.3998C39.6728 49 40.8937 48.4943 41.7939 47.5941C42.6941 46.6939 43.1998 45.473 43.1998 44.2V15.4M28.7998 1L43.1998 15.4M28.7998 1V15.4H43.1998M33.5998 27.4H14.3998M33.5998 37H14.3998M19.1998 17.8H14.3998"
+          stroke="black"
+          stroke-opacity="0.2"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+    <path d="M28.7998 1H9.5998C8.32677 1 7.10587 1.50571 6.20569 2.40589C5.30552 3.30606 4.7998 4.52696 4.7998 5.8V44.2C4.7998 45.473 5.30552 46.6939 6.20569 47.5941C7.10587 48.4943 8.32677 49 9.5998 49H38.3998C39.6728 49 40.8937 48.4943 41.7939 47.5941C42.6941 46.6939 43.1998 45.473 43.1998 44.2V15.4M28.7998 1L43.1998 15.4M28.7998 1V15.4H43.1998M33.5998 27.4H14.3998M33.5998 37H14.3998M19.1998 17.8H14.3998"
+          stroke="black"
+          stroke-opacity="0.2"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+  </symbol>
+
+
+
+  <symbol id="clients_img"
+          viewBox="0 0 50 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+    <path d="M35.9091 43.6364V39.2727C35.9091 36.9581 34.9896 34.7383 33.3529 33.1016C31.7163 31.4649 29.4964 30.5455 27.1818 30.5455H9.72727C7.41266 30.5455 5.19284 31.4649 3.55616 33.1016C1.91948 34.7383 1 36.9581 1 39.2727V43.6364M49 43.6364V39.2727C48.9986 37.3391 48.355 35.4606 47.1703 33.9323C45.9855 32.4041 44.3268 31.3125 42.4545 30.8291M33.7273 4.64728C35.6045 5.12794 37.2684 6.21972 38.4567 7.75051C39.6449 9.28129 40.2898 11.164 40.2898 13.1018C40.2898 15.0397 39.6449 16.9224 38.4567 18.4532C37.2684 19.9839 35.6045 21.0757 33.7273 21.5564M27.1818 13.0909C27.1818 17.9109 23.2745 21.8182 18.4545 21.8182C13.6346 21.8182 9.72727 17.9109 9.72727 13.0909C9.72727 8.27098 13.6346 4.36365 18.4545 4.36365C23.2745 4.36365 27.1818 8.27098 27.1818 13.0909Z"
+          stroke="#262626"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+  </symbol>
+
+  <symbol id="projects_img"
+          viewBox="0 0 50 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+    <path d="M49 40.8C49 42.0731 48.4943 43.294 47.5941 44.1941C46.6939 45.0943 45.473 45.6 44.2 45.6H5.8C4.52696 45.6 3.30606 45.0943 2.40589 44.1941C1.50571 43.294 1 42.0731 1 40.8V7.20002C1 5.92699 1.50571 4.70609 2.40589 3.80591C3.30606 2.90574 4.52696 2.40002 5.8 2.40002H17.8L22.6 9.60002H44.2C45.473 9.60002 46.6939 10.1057 47.5941 11.0059C48.4943 11.9061 49 13.127 49 14.4V40.8Z"
+          stroke="#262626"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+  </symbol>
+
+  <symbol id="proposals_img"
+          viewBox="0 0 50 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+    <path d="M3.40651 27.8393L15.7278 15.5179C17.0805 14.1636 18.9155 13.4019 20.8296 13.4002H27.4716C28.7481 13.4002 29.9723 13.9073 30.8749 14.8099C31.7775 15.7125 32.2846 16.9367 32.2846 18.2132C32.2846 19.4897 31.7775 20.7139 30.8749 21.6165C29.9723 22.5192 28.7481 23.0262 27.4716 23.0262H21.4553M31.0814 21.3898L41.1165 9.62199C41.8918 8.76261 42.967 8.23305 44.1208 8.14225C45.2747 8.05145 46.4194 8.40632 47.3196 9.13386C48.2198 9.86139 48.8069 10.9063 48.9601 12.0535C49.1134 13.2007 48.8212 14.363 48.1435 15.3014L38.0362 29.596C37.3745 30.5335 36.4988 31.2998 35.4819 31.8313C34.4649 32.3628 33.3358 32.6443 32.1884 32.6523H19.843C19.2079 32.6518 18.5789 32.777 17.9924 33.0207C17.4059 33.2643 16.8735 33.6217 16.4257 34.0721L13.0325 37.4653M1 25.4328L15.4391 39.8718"
+          stroke="#262626"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+  </symbol>
+
+  <symbol id="clients_portal_img"
+          viewBox="0 0 46 50"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+    <path d="M1 1V15.4M1 15.4H15.4M1 15.4L8.2 8.92C11.3067 6.1413 15.1509 4.32079 19.2691 3.67805C23.3873 3.03531 27.6035 3.59779 31.4092 5.29765C35.2148 6.99751 38.4474 9.76215 40.717 13.2581C42.9866 16.754 44.1962 20.832 44.2 25M44.2 49V34.6M44.2 34.6H29.8M44.2 34.6L37 41.08C33.8933 43.8587 30.0491 45.6792 25.9309 46.322C21.8127 46.9647 17.5965 46.4022 13.7908 44.7024C9.98516 43.0025 6.75259 40.2379 4.48301 36.7419C2.21344 33.246 1.0038 29.168 1 25M25 25C25 26.3255 23.9255 27.4 22.6 27.4C21.2745 27.4 20.2 26.3255 20.2 25C20.2 23.6745 21.2745 22.6 22.6 22.6C23.9255 22.6 25 23.6745 25 25Z"
+          stroke="#262626"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+  </symbol>
+
+
+</svg>

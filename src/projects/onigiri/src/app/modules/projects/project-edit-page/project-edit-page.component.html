@@ -1,0 +1,161 @@
+@if(editorStore.dataLoaded()) {
+
+@let linksData = editorStore.links();
+
+<div class="flex justify-content-between align-items-center position-relative">
+  <o-button secondary
+            class="o-h-40"
+            icon="arrow-back"
+            (onClick)="backToProjects()">Save and close</o-button>
+
+  <div class="actions-btn-container">
+    <ng-container *ngTemplateOutlet="actionsBtn;"></ng-container>
+  </div>
+
+
+</div>
+
+<div class="flex justify-content-start align-items-center o-mt-40"
+     style="column-gap: 10px;">
+
+  @if(editorStore.isSample()) {
+  <sample-project-chip />
+  }
+
+
+  <div class="flex align-items-end"
+       style="column-gap: 10px;">
+    <h1>{{editorStore.name()}}</h1>
+
+    @if(customerName(); as customerName) {
+    <h4 class="o-color-grey-600"
+        style="padding-bottom: 6px;">for {{customerName}}</h4>
+    }
+
+  </div>
+</div>
+
+<div class="project o-mt-40">
+
+  <div class="project__tasks">
+    <div class="tasks">
+      <h2 class="o-color-grey-1000 o-pl-40">To-do's</h2>
+      <span class="o-text-tooltip o-color-grey-800 font-normal o-pl-40">
+        {{tasksCompleted()}}/{{tasksTotal()}} completed
+      </span>
+
+      <div class="o-mt-30">
+        <project-tasks-list />
+      </div>
+
+      @if(!editorStore.tasks().length) {
+      <ng-container *ngTemplateOutlet="tasksHint"></ng-container>
+      }
+
+    </div>
+  </div>
+
+  <div class="project__links">
+
+    <div class="links">
+      <div class="flex justify-content-between align-items-center">
+        <h2 class="o-color-grey-1000">Docs & Links</h2>
+
+        @if(linksData.length) {
+        <o-button icon="plus"
+                  textButton
+                  class="o-h-40"
+                  (onClick)="onAddDocumentOrLink()">Add</o-button>
+        }
+
+
+      </div>
+
+      @if(linksData.length) {
+      <div class="o-mt-30">
+        @for (item of linksData; track $index; let first=$first) {
+        <div class="links__entry">
+
+          @if(!first) {
+          <div class="links__entry-divider"></div>
+          }
+
+          <project-link [data]="item"
+                        [projectId]="editorStore.projectId()!" />
+
+        </div>
+        }
+
+      </div>
+      } @else {
+      <div class="o-mt-30"
+           style="margin-bottom: 25px;">
+
+        <p class="links__placeholder o-text-main">
+          Keep you documents and links in one place so you won't ever loose important things again
+        </p>
+
+        <o-button icon="plus"
+                  class="o-mt-30 o-h-40 w-full"
+                  (onClick)="onAddDocumentOrLink()">Add document or link</o-button>
+
+      </div>
+      }
+    </div>
+  </div>
+
+</div>
+
+}
+
+
+@if(showActions) {
+<div class="actions-btn-overlay"
+     (click)="showActions = false"></div>
+}
+
+
+<ng-template #tasksHint>
+  <div class="tasks-hint">
+
+    <svg width="70"
+         height="80"
+         viewBox="0 0 70 80"
+         fill="none"
+         xmlns="http://www.w3.org/2000/svg"
+         class="tasks-hint__arrow">
+      <path d="M67.8405 75.9127C50.6309 78.2019 35.4736 78.801 20.9778 68.2849C11.6377 61.509 5.1977 50.0986 3.13996 38.8613C1.41842 29.4601 6.62022 21.5306 10.4616 13.5632C11.9144 10.55 15.2563 7.72622 16.1997 4.75613C16.4563 3.9484 8.73951 4.54053 7.25667 4.57224C6.76889 4.58267 13.1751 3.52132 14.877 2.74738C24.1475 -1.46847 15.0056 14.7672 18.9781 17.6159"
+            stroke="#1C1C1C"
+            stroke-width="4"
+            stroke-linecap="round" />
+    </svg>
+
+    <img src="../../../../../../assets/tasks_hint.jpg"
+         class="tasks-hint__text">
+
+  </div>
+
+</ng-template>
+
+<ng-template #actionsBtn>
+  <div class="actions-btn"
+       [class.actions-btn--expanded]="showActions">
+
+    <div class="actions-btn__header"
+         (click)="showActions = !showActions">
+      <span class="o-text-main font-semibold o-color-grey-1000">Actions</span>
+      <o-icon [key]="showActions ? 'close' : 'more'" />
+    </div>
+
+    <ul class="actions-btn__items">
+      @for (action of editorStore.availableActions(); track $index) {
+      <li class="actions-btn__action"
+          (click)="requestAction(action.key)">
+        <o-icon [key]="action.icon"
+                class="o-color-grey-800" />
+        <span class="o-text-main o-color-grey-1000">{{action.text}}</span>
+      </li>
+      }
+    </ul>
+  </div>
+</ng-template>

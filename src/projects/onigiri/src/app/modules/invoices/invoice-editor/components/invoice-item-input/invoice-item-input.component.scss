@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  height: 40px;
+}
+
+p-autoComplete {
+  display: block;
+}
+
+
+
+::ng-deep {
+  .p-autocomplete {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .service-selector-panel {
+    padding: 12px 0;
+    border-radius: var(--border-radius);
+
+    .p-autocomplete {
+
+      &-item {
+        padding: 10px 12px;
+        color: var(--color-grey-1000) !important;
+      }
+
+      &-empty-message {
+        padding: 0;
+      }
+    }
+
+    // .p-autocomplete-items {
+    //   .p-autocomplete-item {
+    //     padding: 10px 12px;
+    //     color: var(--color-grey-1000) !important;
+    //   }
+
+    //   .p-autocomplete-empty-message {
+    //     padding: 0;
+    //   }
+    // }
+  }
+}

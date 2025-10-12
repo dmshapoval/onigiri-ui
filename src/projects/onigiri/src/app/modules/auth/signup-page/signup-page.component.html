@@ -1,0 +1,152 @@
+<main class="grid grid-nogutter w-full h-full">
+
+  <div class="left col sm:col-6 h-full flex flex-column align-items-center text-left">
+
+    <div class="w-full">
+      <a class="logo flex no-underline align-items-center justify-content-start"
+         href="#">
+        <svg version="2.0"
+             class="logo__img">
+          <use xlink:href="#onigiri_logo_svg" />
+        </svg>
+
+        <span class="logo__text o-logo-text o-color-grey-1000">ONIGIRI</span>
+      </a>
+    </div>
+
+    @if(signInLinkSent()) {
+    <h2 class="w-full">Great. Sign up link was sent to your email address</h2>
+
+    <p class="w-full o-color-grey-1000"
+       style="font-size: 18px; margin-top: 10px;">
+      Click on the link in the email we sent to {{emailInput.value}}
+    </p>
+
+    } @else {
+
+    <h2 class="w-full">Get started with Onigiri</h2>
+    <p class="w-full o-color-grey-1000"
+       style="font-size: 18px; margin-top: 10px;">Sign up in seconds. No credit card required.</p>
+
+    <div class="w-full flex justify-content-center"
+         style="margin-top: 30px;">
+
+      <div class="flex flex-column w-full">
+
+        <button class="signin-btn o-button o-text-main"
+                (click)="signUpWithGoogle()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               xmlns:xlink="http://www.w3.org/1999/xlink"
+               viewBox="0 0 48 48">
+            <defs>
+              <path id="a"
+                    d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
+            </defs>
+            <clipPath id="b">
+              <use xlink:href="#a"
+                   overflow="visible" />
+            </clipPath>
+            <path clip-path="url(#b)"
+                  fill="#FBBC05"
+                  d="M0 37V11l17 13z" />
+            <path clip-path="url(#b)"
+                  fill="#EA4335"
+                  d="M0 11l17 13 7-6.1L48 14V0H0z" />
+            <path clip-path="url(#b)"
+                  fill="#34A853"
+                  d="M0 37l30-23 7.9 1L48 0v48H0z" />
+            <path clip-path="url(#b)"
+                  fill="#4285F4"
+                  d="M48 48L17 24l-4-3 35-10z" />
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+
+
+        <div class="auth-divider o-mt-20 o-mb-20">
+          <span class="auth-divider__line"></span>
+          <span class="auth-divider__text">OR</span>
+          <span class="auth-divider__line"></span>
+        </div>
+
+        <div class="email-auth flex flex-column">
+
+          <div class="w-full">
+            <input pInputText
+                   type="email"
+                   [formControl]="emailInput"
+                   placeholder="Your email"
+                   class="w-full o-h-40">
+
+            @if(invalidEmail) {
+            <p class="o-text-tooltip o-mt-10 o-color-red-600">
+              The email field must contain a valid email address.
+            </p>
+            }
+
+            @if(authError()) {
+            <p class="o-text-tooltip o-mt-10 o-color-red-600">
+              {{authError()}}
+            </p>
+            }
+          </div>
+
+
+          <button class="signin-btn o-button o-text-main"
+                  [disabled]="emptyEmail || invalidEmail|| pendingServer()"
+                  (click)="signupWithEmail()">
+
+            <span>Continue</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p class="text-center o-mt-30"
+       style="font-size: 14px;">
+      <span class="text-color-secondary">Signing up for Onigiri account means that you agree with</span>
+      <a href="https://onigiri.one/policy"
+         class="o-color-green-800"
+         style="margin-left: 4px;">Terms of Use and Privacy Policy</a>
+    </p>
+
+    }
+
+    <div style="
+        margin-top: 30px;
+        width: 50px;
+        height: 1px;
+        background-color: var(--color-grey-450);
+      "></div>
+
+    <div class="flex align-items-center justify-content-center w-full o-c-gap-10 o-mt-25">
+      @if(signInLinkSent()) {
+      <span class="o-text-secondary o-color-grey-600 cursor-pointer underline"
+            (click)="onStartOver()">Start over</span>
+      <span class="inline-block border-circle"
+            style="width: 4px;height:4px;background-color: var(--color-grey-500);"></span>
+      }
+
+      <a class="o-text-secondary o-color-green-800"
+         routerLink="/signin">Have an account? Sign in</a>
+    </div>
+
+  </div>
+
+  <div class="right col sm:col-6 h-full flex flex-column align-items-center text-left">
+    <h2 class="w-full">Try Advanced features for 7 days</h2>
+    <p class="w-full mt-2">Your 14-day trial includes:</p>
+    <ul class="mt-2 w-full text-lg pl-4">
+
+      @for (feature of features; track $index) {
+      <li>
+        <div class="icon-wrap"><i class="pi pi-check"></i></div>
+        <span class="feature-text">{{feature}}</span>
+      </li>
+      }
+
+    </ul>
+  </div>
+</main>

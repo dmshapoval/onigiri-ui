@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.user-info {
+
+  &__name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-grey-800);
+  }
+
+  &__email {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-grey-600);
+  }
+
+  &__photo {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+  }
+}

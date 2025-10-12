@@ -1,0 +1,41 @@
+<p-dropdown [options]="currencies"
+            [formControl]="innerControl"
+            [autoDisplayFirst]="false"
+            styleClass="w-full">
+
+  <ng-template pTemplate="selectedItem"
+               let-currency>
+
+    @if(currency) {
+    <div class="currency">
+      <div class="currency__flag">
+        @if(getCurrencyFlagClasses(currency); as flagClasses) {
+        <span [class]="flagClasses"></span>
+        }
+
+      </div>
+      <div class="o-color-grey-1000 o-text-main">{{currency}}</div>
+    </div>
+    }
+
+  </ng-template>
+
+  <ng-template pTemplate="item"
+               let-currency>
+
+    @if(currency) {
+    <div class="currency">
+      <div class="currency__flag">
+
+        @if(getCurrencyFlagClasses(currency); as flagClasses) {
+        <span [class]="flagClasses"></span>
+        }
+
+      </div>
+      <div class="o-color-grey-1000 o-text-main">{{currency}}</div>
+    </div>
+    }
+
+
+  </ng-template>
+</p-dropdown>

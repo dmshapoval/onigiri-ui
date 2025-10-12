@@ -1,0 +1,31 @@
+<p-autoComplete [(ngModel)]="selectedValue"
+                serviceSelectorAutocomplete
+                [suggestions]="filteredSuggestions"
+                [dropdown]="true"
+                appendTo="body"
+                [disabled]="disabled"
+                (completeMethod)="onSearch($event)"
+                panelStyleClass="service-selector-panel"
+                styleClass="w-full"
+                [showEmptyMessage]="true"
+                placeholder="Item or service name"
+                (onBlur)="onBlur()">
+
+  <ng-template pTemplate="header">
+    <div class="o-text-main o-color-green-800 o-hover-color-green-1000 cursor-pointer"
+         (click)="onCreateNew()"
+         style="padding: 10px 12px;">
+      + New service
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="item"
+               let-suggestion>
+    <div class="o-dropdown-item">
+      {{suggestion.name}}
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="empty"></ng-template>
+
+</p-autoComplete>

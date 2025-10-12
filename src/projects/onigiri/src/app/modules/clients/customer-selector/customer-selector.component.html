@@ -1,0 +1,30 @@
+<p-autoComplete [(ngModel)]="selectedValue"
+                [suggestions]="filteredSuggestions"
+                field="name"
+                [dropdown]="true"
+                [disabled]="disabled"
+                (completeMethod)="onSearch($event)"
+                panelStyleClass="customer-selector-panel"
+                styleClass="w-full"
+                [forceSelection]="true"
+                [showEmptyMessage]="true"
+                placeholder="Choose client">
+
+  <ng-template pTemplate="header">
+    <div class="o-text-main o-color-green-800 o-hover-color-green-1000 cursor-pointer"
+         (click)="onCreateNew()"
+         style="padding: 10px 12px;">
+      + New client
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="item"
+               let-suggestion>
+    <div class="o-dropdown-item">
+      {{suggestion.name}}
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="empty"></ng-template>
+
+</p-autoComplete>

@@ -1,0 +1,41 @@
+<div class="editor"
+     withLayoutCls>
+
+  <div class="editor__img">
+    <profile-img-input />
+  </div>
+
+  <div class="editor__name-descr">
+    <div class="with-progress-counter">
+      <div class="name-input o-font-h1">
+        <rich-text-editor [value]="name()"
+                          [maxLength]="70"
+                          placeholder="Your name"
+                          (valueChange)="updateName($event || null)" />
+      </div>
+
+
+      <div class="text-limit-counter"
+           style="bottom: -16px;">
+        <progress-counter [maxValue]="70"
+                          [currentValue]="nameLength()" />
+      </div>
+    </div>
+
+    <div class="with-progress-counter">
+      <div class="description-input">
+        <rich-text-editor [value]="bio()"
+                          [maxLength]="1000"
+                          placeholder="Write few words about yourself here"
+                          (valueChange)="updateDescription($event || null)" />
+      </div>
+
+      <div class="text-limit-counter"
+           style="bottom: -25px;">
+        <progress-counter [maxValue]="1000"
+                          [currentValue]="bioLength()" />
+      </div>
+    </div>
+  </div>
+
+</div>

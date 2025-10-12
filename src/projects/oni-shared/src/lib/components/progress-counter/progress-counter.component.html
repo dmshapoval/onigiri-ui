@@ -1,0 +1,28 @@
+<div class="progress-bar"
+     [style.--progress]="progress()">
+  <svg viewBox="0 0 15 15"
+       class="circular-progress">
+    <circle class="bg"
+            cx="7"
+            cy="7"
+            r="6"
+            fill="none"
+            [attr.stroke]="emptyColor()"
+            stroke-width="2"></circle>
+
+    @if(progress() > 0) {
+    <circle class="fg"
+            cx="7"
+            cy="7"
+            r="6"
+            fill="none"
+            [attr.stroke]="filledColor()"
+            stroke-width="2"></circle>
+    }
+
+  </svg>
+</div>
+
+<div class="numbers">
+  {{numbersText()}}
+</div>

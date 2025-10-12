@@ -1,0 +1,90 @@
+@mixin onMobile() {
+  @media screen and (max-device-width: 1249px) {
+    @content;
+  }
+}
+
+
+// @mixin onTablet() {
+//   @media screen and (min-width: 600px) {
+//     @content;
+//   }
+// }
+
+
+@mixin onDesktop() {
+  @media screen and (min-width: 1170px) {
+    @content;
+  }
+}
+
+@mixin noScroll() {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@mixin when-sm-h() {
+  .tile-size--sm-h {
+    @content;
+  }
+}
+
+@mixin tile-size-rows-1() {
+  .tile-size--rows-1 {
+    @content;
+  }
+}
+
+@mixin tile-size-rows-2() {
+  .tile-size--rows-2 {
+    @content;
+  }
+}
+
+@mixin tile-size-rows-4() {
+  .tile-size--rows-4 {
+    @content;
+  }
+}
+
+
+
+
+
+
+
+
+@mixin when-sm-sq() {
+  .tile-size--sm-sq {
+    @content;
+  }
+}
+
+@mixin when-md-h() {
+  .tile-size--md-h {
+    @content;
+  }
+}
+
+@mixin when-md-v() {
+  .tile-size--md-v {
+    @content;
+  }
+}
+
+@mixin when-lg-sq() {
+  .tile-size--lg-sq {
+    @content;
+  }
+}
+
+@mixin with-line-clamp() {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--lines-count, 1);
+  line-clamp: var(--lines-count, 1);
+  text-overflow: ellipsis;
+}

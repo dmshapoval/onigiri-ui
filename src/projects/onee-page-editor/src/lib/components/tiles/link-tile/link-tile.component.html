@@ -1,0 +1,52 @@
+<div class="link-tile">
+
+  <div class="link-tile__favicon">
+    <link-tile-favicon />
+  </div>
+
+  <div class="link-tile__data">
+
+    <div class="link-tile__title o-font-h4">
+
+      <rich-text-editor [value]="title()"
+                        [maxLength]="140"
+                        [isReadOnly]="viewStore.onMobileDevice()"
+                        [placeholder]="titlePlaceholder()"
+                        [lineClamp]="titleMaxLines()"
+                        (valueChange)="updateTile({title: $event?.html || null})" />
+
+    </div>
+
+    <div class="link-tile__url">
+      <a [href]="url()"
+         target="_blank"
+         class="link-url o-text-tooltip">{{linkCleanUrl()}}</a>
+    </div>
+  </div>
+
+  <div class="link-tile__thumb"
+       #editImageMenuTrigger
+       (mouseenter.zoneless)="thumbHovered.set(true)"
+       (mouseleave.zoneless)="thumbHovered.set(false)">
+
+    @if(!viewStore.onMobileDevice() && thumbHovered()&& thumbImage.actions().length > 0) {
+    <div class="tile-menu link-tile-img-edit-menu"
+         @thumbMenu>
+      @for (thumbAction of thumbImage.actions(); track $index) {
+      <div class="action-icon"
+           (click)="thumbAction.handler()">
+        <o-icon [key]="thumbAction.iconKey" />
+      </div>
+      }
+    </div>
+    }
+
+    <link-tile-thumb-image />
+  </div>
+
+</div>
+
+<input type="file"
+       #thumbImageSelector
+       (change)="thumbImage.uploadCustom(thumbImageSelector.files)"
+       style="display:none;">

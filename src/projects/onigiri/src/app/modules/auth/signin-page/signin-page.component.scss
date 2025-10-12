@@ -1,0 +1,156 @@
+:host {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  position: relative;
+}
+
+main {
+  width: 600px;
+  padding: 105px 50px 0;
+}
+
+h2 {
+  font-size: 28px;
+  margin-top: 50px;
+}
+
+.signin-btn {
+  height: 45px;
+  background-color: var(--color-grey-1000);
+  color: white;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+}
+
+.logo {
+  &__img {
+    height: 40px;
+    width: 40px;
+  }
+
+  &__text {
+    font-size: 24px;
+    position: relative;
+  }
+
+  .onigiri-ref {
+    position: absolute;
+    font-family: Open Sans;
+    font-size: 8px;
+    font-weight: 700;
+    bottom: -10px;
+    left: 2px;
+  }
+}
+
+.polici-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right {
+  background-color: rgb(232, 244, 224);
+
+  ul {
+    list-style: none;
+
+    li {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      justify-content: flex-start;
+
+      .feature-text {
+        columns: var(--color-grey-1000);
+        font-size: 18px;
+      }
+
+      .icon-wrap {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+#page_key_input {
+  padding-left: 94px;
+  color: var(--color-grey-1000);
+
+  &.ng-invalid {
+    border-color: var(--color-grey-1000);
+  }
+}
+
+.status-icon {
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  height: 30px;
+  width: 30px;
+
+  display: flex;
+  justify-content: center;
+
+  o-icon {
+    scale: 1.1;
+  }
+}
+
+.error-notification {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  border-radius: 5px;
+  padding: 20px 22px;
+  background-color: rgba(250, 110, 101, 0.05);
+  color: #da362c;
+}
+
+.pages-app-link {
+  position: absolute;
+  color: var(--color-grey-600);
+  top: 10px;
+  left: 12px;
+}
+
+.auth-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &__line {
+    flex: 1;
+    background-color: var(--color-grey-500);
+    height: 1px;
+  }
+
+  &__text {
+    padding: 0 10px;
+    color: var(--color-grey-500);
+  }
+}
+
+.email-auth {
+  row-gap: 20px;
+}

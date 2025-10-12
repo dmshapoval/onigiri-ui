@@ -1,0 +1,87 @@
+<div class="w-full flex align-items-center justify-content-between ">
+  <h4>Page settings</h4>
+
+  <button class="o-button save-btn"
+          (click)="onClose()">
+
+    <span class="o-button__text">Save</span>
+  </button>
+</div>
+
+<div class="o-mt-30 relative">
+
+  <p-tabView>
+    <p-tabPanel header="General">
+
+      <div class="flex flex-column o-r-gap-30">
+
+        <div class="flex o-c-gap-20">
+          <div class="field flex-1">
+            <label class="o-text-tooltip">Page link</label>
+            <page-key-input [value]="pageData.key()"
+                            (valueChange)="pageData.updatePageKey($event)" />
+          </div>
+
+          <div class="field flex-1">
+            <label class="o-text-tooltip">
+              Page Title
+
+              <progress-counter [maxValue]="70"
+                                [currentValue]="titleInput.value?.length || 0" />
+            </label>
+
+            <input pInputText
+                   type="text"
+                   maxlength="70"
+                   [formControl]="titleInput"
+                   autocomplete="off"
+                   [placeholder]="titlePlaceholder()"
+                   class="o-h-40 w-full" />
+
+          </div>
+
+        </div>
+
+        <div class="w-full">
+          <div class="field mb-0">
+            <label class="o-text-tooltip">
+              Page Description
+
+              <progress-counter [maxValue]="160"
+                                [currentValue]="descriptionInput.value?.length || 0" />
+            </label>
+
+            <textarea style="height: 80px;"
+                      class="w-full"
+                      maxlength="160"
+                      pInputTextarea
+                      [formControl]="descriptionInput"
+                      autocomplete="off"
+                      [placeholder]="descriptionPlaceholder()"></textarea>
+
+
+          </div>
+        </div>
+
+      </div>
+
+    </p-tabPanel>
+
+
+    <p-tabPanel [disabled]="true">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center">
+          <span>Custom Domain</span>
+          <!-- <coming-soon-chip text="SOON"
+                            class="w-auto" /> -->
+        </div>
+      </ng-template>
+    </p-tabPanel>
+  </p-tabView>
+
+
+  <coming-soon-chip text="SOON"
+                    class="w-auto absolute"
+                    style="top: 2px; left: 203px;" />
+
+</div>

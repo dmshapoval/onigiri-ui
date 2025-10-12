@@ -1,0 +1,106 @@
+<div class="o-dialog">
+
+  <div class="o-dialog__closing">
+    <div class="o-dialog__close-icon"
+         (click)="onClose()">
+      <o-icon key="close" />
+    </div>
+  </div>
+
+
+  <div class="o-dialog__body">
+
+    <div class="o-dialog__header">
+      <h2 class="o-dialog__header-title">Send Invoice via email</h2>
+      <p class="o-dialog__header-caption">
+        Securely send your invoice via email. Use comma to add several recipients to your email
+      </p>
+    </div>
+
+    <div class="o-dialog__content o-mt-40"
+         [formGroup]="form">
+
+      <div class="flex flex-column w-full o-r-gap-20">
+
+        <div class="input-wrap">
+          <label for="recipient_input"
+                 class="o-font-h4 o-color-grey-1000">Email to</label>
+          <p-chips #recipientsInput
+                   formControlName="recipients"
+                   placeholder="clientemail@clientcompany.com"
+                   [separator]="emailsSeparatorExp"
+                   [allowDuplicate]="false"
+                   [caseSensitiveDuplication]="false"
+                   [addOnBlur]="true"
+                   [max]="4">
+
+            <ng-template let-item
+                         pTemplate="item">
+              <span [class.invalid-chip]="isNotValidEmail(item)">{{item}}</span>
+            </ng-template>
+
+            <ng-template pTemplate="removetokenicon">
+              <o-icon key="close-rounded" />
+            </ng-template>
+
+          </p-chips>
+
+          @if(form.controls.recipients.invalid) {
+          <span class="o-validation-error">
+            The email field must be a valid email address.
+          </span>
+          }
+
+        </div>
+
+        <div class="input-wrap">
+          <label for="cc_input"
+                 class="o-font-h4 o-color-grey-1000">CC</label>
+          <p-chips #ccInput
+                   formControlName="cc"
+                   placeholder="myaccounant@company.com"
+                   [separator]="emailsSeparatorExp"
+                   [allowDuplicate]="false"
+                   [caseSensitiveDuplication]="false"
+                   [addOnBlur]="true"
+                   [max]="4">
+
+            <ng-template pTemplate="removetokenicon">
+              <o-icon key="close-rounded" />
+            </ng-template>
+          </p-chips>
+
+          @if(form.controls.cc.errors && form.controls.cc.errors['email']) {
+          <span class="o-validation-error">
+            The email field must be a valid email address.
+          </span>
+          }
+        </div>
+
+        <div class="input-wrap">
+          <label for="message_input"
+                 class="o-font-h4 o-color-grey-1000">Message</label>
+
+          <textarea rows="4"
+                    id="message_input"
+                    class="w-full o-scroll"
+                    pInputTextarea
+                    formControlName="message"
+                    autocomplete="off"
+                    placeholder="Thank you for your business"></textarea>
+        </div>
+
+        @if(serverError()) {
+        <p class="o-server-error">{{serverError()}}</p>
+        }
+
+        <div class="flex justify-content-end">
+          <send-invoice-button [status]="requestStatus()"
+                               [disabled]="form.invalid || !canSend()"
+                               (onClick)="onSend()" />
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

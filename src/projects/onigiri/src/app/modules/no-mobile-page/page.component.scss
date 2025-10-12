@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  color: var(--color-grey-1000);
+  height: 100vh;
+  width: 100vw;
+}
+
+.logo {
+
+
+  &__img {
+    height: 40px;
+    width: 40px;
+  }
+
+  &__text {
+    font-size: 24px;
+  }
+}
+
+.sorry {
+  margin-top: 36px;
+  font-family: "Paytone One";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.info {
+  margin-top: 45px;
+
+  font-family: "Open Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+}

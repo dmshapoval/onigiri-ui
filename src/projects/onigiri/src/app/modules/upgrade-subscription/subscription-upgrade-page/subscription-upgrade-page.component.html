@@ -1,0 +1,50 @@
+<div class="flex flex-column w-full align-items-center">
+
+  @if(showPagesAccessNotification$ | async) {
+  <div class="pages-access-notification">
+
+    <div class="pages-access-notification__content">
+      <div>
+        <div class="o-text-tooltip font-normal">You're on {{currentUserSubscription()}}</div>
+        <div class="o-font-h2">Pages remain free forever. Explore other parts of the Onigiri platform</div>
+      </div>
+
+      <o-button (onClick)="onCancel()">Explore</o-button>
+    </div>
+
+
+  </div>
+  }
+
+
+  <div class="period-selector-wrap flex align-items-center justify-content-between">
+    <h1>Choose a plan</h1>
+    <div class="flex align-items-center period-selector">
+
+      <label for="period_selector"
+             class="period-selector__lbl o-text-main">Monthly</label>
+
+      <p-inputSwitch [(ngModel)]="showYearly"
+                     inputId="period_selector"></p-inputSwitch>
+
+      <span class="o-color-grey-800 o-font-h4 font-semibold period-selector__comment">Yearly (Save up to 35%)</span>
+    </div>
+
+  </div>
+
+  <div class="flex products justify-content-center">
+
+    <subscription-card [product]="freeSubscription"
+                       [showYearly]="showYearly"
+                       (selected)="onCancel()" />
+
+    @for (product of subscriptionOptions; track $index) {
+    <subscription-card [product]="product"
+                       [showYearly]="showYearly"
+                       class="h-full"
+                       (selected)="onUpgradeSubscription(product.key)" />
+    }
+
+  </div>
+
+</div>

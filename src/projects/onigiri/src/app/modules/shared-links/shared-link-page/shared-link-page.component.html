@@ -1,0 +1,15 @@
+<main class="flex flex-column">
+
+  @if(isLoading()) {
+  <p-progressBar mode="indeterminate"
+                 [style]="{ height: '6px' }" />
+  }
+
+  <div class="flex-1">
+
+    <shared-invoice (loadingStatus)="hadleRequestStatusChange($event)" />
+
+  </div>
+
+  <o-ref-footer class="o-mt-40 o-mb-40"></o-ref-footer>
+</main>

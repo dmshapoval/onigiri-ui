@@ -1,0 +1,29 @@
+@let imageId = vm.imageId();
+@let showLoader = vm.isLoading() || vm.thumbData()._type === 'pending';
+@let error = vm.error();
+
+<div class="link-tile-thumb-image">
+
+  @if(showLoader) {
+
+  <p-skeleton width="100%"
+              height="100%" />
+
+  } @else if(error) {
+  <div class="placeholder placeholder--error o-text-tooltip">
+    {{error}}
+  </div>
+  } @else if(!imageId && !error) {
+  <div class="placeholder o-text-tooltip">
+    There's no preview image
+  </div>
+  } @else if(imageId && !error) {
+
+  <img [src]="imageId | oImageUrl"
+       alt="Thumb">
+
+  }
+
+
+
+</div>

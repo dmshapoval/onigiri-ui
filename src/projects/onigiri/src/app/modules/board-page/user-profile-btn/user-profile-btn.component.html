@@ -1,0 +1,29 @@
+<div class="user-info flex align-items-center w-full justify-content-between">
+
+  <div class="flex align-items-center"
+       style="gap: 8px">
+    <div class="user-info__photo">
+      @let userPhoto = userPhoto$ | async;
+
+      @if(userPhoto && !avatarLoadFailed()) {
+      <img [src]="userPhoto"
+           alt="user avatar"
+           (error)="avatarLoadFailed.set(true)">
+      } @else {
+      <img src="../../../../assets/no-user-avatar.png"
+           alt="default user avatar">
+      }
+
+    </div>
+
+    <div class="flex-1">
+      <div class="user-info__name">{{account.name()}}</div>
+      <div class="user-info__email">{{account.email()}}</div>
+    </div>
+  </div>
+
+  <o-icon class="cursor-pointer o-color-grey-800"
+          key="logout"
+          style="height: 30px;"
+          (click)="signOut()" />
+</div>

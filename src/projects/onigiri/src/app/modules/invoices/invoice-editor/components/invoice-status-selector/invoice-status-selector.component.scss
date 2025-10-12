@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  width: 105px;
+}
+
+:host ::ng-deep {
+  .p-dropdown {
+    border: none;
+
+    .p-inputtext {
+      border: none;
+    }
+
+    &.draft {
+      background-color: var(--color-grey-200);
+    }
+
+    &.sent {
+      background-color: var(--color-blue-200);
+    }
+
+    &.paid {
+      background-color: var(--color-green-200);
+    }
+
+    &.overdue {
+      background-color: var(--color-red-200);
+    }
+  }
+}

@@ -1,0 +1,84 @@
+.p-dialog {
+  box-shadow: none;
+  scrollbar-width: none;
+
+  .p-dialog-content {
+    //overflow: hidden;
+    background-color: transparent;
+
+    &::-webkit-scrollbar {
+      display: none;
+      /* Safari and Chrome */
+    }
+
+
+  }
+}
+
+
+.o-dialog {
+
+  overflow-y: scroll;
+  max-height: 100vh;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+  }
+
+
+
+  &__closing {
+    background-color: transparent;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    height: 56px;
+  }
+
+  &__close-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #fff;
+    background-color: var(--color-grey-1000);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  &__body {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: var(--border-radius);
+    transition: height 0.3s ease-in-out;
+  }
+
+  &__header {
+
+    &-title {
+      margin-bottom: 10px;
+    }
+
+    &-caption {
+      font-family: 'Open Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: normal;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+}
+
+.cdk-overlay-container {
+  z-index: 2000;
+}

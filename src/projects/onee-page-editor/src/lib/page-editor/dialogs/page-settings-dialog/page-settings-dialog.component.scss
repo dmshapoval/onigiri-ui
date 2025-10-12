@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  background-color: var(--color-grey-100);
+  padding: 30px 20px;
+  border-radius: 10px;
+}
+
+coming-soon-chip {
+  margin-left: 3px;
+  width: fit-content;
+  padding: 0 12px;
+}
+
+label {
+  font-weight: 400;
+  color: var(--color-grey-1000);
+}
+
+.save-btn {
+  height: 30px;
+  width: 52px;
+  color: var(--color-grey-100);
+  background-color: var(--color-grey-1000);
+
+  .o-button__text {
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+input,
+textarea {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-grey-1000);
+}
+
+.field {
+
+
+  // .text-limit-counter {
+  //   position: absolute;
+  //   left: 2px;
+  //   opacity: 0;
+  //   transition: opacity 0.2s ease;
+  // }
+
+  label {
+    width: 100%;
+    position: relative;
+  }
+
+  progress-counter {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  &:focus-within {
+    progress-counter {
+      opacity: 1;
+    }
+
+    // .text-limit-counter {
+    //   opacity: 1;
+    // }
+  }
+}
+
+:host ::ng-deep {
+  .p-tabview-panels {
+    padding-top: 30px;
+    padding-bottom: 0;
+  }
+}

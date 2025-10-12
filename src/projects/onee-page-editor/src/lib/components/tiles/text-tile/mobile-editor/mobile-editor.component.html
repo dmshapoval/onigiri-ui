@@ -1,0 +1,23 @@
+<div class="tile-mobile-editor__header">
+  <div class="font-bold">Text details</div>
+
+  <button class="o-button o-button--black w-min"
+          mobileEditorClose>Save</button>
+</div>
+
+<div class="tile-mobile-editor__body">
+
+  <div class="text-tile mx-auto">
+
+    <div class="text-tile__input o-text-main ">
+      <rich-text-editor [value]="text()"
+                        [maxLength]="800"
+                        placeholder="Write something..."
+                        [lineClamp]="maxLinesCount()"
+                        (valueChange)="updateTile({text: $event?.html || null})" />
+    </div>
+
+
+  </div>
+
+</div>

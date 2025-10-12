@@ -1,0 +1,15 @@
+<div class="text-tile"
+     withTileSize>
+
+  <div class="text-tile__input o-text-main"
+       [class.text-tile__input--readonly]="viewStore.onMobileDevice()">
+
+    <rich-text-editor [value]="text()"
+                      [isReadOnly]="viewStore.onMobileDevice()"
+                      [maxLength]="800"
+                      placeholder="Write something..."
+                      [lineClamp]="maxLinesCount()"
+                      (valueChange)="updateTile({text: $event?.html || null })" />
+  </div>
+
+</div>

@@ -1,0 +1,44 @@
+@let viewType = viewStore.viewType();
+
+<div #tilesGridContainer
+     class="tiles-editor"
+     [class.tiles-editor--mobile]="viewType === 'mobile'">
+
+  <gridstack #desktopGrid
+             [options]="desktopGridOptions"
+             (changeCB)="onChange($event)"
+             (dragStartCB)="onDragStarted()"
+             (dragStopCB)="onDragFinished()"
+             class="tiles-grid"
+             [class.hidden]="viewType !== 'desktop'"
+             style="width: 860px;">
+
+    @for (tile of desktopGridItems(); track tile.id) {
+
+    <gridstack-item [options]="tile">
+      <tile-container [tileId]="tile.id!" />
+    </gridstack-item>
+
+    }
+
+  </gridstack>
+
+  <gridstack #mobileGrid
+             [options]="mobileGridOptions()"
+             (changeCB)="onChange($event)"
+             (dragStartCB)="onDragStarted()"
+             (dragStopCB)="onDragFinished()"
+             [class.hidden]="viewType !== 'mobile'"
+             class="tiles-grid">
+
+    @for (tile of mobileGridItems(); track tile.id) {
+
+    <gridstack-item [options]="tile">
+      <tile-container [tileId]="tile.id!" />
+    </gridstack-item>
+
+    }
+
+  </gridstack>
+
+</div>

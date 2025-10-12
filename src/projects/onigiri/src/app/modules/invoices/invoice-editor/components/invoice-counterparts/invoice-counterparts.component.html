@@ -1,0 +1,106 @@
+<div class="grid grid-nogutter o-c-gap-30">
+
+  <div class="field col">
+    <label for="invoice_billed_to"
+           class="o-input-lbl w-full">From</label>
+
+    @if(businesDetailsNotSpecified()) {
+    <o-button icon="plus"
+              textButton
+              class="o-h-40"
+              (onClick)="onEditBusinessDetails()"
+              style="margin-left: -10px;">Add business details</o-button>
+    } @else {
+
+    <div class="flex">
+
+      @let billedFromData = billedFrom();
+
+      <div class="flex-1 o-text-main">
+
+        @if(billedFromData.companyName || billedFromData.contactName) {
+        <div class="mb-3">
+          @if(billedFromData.companyName) { <p>{{billedFromData.companyName}}</p> }
+          @if(billedFromData.contactName) { <p>{{billedFromData.contactName}}</p> }
+        </div>
+        }
+
+
+        <o-address [address]="billedFromData.address"
+                   [city]="billedFromData.city"
+                   [country]="billedFromData.country"
+                   [state]="billedFromData.state"
+                   [postalCode]="billedFromData.postalCode"
+                   class="mb-3"
+                   style="color: black;" />
+
+        @if(billedFromData.email) { <p>{{billedFromData.email}}</p> }
+        @if(billedFromData.phone) { <p>{{billedFromData.phone}}</p> }
+        @if(billedFromData.vatNumber) { <p>VAT {{billedFromData.vatNumber}}</p> }
+
+      </div>
+
+
+      <div>
+        <o-icon class="cursor-pointer o-color-green-800 o-hover-color-green-1000 o-h-30"
+                key="edit"
+                (click)="onEditBusinessDetails()" />
+      </div>
+
+    </div>
+    }
+
+  </div>
+
+  <div class="field col">
+    <label for="invoice_billed_to"
+           class="o-input-lbl">Billed To</label>
+
+
+    @if(editorStore.selectedCustomer(); as selectedCustomer) {
+
+    <div class="selected-customer o-text-main">
+
+      <div class="selected-customer__info">
+        @if(selectedCustomer.contactName || selectedCustomer.companyName) {
+
+        <div class="mb-3">
+          @if(selectedCustomer.companyName) { <p>{{selectedCustomer.companyName}}</p> }
+          @if(selectedCustomer.contactName) { <p>{{selectedCustomer.contactName}}</p> }
+        </div>
+
+        }
+
+        <o-address [address]="selectedCustomer.address"
+                   [city]="selectedCustomer.city"
+                   [country]="selectedCustomer.country"
+                   [state]="selectedCustomer.state"
+                   [postalCode]="selectedCustomer.postalCode"
+                   class="mb-3" />
+
+        @if(selectedCustomer.email) { <p>{{selectedCustomer.email}}</p> }
+        @if(selectedCustomer.phone) { <p>{{selectedCustomer.phone}}</p> }
+        @if(selectedCustomer.vatNumber) { <p>VAT {{selectedCustomer.vatNumber}}</p> }
+      </div>
+
+      <div class="selected-customer__actions">
+        <o-icon class="cursor-pointer o-color-green-800 o-hover-color-green-1000 o-h-30"
+                key="replace"
+                (click)="onClearSelectedCustomer()" />
+
+        <o-icon class="cursor-pointer o-color-green-800 o-hover-color-green-1000 o-h-30"
+                key="edit"
+                (click)="onEditSelectedCustomer(selectedCustomer.id)" />
+      </div>
+
+    </div>
+
+    } @else {
+
+    <customer-selector [formControl]="billedToControl" />
+
+    }
+
+
+  </div>
+</div>

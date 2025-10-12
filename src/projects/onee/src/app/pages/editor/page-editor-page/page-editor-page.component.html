@@ -1,0 +1,49 @@
+@let onMobile = onMobileDevice | async;
+
+@if(!onMobile) {
+<div class="fixed"
+     style="bottom: 40px; left: 25px;">
+  <ng-container [ngTemplateOutlet]="signOutBtn" />
+</div>
+}
+
+<onee-page-editor>
+
+  <ng-template oTemplate="closeButton">
+
+    <ng-container [ngTemplateOutlet]="onMobile ? signOutBtn : switchToOni " />
+
+  </ng-template>
+
+</onee-page-editor>
+
+<ng-template #signOutBtn>
+  <button class="signout-btn o-button o-button--secondary white-space-nowrap"
+          (click)="signOut()">
+
+    @if(!onMobile) {
+    <span class="font-semibold"
+          style="margin-right: 10px">
+      Sign out
+    </span>
+    }
+
+    <o-icon key="logout" />
+
+  </button>
+
+</ng-template>
+
+<ng-template #switchToOni>
+
+  @if(canSwitchToOnigiri()) {
+  <button class="o-button o-button--secondary w-min white-space-nowrap"
+          (click)="switchToOnigiri()">Switch to Onigiri</button>
+  }
+
+  @if(showDiscoverOnigiri()) {
+  <button class="o-button discover-onigiri-btn w-min white-space-nowrap"
+          (click)="discoverOnigiri()">Want more? Discover 🍙 Onigiri</button>
+  }
+
+</ng-template>

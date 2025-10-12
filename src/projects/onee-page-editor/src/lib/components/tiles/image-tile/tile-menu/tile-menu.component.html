@@ -1,0 +1,66 @@
+@let size = tileSize();
+
+<div class="tile-menu">
+  @if(showLinkInput()) {
+  <div class="link-input">
+
+    <div class="action-icon"
+         (click)="showLinkInput.set(false)">
+      <o-icon key="arrow-back" />
+    </div>
+
+    <input type="text"
+           class="cursor-auto o-h-30"
+           pInputText
+           [formControl]="linkInput"
+           autocomplete="off"
+           (keydown.enter)="showLinkInput.set(false)" />
+
+    <div class="action-icon"
+         (click)="linkInput.setValue(null)">
+      <o-icon key="close-rounded" />
+    </div>
+
+  </div>
+  } @else {
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width=== 1 && size.height === 2"
+       (click)="updateTileSize(1, 2)">
+    <o-icon key="sm_square_tile" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width === 2 && size.height === 2"
+       (click)="updateTileSize(2, 2)">
+    <o-icon key="md_horizontal_tile" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width === 1 && size.height === 4"
+       (click)="updateTileSize(1, 4)">
+    <o-icon key="md_vertical_tile" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width === 2 && size.height === 4"
+       (click)="updateTileSize(2, 4)">
+    <o-icon key="lg_square_tile" />
+  </div>
+
+  <div class="tile-menu__divider"></div>
+
+  <div class="action-icon"
+       (click)="showLinkInput.set(true)">
+    <o-icon key="link" />
+  </div>
+
+
+  <div class="tile-menu__divider"></div>
+
+  <div class="action-icon"
+       (click)="onDeleteTile()">
+    <o-icon key="trash" />
+  </div>
+  }
+
+</div>

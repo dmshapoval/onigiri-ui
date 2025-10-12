@@ -1,0 +1,146 @@
+:host {
+  display: block;
+  padding: 40px 25px;
+}
+
+// .nav {
+//   padding: 40px 25px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// }
+
+.project {
+  display: grid;
+  // grid-template-columns: 57.43% 38.29%;
+  grid-template-columns: 3fr 2fr;
+  column-gap: 30px;
+}
+
+
+.tasks {
+  min-height: 320px;
+  padding: 30px 0;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+}
+
+.links {
+  padding: 30px 40px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+
+  &__placeholder {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &__entry {
+
+
+    &-divider {
+      margin: 15px 0 15px 26px;
+      height: 1px;
+      background-color: var(--color-grey-450);
+    }
+  }
+}
+
+.tasks-hint {
+  position: relative;
+  margin-top: 15px;
+
+  &__arrow {
+    position: absolute;
+    left: 43px;
+  }
+
+  &__text {
+    position: absolute;
+    left: 133px;
+    top: 20px;
+    width: 400px;
+  }
+}
+
+.actions-btn-container {
+  position: absolute;
+  top: 40px;
+  right: 25px;
+  z-index: 2;
+}
+
+.actions-btn-overlay {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.actions-btn {
+  background-color: #D9D9D9;
+  height: 40px;
+  width: 104px;
+  border-radius: var(--border-radius);
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  overflow: hidden;
+  z-index: 2;
+
+  o-icon {
+    height: 16px;
+  }
+
+
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 10px 12px;
+  }
+
+  &__items {
+    // opacity: 0;
+    overflow: hidden;
+    height: 0;
+    width: 100%;
+    transition: height 0.3s ease;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 5px;
+    padding: 10px 12px;
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: white;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: var(--color-green-200);
+    }
+  }
+
+  &--expanded {
+    height: auto;
+    width: 280px;
+    background-color: white;
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.10);
+
+    .actions-btn__header {
+      border-bottom: 1px solid var(--color-grey-450);
+    }
+
+    .actions-btn__items {
+      height: 120px;
+    }
+  }
+}

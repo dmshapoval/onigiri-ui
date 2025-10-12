@@ -1,0 +1,72 @@
+@let viewType = viewStore.viewType();
+@let shape = image().shape;
+@let isPending = image().imageId._type === 'pending';
+
+
+@if(imageId()) {
+
+<div class="img-container"
+     [class.img-container--round]="shape === 'circle'"
+     [class.img-container--square]="shape === 'square'">
+
+  <img [src]="imageId() | oImageUrl"
+       alt="Profile image">
+
+  <div class="img-actions">
+    @if(viewStore.onMobileDevice()) {
+    <o-icon key="trash"
+            (click)="onClean()" />
+    } @else {
+    <o-icon key="circle"
+            [class.selected]="shape === 'circle'"
+            (click)="updateShape('circle')" />
+    <o-icon key="lg_square_tile"
+            [class.selected]="shape === 'square'"
+            (click)="updateShape('square')" />
+    <div style="width: 2px; height: 15px; background-color: #343434;"></div>
+    <o-icon key="upload"
+            (click)="onReplace()" />
+    <div style="width: 2px; height: 15px; background-color: #343434;"></div>
+    <o-icon key="trash"
+            (click)="onClean()" />
+    }
+
+  </div>
+
+</div>
+
+} @else {
+
+<div class="avatar-placeholder"
+     [class.avatar-placeholder--round]="shape === 'circle'"
+     [class.avatar-placeholder--square]="shape === 'square'"
+     (click)="file.click()">
+
+  @if(isLoading() || isPending) {
+
+  <inline-loader />
+
+  } @else {
+
+  <div class="icon-container">
+    <o-icon key="upload" />
+  </div>
+
+  @if(viewType === 'desktop') {
+  <p class="o-text-main font-semibold"
+     style="color: #000;">Upload avatar</p>
+  }
+
+  }
+
+</div>
+}
+
+
+
+<input type="file"
+       #file
+       placeholder="Choose file"
+       (change)="onUpload(file.files)"
+       accept=".gif,.jpg,.jpeg,.png,.svg,.webp"
+       style="display:none;">

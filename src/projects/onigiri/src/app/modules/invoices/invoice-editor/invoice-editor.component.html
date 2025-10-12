@@ -1,0 +1,130 @@
+@let loadingState = editorStore.loadingState | async;
+
+<div class="inv">
+
+  <div class="inv__main">
+
+
+
+    @if(loadingState === 'loading') {
+
+    <div class="inv__main-topbar">
+      <o-button secondary
+                (onClick)="onClose()">Close</o-button>
+    </div>
+
+    <p-skeleton width="100%"
+                height="80vh" />
+
+    } @else {
+
+    <div class="inv__main-topbar">
+      <o-button secondary
+                (onClick)="onClose()">Save and close</o-button>
+    </div>
+
+    <div class="inv__main-body">
+      @if(isPaid() && sharedInvoiceData() !== null) {
+      <div class="flex justify-content-center">
+        <invoice-view [data]="sharedInvoiceData()!" />
+      </div>
+      } @else {
+      <invoice-edit-form />
+      }
+
+    </div>
+    }
+
+
+  </div>
+
+  <div class="inv__sidebar flex flex-column">
+    @if(loadingState === 'loading') {
+
+    <div class="flex-1 py-4">
+      <p-skeleton width="100%"
+                  height="100%" />
+    </div>
+
+    } @else {
+
+    <div class="inv__sidebar-actions flex flex-column">
+      @switch (status()) {
+
+      @case('draft') {
+      <o-button icon="send"
+                (onClick)="sendEmail()">Send Now</o-button>
+      <download-invoice-pdf-button [requestHandler]="handlePDFRequest" />
+      <o-button secondary
+                icon="link"
+                (onClick)="showPublicLink()">Share Link</o-button>
+      <o-button secondary
+                icon="eye"
+                (onClick)="showPreview()">Preview</o-button>
+      }
+
+      @case('sent') {
+      <o-button icon="paid"
+                (onClick)="onMarkPaidRequest()">Mark as Paid</o-button>
+
+      <o-button icon="send"
+                secondary
+                (onClick)="sendEmail()">Resend Email</o-button>
+      <download-invoice-pdf-button [requestHandler]="handlePDFRequest" />
+      <o-button secondary
+                icon="link"
+                (onClick)="showPublicLink()">Share Link</o-button>
+      <o-button secondary
+                icon="eye"
+                (onClick)="showPreview()">Preview</o-button>
+      }
+
+      @case('paid') {
+      <download-invoice-pdf-button [requestHandler]="handlePDFRequest" />
+      <o-button secondary
+                icon="link"
+                (onClick)="showPublicLink()">Share Link</o-button>
+      }
+
+      @case('overdue') {
+      <o-button icon="paid"
+                (onClick)="onMarkPaidRequest()">Mark as Paid</o-button>
+      <o-button icon="send"
+                secondary
+                (onClick)="sendEmail()">Resend Email</o-button>
+
+      <download-invoice-pdf-button [requestHandler]="handlePDFRequest" />
+
+      <o-button secondary
+                icon="link"
+                (onClick)="showPublicLink()">Share Link</o-button>
+
+      <o-button secondary
+                icon="eye"
+                (onClick)="showPreview()">Preview</o-button>
+      }
+
+      }
+
+    </div>
+
+    <div class="inv__sidebar-settings">
+      <h2>Settings</h2>
+
+      <div class="flex align-items-center o-c-gap-20 w-full justify-content-between">
+        <div>
+          <label class="o-input-lbl">Status</label>
+          <invoice-status-selector [formControl]="invoiceStatusInput" />
+        </div>
+        <div>
+          <label class="o-input-lbl">Currency</label>
+          <currency-selector [formControl]="currencyInput" />
+        </div>
+      </div>
+
+    </div>
+    }
+
+
+  </div>
+</div>

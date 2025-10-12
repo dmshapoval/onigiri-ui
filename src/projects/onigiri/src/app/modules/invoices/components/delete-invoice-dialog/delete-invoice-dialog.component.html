@@ -1,0 +1,50 @@
+<div class="o-dialog">
+
+  <div class="o-dialog__closing">
+    <div class="o-dialog__close-icon"
+         (click)="onCancel()">
+      <o-icon key="close" />
+    </div>
+  </div>
+
+
+  <div class="o-dialog__body">
+
+    <div class="o-dialog__header">
+      <h2 class="o-dialog__header-title">
+        You’re going to delete
+
+        @if(invoiceName) {
+        <span class="font-extrabold">{{invoiceName}}</span>
+        } @else {
+        invoice
+        }
+
+        @if(customer) {
+        made for <span class="font-extrabold">{{customer}}</span>
+        }
+      </h2>
+      <p class="o-dialog__header-caption o-color-grey-1000">
+        You won’t be able to restore it. Please be sure that you want to delete it otherwise it would be lost forever
+      </p>
+    </div>
+
+    <!-- <div class="o-dialog__content o-mt-40">
+
+    
+
+    </div> -->
+
+    <div class="o-dialog__footer o-mt-20">
+
+      <o-button secondary
+                (onClick)="onCancel()"
+                style="width:100px">Cancel</o-button>
+
+      <o-button danger
+                (onClick)="onConfirm()"
+                [disabled]="!invoiceId"
+                style="width:100px">Delete</o-button>
+    </div>
+  </div>
+</div>

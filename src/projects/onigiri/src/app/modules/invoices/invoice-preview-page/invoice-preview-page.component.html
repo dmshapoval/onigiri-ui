@@ -1,0 +1,55 @@
+<div class="invoice-preview flex flex-column">
+
+  <div class="invoice-preview__header flex align-items-center justify-content-between">
+    <o-button secondary
+              icon="eye-off"
+              (onClick)="onClose()"
+              class="o-h-40 o-color-grey-1000">Close preview</o-button>
+
+    <h4 class="flex-1 text-center">You're in a preview mode. <br /> Below is what your customer will see</h4>
+
+    @if(invoiceLink(); as invoiceLink) {
+    <o-copy-link-button [link]="invoiceLink"
+                        (onCopied)="onLinkCopied()" />
+    }
+
+  </div>
+
+
+  <div class="invoice-preview__body flex flex-column flex-1 align-self-center">
+
+    @if(invoiceData(); as invoiceData) {
+    <div>
+      <div class="flex align-items-center justify-content-between o-pt-40 o-pb-40 ">
+        <div class="flex align-items-center o-c-gap-20">
+          @if(allowStripePayment()) {
+          <o-button icon="card"
+                    class="o-h-40"
+                    (onClick)="payWithCard()">Pay with card</o-button>
+          }
+
+          @if(allowTransfer()) {
+          <o-button secondary
+                    icon="bank"
+                    class="o-h-40 o-color-grey-1000"
+                    (onClick)="showTransferDetails()">Pay via Bank Transfer</o-button>
+          }
+
+        </div>
+
+        <download-invoice-pdf-button [requestHandler]="handlePDFRequest"
+                                     style="min-width: 160px;" />
+      </div>
+
+      <div class="invoice-preview__doc flex-1">
+        <invoice-view [data]="invoiceData" />
+      </div>
+    </div>
+    }
+
+    <div class="invoice-preview__footer">
+      <o-ref-footer />
+    </div>
+
+  </div>
+</div>

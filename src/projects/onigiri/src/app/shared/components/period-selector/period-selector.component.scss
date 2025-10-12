@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  min-width: 150px;
+}
+
+.currency {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+
+  &__flag {
+    width: 17px;
+
+    .fi {
+      max-width: 100%;
+    }
+  }
+
+}
+
+:host ::ng-deep {
+  .p-dropdown {
+    .p-inputtext {
+      border: none;
+    }
+  }
+}

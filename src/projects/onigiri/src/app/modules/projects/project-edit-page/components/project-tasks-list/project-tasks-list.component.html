@@ -1,0 +1,101 @@
+<div class="tasks-list">
+  <div class="tasks-list__entry o-pl-40 o-pr-40">
+
+    <div class="task o-mb-10">
+      <p-checkbox [value]="false"
+                  [binary]="true"
+                  [readonly]="true"
+                  [disabled]="true"
+                  class="task__status" />
+
+      <input type="text"
+             [formControl]="newTaskInput"
+             autocomplete="off"
+             class="task__text o-text-main"
+             placeholder="Describe this to-do..."
+             (keydown.enter)="onCreateTask()">
+    </div>
+
+  </div>
+
+  <div cdkDropList
+       (cdkDropListDropped)="onReordered($event)">
+
+    @for (entry of plannedTasks; track $index; let i = $index) {
+
+    <div cdkDrag
+         [formGroup]="entry.form"
+         class="tasks-list__entry o-pt-10 o-pb-10">
+
+      <div class="reorder-task-icon">
+        <o-icon class="o-color-grey-800"
+                key="drag"
+                style="height: 30px;"
+                cdkDragHandle />
+      </div>
+
+      <div class="task">
+
+        <p-checkbox formControlName="isCompleted"
+                    [binary]="true"
+                    class="task__status" />
+
+        <input type="text"
+               formControlName="text"
+               autocomplete="off"
+               class="task__text o-text-main"
+               placeholder="Describe this to-do...">
+
+      </div>
+
+      <div class="remove-task-icon">
+        <o-icon class="cursor-pointer o-color-grey-800"
+                key="close-rounded"
+                style="height: 30px;"
+                (click)="onDeleteTask(entry)" />
+      </div>
+    </div>
+    }
+
+
+  </div>
+
+  @if(completedTasks.length) {
+  <div class="o-pl-40"
+       style="margin-top: 33px;">
+
+    <p class="o-text-tooltip o-color-grey-800">Completed</p>
+
+    @for (entry of completedTasks; track $index; let i = $index) {
+    <div cdkDrag
+         [formGroup]="entry.form"
+         class="tasks-list__entry "
+         style="margin-top: 14px;">
+
+      <div class="task">
+
+        <p-checkbox formControlName="isCompleted"
+                    [binary]="true"
+                    class="task__status" />
+
+        <input type="text"
+               formControlName="text"
+               autocomplete="off"
+               class="task__text o-text-main"
+               placeholder="Describe this to-do...">
+      </div>
+
+      <div class="remove-task-icon">
+        <o-icon class="cursor-pointer o-color-grey-800"
+                key="close-rounded"
+                style="height: 30px;"
+                (click)="onDeleteTask(entry)" />
+      </div>
+    </div>
+    }
+
+  </div>
+  }
+
+
+</div>

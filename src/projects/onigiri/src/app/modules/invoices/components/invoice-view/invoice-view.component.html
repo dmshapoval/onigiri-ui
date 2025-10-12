@@ -1,0 +1,212 @@
+<div class="invoice flex flex-column w-full">
+
+  <div class="invoice__title flex justify-content-start align-items-center">
+
+
+    @if(billedFrom()?.logo; as billedFromLogo) {
+    <div class="invoice__title-logo">
+      <img [src]="billedFromLogo | oImageUrl"
+           alt="Logo">
+    </div>
+    }
+
+    <div class="invoice__title-info flex flex-column flex-1">
+      <h1>{{data().title}}</h1>
+
+      <div class="flex justify-content-between align-items-center o-text-main o-color-grey-1000">
+        <p>
+          @if(data().issue_date) { Issued: {{data().issue_date | oDate }} }
+        </p>
+
+        <p>
+          @if(data().no) { Invoice# {{ data().no }} }
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="invoice__header">
+
+    <div class="invoice__header-section">
+      <h4>BILL TO</h4>
+      @if(billedTo(); as billedTo) {
+
+      @if(billedTo.company_name || billedTo.contact_name) {
+      <div class="mb-3 o-text-tooltip">
+        @if(billedTo.company_name) { <p>{{billedTo.company_name}}</p> }
+        @if(billedTo.contact_name) { <p>{{billedTo.contact_name}}</p> }
+      </div>
+      }
+
+      <o-address [address]="billedTo.address"
+                 [city]="billedTo.city"
+                 [country]="billedTo.country"
+                 [state]="billedTo.state"
+                 [postalCode]="billedTo.postal_code"
+                 class="o-text-tooltip mb-3" />
+
+      @if(billedTo.email) { <p class="o-text-tooltip">{{billedTo.email}}</p> }
+      @if(billedTo.phone) { <p class="o-text-tooltip">{{billedTo.phone}}</p> }
+      @if(billedTo.vat_number) { <p class="o-text-tooltip">VAT {{billedTo.vat_number}}</p> }
+
+      }
+
+    </div>
+
+    <div class="invoice__header-section">
+      <h4>FROM</h4>
+
+      @if(billedFrom(); as billedFrom) {
+
+      @if(billedFrom.company_name || billedFrom.contact_name) {
+      <div class="mb-3 o-text-tooltip">
+        @if(billedFrom.company_name) { <p>{{billedFrom.company_name}}</p> }
+        @if(billedFrom.contact_name) { <p>{{billedFrom.contact_name}}</p> }
+      </div>
+      }
+
+
+      <o-address [address]="billedFrom.address"
+                 [city]="billedFrom.city"
+                 [country]="billedFrom.country"
+                 [state]="billedFrom.state"
+                 [postalCode]="billedFrom.postal_code"
+                 class="o-text-tooltip mb-3" />
+
+      @if(billedFrom.email) { <p class="o-text-tooltip">{{billedFrom.email}}</p> }
+      @if(billedFrom.phone) { <p class="o-text-tooltip">{{billedFrom.phone}}</p> }
+      @if(billedFrom.vat_number) { <p class="o-text-tooltip">VAT {{billedFrom.vat_number}}</p> }
+
+      }
+
+    </div>
+
+    <div class="invoice__header-section">
+      <h4>PAYMENT</h4>
+      @if(data().due_date) {
+      <p class="o-text-tooltip mb-3">Due: {{data().due_date | oDate }}</p>
+      }
+
+
+      <div class="o-text-tooltip">
+        @for (entry of paymentDetails(); track $index) {
+        @if(entry) { <p>{{entry}}</p>}
+        @else { <br> }
+        }
+      </div>
+
+    </div>
+  </div>
+
+  <div class="invoice__lines">
+
+    <table class="w-full">
+
+      <thead>
+        <tr>
+          <th class="o-font-h4 text-left">DESCRIPTION</th>
+          <th class="o-font-h4 text-right"
+              style="width: 100px;">QTY</th>
+          <th class="o-font-h4 text-right"
+              style="width: 120px;">RATE</th>
+          <th class="o-font-h4 text-right"
+              style="width: 120px;">AMOUNT</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+        @for (line of data().items; track $index) {
+        <tr>
+          <td class="o-text-main text-left o-color-grey-1000">
+            @if(line.item) { <p>{{line.item}}</p> }
+
+            @if(line.details) {
+            <div [class.o-color-grey-800]="line.item?.length"
+                 [class.o-mt-10]="line.item?.length">
+
+              @for (entry of getSplittedByLines(line.details); track $index) {
+              @if(entry) { <p>{{entry}}</p> }
+              @else { <br> }
+              }
+
+            </div>
+            }
+
+          </td>
+          <td class="o-text-main text-right">{{line.qty}}</td>
+          <td class="o-text-main text-right">
+            @if(line.rate) {
+            <ng-container>
+              {{currencySymbol()}} {{line.rate | oMoney }}
+            </ng-container>
+            }
+
+          </td>
+          <td class="o-text-main text-right">{{currencySymbol()}} {{ getLineTotal(line) | oMoney }}</td>
+        </tr>
+        }
+
+      </tbody>
+
+    </table>
+  </div>
+
+  @if(showNumbers()) {
+  <div class="invoice__numbers o-text-main">
+    <div class="invoice__numbers-row">
+      <span>Subtotal</span>
+      <span>{{currencySymbol()}} {{data().subtotal | oMoney }}</span>
+    </div>
+
+    @if(showDiscount()) {
+    <div class="invoice__numbers-row">
+      <span>{{data().discount!.text}}</span>
+      <span>{{currencySymbol()}} {{data().discount!.amount | oMoney }}</span>
+    </div>
+    }
+
+    @if(showTax()) {
+    <div class="invoice__numbers-row">
+      <span>{{data().tax!.text}}</span>
+      <span>{{currencySymbol()}} {{data().tax!.amount | oMoney}}</span>
+    </div>
+    }
+
+  </div>
+  }
+
+  <div class="invoice__total flex justify-content-between align-items-center"
+       [class.o-mt-30]="!showNumbers">
+    <h4>TOTAL DUE</h4>
+
+    @if(data().total) {
+    <h4> {{ currencySymbol() }} {{ data().total | oMoney }} </h4>
+    }
+  </div>
+
+  @if(notes().length) {
+  <div class="o-mt-40">
+    <h4>NOTES</h4>
+    <div class="o-text-main o-mt-25">
+      @for (entry of notes(); track $index) {
+      @if(entry) { <p>{{entry}}</p> }
+      @else { <br> }
+      }
+    </div>
+
+  </div>
+  }
+
+  <div class="flex align-items-center justify-content-center o-mt-40">
+    <p class="o-text-tooltip">
+      Any questions? Contact
+      @if(senderEmail()) {
+      <a [href]="'mailto:' + senderEmail()"
+         class="o-color-grey-1000">{{senderEmail()}}</a>
+      }
+      @else { <span>sender</span> }
+    </p>
+  </div>
+</div>

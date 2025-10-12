@@ -1,0 +1,67 @@
+@if(isLoading()) {
+<page-loading-placeholder />
+}
+
+
+<div class="nav">
+
+  <div>
+    @if(closeBtnTpl()) {
+    <ng-container [ngTemplateOutlet]="closeBtnTpl()"></ng-container>
+    }
+  </div>
+
+  <div class="flex o-c-gap-20">
+
+    <div class="view-selector">
+      <view-type-selector />
+    </div>
+
+    <button class="o-button share-link-btn o-color-grey-1000"
+            (click)="onSharePage()">
+      <o-icon key="share"
+              style="margin-right: 10px; height: 16px;" />
+      <span class="o-button__text">Share</span>
+    </button>
+
+  </div>
+</div>
+
+<div class="editor"
+     withLayoutCls>
+
+  @if(dataStore.loaded()) {
+  <div class="editor__body"
+       [style.height]="editorHeight()">
+
+    <div class="editor__profile">
+      <div #profileEditor
+           class="profile-editor-wrap">
+        <profile-editor />
+      </div>
+      <div> <!-- NOTE: this div is needed for sticky behavior --> </div>
+    </div>
+
+
+    <div #tilesEditor
+         class="editor__tiles"
+         [style.top]="tilesTopOffset()">
+      @if(!tilesStore.tiles().length) {
+      <onboarding-form mode="embedded"
+                       (done)="handleOnboardingResults()" />
+      } @else {
+      <tiles-editor />
+      }
+    </div>
+
+  </div>
+  }
+
+  <div class="page-editor-menu-container">
+    <page-editor-menu />
+  </div>
+
+</div>
+
+
+<page-editor-mobile-panel />

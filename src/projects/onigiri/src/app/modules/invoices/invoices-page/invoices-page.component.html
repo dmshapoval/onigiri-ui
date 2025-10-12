@@ -1,0 +1,91 @@
+@let data = invoicesData();
+
+<div class="flex justify-content-between align-items-center">
+  <h1>Invoices</h1>
+
+  @if(!isLoading() && data.length) {
+  <o-button (onClick)="onCreate()">New Invoice</o-button>
+  }
+
+</div>
+
+<div class="o-mt-40">
+
+
+  @if(isLoading()) {
+  <p-skeleton width="100%"
+              height="300px" />
+
+  } @else if (data.length) {
+
+  <p-table [value]="data"
+           class="entities-table">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>No.</th>
+        <th>Client</th>
+        <th>Issue Date</th>
+        <th>Total</th>
+        <th style="width: 80px;"></th>
+        <th style="width: 70px;"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body"
+                 let-entry>
+      <tr>
+        <td>
+          <span class="entity-name"
+                (click)="onEdit(entry.id)"> {{ entry.no || '(Not named)' }}</span>
+        </td>
+        <!-- <td>{{ entry.no }}</td> -->
+        <td>
+          @if(entry.customer) {
+          <span class="o-color-grey-1000">{{entry.customer.contactName || '(Not named)'}}</span>
+          } @else {
+          <span class="o-color-grey-500">no client</span>
+          }
+        </td>
+        <td>{{ entry.date | oDate }}</td>
+        <td>{{ entry.amount }}</td>
+        <td><invoice-status-chip [status]="entry.status" /></td>
+        <td>
+          <div class="entity-actions">
+
+            <div class="entity-action">
+              <o-icon key="copy"
+                      (click)="onCopy(entry.id)" />
+            </div>
+
+            <div class="entity-action">
+              <o-icon key="trash"
+                      (click)="onDelete(entry)" />
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  } @else {
+
+  <empty-state-placeholder title="Create your first invoice"
+                           subTitle="Easily make, send and share invoices — get paid faster than ever"
+                           btnText="Create invoice"
+                           (onCreateClick)="onCreate()">
+
+
+    <ng-template oTemplate="sample">
+
+      <div class="sample-img">
+        <img src="../../../../assets/invoice_sample.png"
+             alt="Sample">
+      </div>
+
+    </ng-template>
+  </empty-state-placeholder>
+
+  }
+</div>

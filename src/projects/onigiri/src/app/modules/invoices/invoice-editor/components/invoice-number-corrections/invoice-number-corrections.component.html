@@ -1,0 +1,93 @@
+<div class="flex justify-content-end align-items-center o-c-gap-30 o-mb-20 o-pr-40">
+
+  @if (!hasTax) {
+  <o-button icon="plus"
+            class="o-h-40"
+            textButton
+            (onClick)="onAddTax()">Tax</o-button>
+  }
+
+  @if(!hasDiscount) {
+  <o-button icon="plus"
+            class="o-h-40"
+            textButton
+            (onClick)="onAddDiscount()">Discount</o-button>
+  }
+
+</div>
+
+@if(hasDiscount) {
+<div [formGroup]="discountForm"
+     class="total-correction-line">
+
+  <div class="total-correction-line__data">
+    <input pInputText
+           type="text"
+           class="w-full o-h-40"
+           formControlName="text"
+           autocomplete="off"
+           placeholder="Discount" />
+
+    <p-inputNumber formControlName="value"
+                   mode="decimal"
+                   [maxFractionDigits]="2"
+                   [minFractionDigits]="2"
+                   inputStyleClass="text-right"
+                   styleClass="w-full o-h-40"
+                   placeholder="0" />
+
+    <number-type-switch formControlName="numberType" />
+
+    <div class="text-right total-correction-line__total">
+      {{invoiceCurrencySymbol$ | async}} {{discountAmount$ | async}}
+    </div>
+  </div>
+
+  <div class="total-correction-line__actions">
+    <o-icon class="remove-item-icon cursor-pointer o-color-grey-800 o-h-30"
+            key="close-rounded"
+            (click)="onDeleteDiscount()" />
+  </div>
+
+</div>
+}
+
+@if(hasTax) {
+<div [formGroup]="taxForm"
+     class="total-correction-line">
+
+  <div class="total-correction-line__data">
+    <input pInputText
+           type="text"
+           class="w-full o-h-40"
+           formControlName="text"
+           autocomplete="off"
+           placeholder="Tax" />
+
+    <p-inputNumber formControlName="value"
+                   mode="decimal"
+                   [maxFractionDigits]="2"
+                   [minFractionDigits]="2"
+                   inputStyleClass="text-right"
+                   styleClass="w-full o-h-40"
+                   placeholder="0"></p-inputNumber>
+
+    <number-type-switch formControlName="numberType"></number-type-switch>
+
+    <div class="text-right total-correction-line__total">
+      {{invoiceCurrencySymbol$ | async}} {{taxAmount$ | async}}
+    </div>
+  </div>
+
+  <div class="total-correction-line__actions">
+    <o-icon class="remove-item-icon cursor-pointer o-color-grey-800 o-h-30"
+            key="close-rounded"
+            (click)="onDeleteTax()" />
+  </div>
+</div>
+}
+
+<div class="flex justify-content-between align-items-center o-color-grey-1000 o-pr-40">
+  <span class="o-font-h4">Total Due</span>
+  <span class="o-font-h2">{{invoiceCurrencySymbol$ | async}} {{invoiceTotal$ | async}}</span>
+</div>

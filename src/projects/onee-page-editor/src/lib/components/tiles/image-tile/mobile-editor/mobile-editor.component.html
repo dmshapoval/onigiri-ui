@@ -1,0 +1,33 @@
+<div class="tile-mobile-editor__header">
+  <div class="font-bold">Image details</div>
+
+  <button mobileEditorClose
+          class="o-button o-button--black w-min">Save</button>
+</div>
+
+<div class="tile-mobile-editor__body">
+
+  <div class="link-input">
+    <label class="o-text-tooltip block o-mb-10">Image link</label>
+    <input type="text"
+           class="cursor-auto o-h-30"
+           [formControl]="linkInput"
+           placeholder="Add link here"
+           autocomplete="off" />
+
+  </div>
+
+  <div class="caption-input o-mt-20">
+    <label class="o-text-tooltip block o-mb-10">Image caption</label>
+
+    <div #captionInput
+         class="caption-input__input o-text-main cursor-auto"
+         contenteditable
+         [maxLength]="800"
+         [content]="caption()"
+         (contentChange)="updateTile({caption: $event || ''})">
+    </div>
+
+  </div>
+
+</div>

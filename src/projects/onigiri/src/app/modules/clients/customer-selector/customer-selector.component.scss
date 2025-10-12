@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+::ng-deep {
+  .customer-selector-panel {
+    padding: 12px 0;
+    border-radius: var(--border-radius);
+
+    .p-autocomplete-items {
+      .p-autocomplete-item {
+        padding: 10px 12px;
+        color: var(--color-grey-1000) !important;
+      }
+
+      .p-autocomplete-empty-message {
+        padding: 0;
+      }
+    }
+  }
+}

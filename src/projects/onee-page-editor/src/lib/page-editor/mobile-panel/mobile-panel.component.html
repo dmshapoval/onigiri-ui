@@ -1,0 +1,16 @@
+<!-- @let editorType = mobileEditorService.editorType(); -->
+@let editorConfig = innerEditor();
+
+<p-sidebar #editorPanel
+           [visible]="!!editorConfig"
+           position="bottom"
+           [showCloseIcon]="false"
+           (onHide)="onPanelClosed()"
+           [style]="{height: 'min-content'}">
+
+  @if(editorConfig) {
+  <ng-template [ngComponentOutlet]="editorConfig.cmp"
+               [ngComponentOutletInputs]="editorConfig.props" />
+  }
+
+</p-sidebar>

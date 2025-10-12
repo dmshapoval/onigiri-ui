@@ -1,0 +1,7 @@
+@let tile = selectedTile();
+
+@if(tile && tileMenu()) {
+
+<ng-template [ngComponentOutlet]="tileMenu()" />
+
+}

@@ -1,0 +1,38 @@
+@switch (data()._type) {
+@case ('pending') {
+<p-skeleton height="40px"
+            width="40px" />
+}
+@case ('none') {
+<div class="flex align-items-center justify-content-center o-h-40 o-w-40 h-full"
+     style="background-color: var(--color-grey-200); border-radius: 50%;">
+  <o-icon key="link"
+          style="height: 16px; width: 16px;" />
+</div>
+}
+
+@case ('custom') {
+
+<img [src]="$any(data()).imageId | oImageUrl"
+     alt="Custom Favicon"
+     class="o-h-40 o-w-40">
+
+}
+
+@case ('resolved') {
+
+<img [src]="$any(data()).imageId | oImageUrl"
+     alt="Resolved Favicon"
+     class="o-h-40 o-w-40">
+
+}
+
+@case ('url') {
+
+<img [src]="$any(data()).url | safeResourceUrl"
+     alt="Url Favicon"
+     class="o-h-40 o-w-40">
+
+}
+
+}

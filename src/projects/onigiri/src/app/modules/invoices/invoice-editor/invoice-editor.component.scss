@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+$invoice-nav-width: 280px;
+
+.inv {
+
+  &__main {
+    min-height: 100vh;
+    margin-right: $invoice-nav-width;
+    padding: 40px 35px 40px 25px;
+    background-color: var(--color-grey-400);
+
+    &-topbar {
+      margin-bottom: 40px;
+    }
+  }
+
+  &__sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+
+    padding: 0 25px;
+    background-color: var(--color-grey-100);
+    width: $invoice-nav-width;
+
+    &-actions {
+      padding: 40px 0;
+      gap: 20px;
+
+      o-button {
+        height: 40px;
+      }
+    }
+
+    &-settings {
+      h2 {
+        margin-bottom: 30px;
+      }
+
+      label {
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+<p-autoComplete [(ngModel)]="selectedValue"
+                [suggestions]="filteredSuggestions"
+                field="name"
+                [dropdown]="true"
+                [disabled]="disabled"
+                (completeMethod)="onSearch($event)"
+                panelStyleClass="project-selector-panel"
+                [panelStyle]="{ width: panelWidth + 'px' }"
+                styleClass="w-full"
+                [forceSelection]="true"
+                [showEmptyMessage]="true"
+                placeholder="Choose project">
+
+  <ng-template pTemplate="header">
+    <div class="o-text-main o-color-green-800 o-hover-color-green-1000 cursor-pointer"
+         (click)="onCreateNew()"
+         style="padding: 10px 12px;">
+      + New project
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="item"
+               let-suggestion>
+    <div class="o-dropdown-item">
+      {{suggestion.name}} @if(suggestion.isCompleted) { <span> (Completed)</span> }
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="empty"></ng-template>
+
+</p-autoComplete>

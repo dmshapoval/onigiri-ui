@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  column-gap: 16px;
+}
+
+.bg-select-panel {
+  --option-item-size: 30px;
+  --options-column-gap: 15px;
+  --options-row-gap: 15px;
+
+  // width: 235px;
+
+  ::ng-deep {
+
+    .color-select-panel {
+      width: 230px;
+      padding-inline: 10px;
+    }
+
+  }
+
+}

@@ -1,0 +1,20 @@
+<p-selectButton [options]="types"
+                [(ngModel)]="value"
+                [disabled]="disabled">
+
+  <ng-template let-item
+               pTemplate>
+
+    <div class="number-type-btn">
+      @switch (item) {
+      @case ('percent') {
+      <o-icon key="percent" />
+      }
+      @case ('fixed') {
+      <o-icon key="dollar" />
+      }
+      }
+    </div>
+
+  </ng-template>
+</p-selectButton>

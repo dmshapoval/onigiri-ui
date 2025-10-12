@@ -1,0 +1,26 @@
+<p-dropdown [options]="statuses"
+            [formControl]="innerControl"
+            [autoDisplayFirst]="false"
+            optionLabel="label"
+            optionValue="value"
+            [styleClass]="'w-full ' + selectedStatus">
+
+  <ng-template pTemplate="selectedItem"
+               let-status>
+
+    <div class="h-full flex align-items-center"
+         [style.backround-color]="getStatusBGColor(status.value)">
+      <div class="o-color-grey-1000 o-text-main">{{status.label}}</div>
+    </div>
+
+  </ng-template>
+
+  <ng-template pTemplate="item"
+               let-status>
+
+    <div class="h-full flex align-items-center">
+      <div class="o-color-grey-1000 o-text-main">{{status.label}}</div>
+    </div>
+
+  </ng-template>
+</p-dropdown>

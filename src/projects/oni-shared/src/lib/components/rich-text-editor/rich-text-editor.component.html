@@ -1,0 +1,35 @@
+@let isEditable = !isReadOnly();
+@let isEmpty = !value()?.text?.length;
+
+<div class="rte">
+
+  <div #wrapper
+       class="rte__input-wrap"
+       [style.--lines-count]="lineClamp() || 1"
+       [class.with-line-clamp]="!!lineClamp()"
+       (focusout)="wrapper.scrollTop = 0">
+
+    <!-- <div #contentContainer
+         class="rte__input cursor-auto"
+         [class.hidden]="!isReadOnly()"
+         [class.with-line-clamp]="!!lineClamp()">
+    </div> -->
+
+    @if(placeholder() && isEmpty) {
+    <span class="rte__placeholder"
+          [style.cursor]="isEditable ? 'text' : 'auto'"
+          (click)="isEditable && contentInput.focus()">
+      {{placeholder()}}
+    </span>
+    }
+
+    <div #contentInput
+         class="rte__input"
+         (input)="onInput()"
+         (paste)="onPaste($event)"
+         (keydown)="onKeyDown($event)"
+         (mousedown)="$event.stopPropagation()">
+    </div>
+  </div>
+
+</div>

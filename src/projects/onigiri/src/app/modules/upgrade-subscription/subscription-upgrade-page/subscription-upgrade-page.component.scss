@@ -1,0 +1,56 @@
+$pageWidth: 1200px;
+
+:host {
+  display: flex;
+  width: 100vw;
+  min-width: $pageWidth;
+  min-height: 100vh;
+  background-color: var(--color-grey-200);
+  justify-content: center;
+}
+
+.period-selector-wrap {
+  width: $pageWidth;
+  padding: 40px 25px;
+}
+
+.period-selector {
+
+  gap: 10px;
+
+  p-inputSwitch {
+    margin-bottom: -2px;
+  }
+}
+
+.products {
+  width: $pageWidth;
+  padding: 30px 25px 40px;
+  column-gap: 35px;
+}
+
+.pages-access-notification {
+  background-color: var(--color-green-200);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 120px;
+
+
+  &__content {
+    padding: 0 25px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: $pageWidth;
+  }
+}
+
+:host ::ng-deep {
+
+  subscription-card {
+    width: 360px;
+  }
+
+}

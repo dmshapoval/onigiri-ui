@@ -1,0 +1,23 @@
+<div class="tile-mobile-editor__header">
+  <div class="font-bold">Section title</div>
+
+  <button class="o-button o-button--black w-min"
+          mobileEditorClose>Save</button>
+</div>
+
+<div class="tile-mobile-editor__body">
+
+  <div class="title-input">
+    <label class="block o-text-tooltip o-mb-10">Text</label>
+
+    <div class="title-input__input o-text-main">
+
+      <rich-text-editor [value]="text()"
+                        [maxLength]="140"
+                        placeholder="Add section title here"
+                        (valueChange)="onChanges({text: $event?.html || null})" />
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,21 @@
+<div class="title-tile">
+
+  <div class="title-tile__input o-font-h4">
+    <rich-text-editor [value]="text()"
+                      [maxLength]="140"
+                      [isReadOnly]="viewStore.onMobileDevice()"
+                      [lineClamp]="1"
+                      (valueChange)="updateTile({text: $event?.html || null})"
+                      placeholder="Add section title" />
+  </div>
+
+  <div class="title-tile__actions">
+    <div class="action-icon mx-auto">
+      <o-icon key="trash"
+              (click)="removeTile()"
+              class="o-h-30 o-w-30" />
+    </div>
+  </div>
+
+
+</div>

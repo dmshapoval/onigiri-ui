@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  background-color: var(--o-color-grey-200);
+}
+
+
+.invoice-preview {
+
+  &__header {
+    padding: 40px 25px;
+    background-color: var(--color-green-200);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  &__actions {
+    padding: 40px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__body {
+    width: 860px;
+    min-height: calc(100vh - 120px);
+  }
+
+
+  &__footer {
+    padding: 40px 0;
+  }
+}

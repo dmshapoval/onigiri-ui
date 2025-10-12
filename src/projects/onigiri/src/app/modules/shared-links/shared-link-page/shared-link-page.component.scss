@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+main {
+  min-height: 100%;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--color-grey-200);
+}
+
+@media print {
+
+
+  main {
+    width: 860px;
+    min-height: auto;
+    // min-height: 1220px;
+    background-color: white;
+  }
+
+  o-ref-footer {
+    display: none;
+  }
+}

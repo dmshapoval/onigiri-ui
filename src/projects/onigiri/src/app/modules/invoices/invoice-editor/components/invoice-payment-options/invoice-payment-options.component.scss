@@ -1,0 +1,32 @@
+.payment-option {
+  padding: 15px 20px 15px 0;
+
+  border-radius: 5px;
+  border: 1px solid #E6E6E6;
+  transition: all 0.2s ease;
+
+  &--enabled {
+    border-color: rgba(114, 165, 49, 0.40);
+    background: rgba(114, 165, 49, 0.02);
+  }
+
+  &__toggle {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  &__label {
+    margin-left: 10px;
+  }
+
+  &__details {
+    padding-left: 40px;
+    margin-top: 14px;
+  }
+}

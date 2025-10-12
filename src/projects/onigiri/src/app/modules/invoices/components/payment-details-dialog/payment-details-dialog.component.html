@@ -1,0 +1,38 @@
+<div class="o-dialog">
+
+  <div class="o-dialog__closing">
+    <div class="o-dialog__close-icon"
+         (click)="onCancel()">
+      <o-icon key="close" />
+    </div>
+  </div>
+
+  <div class="o-dialog__body">
+
+    <div class="flex flex-column w-full">
+
+      <div class="flex flex-column align-items-center"
+           style="row-gap: 8px;">
+        <svg width="40"
+             height="40"
+             version="2.0">
+          <use xlink:href="#bank_transfer_icon"></use>
+        </svg>
+
+        <p class="o-font-h2">Pay via Bank Transfer</p>
+        <p class="o-font-h4">Accept bank transfers, cheques or PayPal.</p>
+      </div>
+
+      <!-- <label class="o-font-h4">Description</label> -->
+      <p class="transfer-details o-mt-20">{{data.details}}</p>
+    </div>
+
+    <div class="o-dialog__footer o-mt-20">
+      <o-copy-link-button [link]="data.details"
+                          icon="copy"
+                          text="Copy"
+                          class="w-full" />
+    </div>
+
+  </div>
+</div>

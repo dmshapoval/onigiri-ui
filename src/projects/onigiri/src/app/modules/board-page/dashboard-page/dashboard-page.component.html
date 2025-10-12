@@ -1,0 +1,87 @@
+<h1>Dashboard</h1>
+
+<div class="dashboard o-mt-40"
+     [class.empty]="isEmpty()">
+
+  <div class="dashboard__header">
+    <h2>Invoice income</h2>
+
+    <div class="dashboard__filters"
+         [formGroup]="filtersForm">
+      <currency-selector formControlName="currency" />
+      <period-selector formControlName="period" />
+    </div>
+
+  </div>
+
+  <div class="dashboard__section dashboard__section--paid">
+    <div class="flex flex-column justify-content-center w-full h-full o-pl-40">
+      <div class="dashboard__section-title">
+        <span class="circle"
+              style="background-color: var(--color-green-800)"></span>
+        <span class="text">Paid</span>
+      </div>
+
+      <div class="dashboard__section-number o-font-h2"
+           [class.empty]="!paid()">
+
+        <span class="currency">{{ currencySymbol | async }}</span>
+        <span class="value">{{ paid() | oMoney }}</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="dashboard__section dashboard__section--overdue">
+    <div class="flex justify-content-between align-items-center w-full h-full o-p-30">
+      <div class="dashboard__section-title">
+        <span class="circle"
+              style="background-color: var(--color-red-600)"></span>
+        <span class="text">Overdue</span>
+      </div>
+
+      <div class="dashboard__section-number o-font-h3"
+           [class.empty]="!overdue()">
+        <span class="currency">{{ currencySymbol | async }}</span>
+        <span class="value">{{ overdue() | oMoney }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard__section dashboard__section--waiting">
+
+    <div class="flex justify-content-between align-items-center w-full h-full o-p-30">
+      <div class="dashboard__section-title">
+        <span class="circle"
+              style="background-color: var(--color-grey-600)"></span>
+        <span class="text">Waiting for payment</span>
+      </div>
+
+      <div class="dashboard__section-number o-font-h3"
+           [class.empty]="!waitingForPayment()">
+        <span class="currency">{{ currencySymbol | async }}</span>
+        <span class="value">{{ waitingForPayment() | oMoney }}</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="dashboard__actions">
+
+    @if(isEmpty()) {
+    <span class="o-color-grey-800 o-text-tooltip">Time to get paid?</span>
+    <o-button icon="invoices"
+              class="o-h-40 o-mt-10"
+              style="width: 180px;"
+              (onClick)="createInvoice()">Create invoice</o-button>
+    } @else {
+    <span class="o-color-grey-800 o-text-tooltip">Keep everything up to date</span>
+    <o-button icon="invoices"
+              class="o-h-40 o-mt-10"
+              style="width: 180px;"
+              (onClick)="manageInvoices()">Manage Invoices</o-button>
+    }
+
+  </div>
+
+</div>

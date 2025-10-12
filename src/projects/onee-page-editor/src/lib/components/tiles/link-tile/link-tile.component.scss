@@ -1,0 +1,235 @@
+@import "../../../mixins.scss";
+
+:host {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+
+
+}
+
+.link-tile {
+  // overflow: hidden;
+  border-radius: var(--tile-border-radius);
+}
+
+.link-tile__thumb {
+  position: relative;
+
+  .link-tile-img-edit-menu {
+    position: absolute;
+    z-index: 1;
+    top: -35px;
+  }
+}
+
+::ng-deep {
+
+  .link-tile {
+    width: 100%;
+    height: 100%;
+    padding-inline: 20px;
+    background: #FFF;
+
+    will-change: width,
+      height;
+    transition: width 0.3s ease-in-out,
+      height 0.3s ease-in-out;
+
+    &__title {
+      border-radius: 10px;
+      overflow: hidden;
+
+      // background-color: var(--color-grey-200);
+
+      // &:not(:focus) {
+      //   @include with-line-clamp();
+      // }
+
+      &:focus-within {
+        background-color: var(--color-grey-200);
+      }
+
+      &.empty {
+        color: var(--color-grey-600);
+
+        &::before {
+          content: var(--title-placeholder);
+        }
+      }
+
+    }
+
+
+    .link-url {
+      margin-top: 5px;
+      // padding-left: 10px;
+      color: var(--color-grey-800);
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+  }
+
+
+  @include when-sm-h() {
+    .link-tile {
+      display: flex;
+      align-items: center;
+      column-gap: 20px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+
+      &__data {
+        flex: 1 1 0;
+      }
+
+      &__title {
+        padding: 13px 10px;
+        height: 48px;
+        width: 310px;
+        overflow: hidden;
+      }
+
+      &__url {
+        display: none;
+      }
+
+      &__thumb {
+        display: none;
+      }
+    }
+  }
+
+  @include when-sm-sq() {
+    .link-tile {
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+      padding-bottom: 14px;
+
+      &__favicon {
+        width: 100%;
+      }
+
+      &__title {
+        max-height: 66px;
+        width: 155px;
+        padding: 2px 10px;
+        margin-inline: -10px;
+      }
+
+      &__data {
+        margin-top: 10px;
+        flex: 1 1 0;
+      }
+
+      &__thumb {
+        display: none;
+      }
+    }
+  }
+
+  @include when-md-h() {
+    .link-tile {
+      display: grid;
+      grid-template-rows: 40px 1fr;
+      row-gap: 10px;
+      grid-template-columns: 1fr 190px;
+      column-gap: 15px;
+      padding-top: 20px;
+      padding-bottom: 14px;
+
+      grid-template-areas:
+        "favicon thumb"
+        "data thumb";
+
+      &__data {
+        grid-area: data;
+      }
+
+      &__title {
+        width: 155px;
+        max-height: 66px;
+        padding: 2px 10px;
+        margin-left: -10px;
+      }
+
+      &__favicon {
+        grid-area: favicon;
+        margin-bottom: 10px;
+      }
+
+      &__thumb {
+        grid-area: thumb;
+        height: 135px;
+      }
+    }
+  }
+
+  @include when-md-v() {
+    .link-tile {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding-top: 20px;
+      padding-bottom: 10px;
+
+      &__favicon {
+        width: 100%;
+      }
+
+      &__data {
+        flex: 1 1 0;
+
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      &__title {
+        max-height: 142px;
+        width: 155px;
+        padding: 2px 10px;
+        margin-inline: -10px;
+      }
+
+      &__thumb {
+        height: 82px;
+        margin-inline: -10px;
+      }
+    }
+  }
+
+  @include when-lg-sq() {
+    .link-tile {
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+      &__favicon {
+        width: 100%;
+      }
+
+      &__data {
+        margin-top: 14px;
+        flex: 1 1 0;
+      }
+
+      &__title {
+        max-height: 66px;
+        width: 370px;
+        padding: 5px 10px;
+        margin-inline: -10px;
+      }
+
+      &__thumb {
+        margin-top: 24px;
+        height: 185px;
+      }
+    }
+  }
+}

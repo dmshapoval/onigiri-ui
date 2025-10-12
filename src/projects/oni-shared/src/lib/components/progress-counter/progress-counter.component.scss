@@ -1,0 +1,51 @@
+@use 'sass:math';
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+$size: 14px;
+$half-size: math.div($size, 2);
+$stroke-width: 2px;
+$radius: math.div($size - $stroke-width, 2);
+$circumference: $radius * math.$pi * 2;
+
+
+.circular-progress {
+  width: $size;
+  height: $size;
+  --dash: calc((var(--progress) * #{$circumference}) / 100);
+
+  circle {
+    cx: $half-size;
+    cy: $half-size;
+    r: $radius;
+    stroke-width: $stroke-width;
+    fill: none;
+    stroke-linecap: round;
+
+
+    &.fg {
+      transform: rotate(-90deg);
+      transform-origin: $half-size $half-size;
+      stroke-dasharray: var(--dash) calc(#{$circumference} - var(--dash));
+      transition: stroke-dasharray 0.3s linear 0s;
+    }
+  }
+}
+
+.progress-bar {
+  width: $size;
+  height: $size;
+}
+
+
+.numbers {
+  height: 10px;
+  color: var(--color-grey-600);
+  font-family: "Open Sans";
+  font-size: 10px;
+  font-weight: 700;
+}

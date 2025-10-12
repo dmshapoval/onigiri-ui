@@ -1,0 +1,78 @@
+<div class="flex flex-column w-full o-r-gap-10">
+
+  <div class="payment-option"
+       [class.payment-option--enabled]="transferPayment.value.enabled"
+       [formGroup]="transferPayment">
+
+    <div class="flex align-items-center">
+
+      <div class="payment-option__toggle">
+        <p-checkbox formControlName="enabled"
+                    [binary]="true" />
+      </div>
+
+      <svg width="40"
+           height="40"
+           version="2.0">
+        <use xlink:href="#bank_transfer_icon"></use>
+      </svg>
+
+      <span class="payment-option__label o-font-h4">Bank Transfer</span>
+
+    </div>
+
+
+
+    @if(transferPayment.value.enabled) {
+    <div class="payment-option__details">
+      <textarea style="height: 148px;"
+                class="w-full"
+                pInputTextarea
+                formControlName="details"
+                placeholder="Add payment instructions for your client here"></textarea>
+    </div>
+
+    }
+
+  </div>
+
+  <div class="payment-option"
+       [class.payment-option--enabled]="stripeEnabled.value">
+
+    <div class="flex align-items-center justify-content-between">
+
+      <div class="flex align-items-center">
+        <div class="payment-option__toggle">
+          <p-checkbox [formControl]="stripeEnabled"
+                      [binary]="true" />
+        </div>
+
+        <div class="payment-option__icon">
+          <svg width="40"
+               height="40"
+               version="2.0"
+               style="border-radius: 5px;">
+
+            <use xlink:href="#stripe_icon"></use>
+          </svg>
+
+        </div>
+
+        <span class="payment-option__label o-font-h4">Stripe</span>
+      </div>
+
+      @if(!stripeIsConnected() && !processingStripeRequest()) {
+
+      <o-button secondary
+                (onClick)="connectStripe($event)">
+        Connect
+      </o-button>
+      }
+
+    </div>
+
+
+
+  </div>
+
+</div>

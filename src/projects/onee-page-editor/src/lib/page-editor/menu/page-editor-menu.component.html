@@ -1,0 +1,16 @@
+<div class="page-editor-menu">
+  @switch (menuEditor.mode()) {
+  @case('add_tile') {
+  <add-tile-menu />
+  }
+  @case('appearance') {
+  <appearance-menu />
+  }
+
+  @case ('tile-view') {
+  <edit-tile-menu />
+  }
+
+  }
+
+</div>

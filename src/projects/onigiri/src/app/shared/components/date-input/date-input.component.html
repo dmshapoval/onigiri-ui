@@ -1,0 +1,85 @@
+<div class="date-picker-wrap"
+     #opTarget>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon o-h-40">
+      <o-icon key="calendar" />
+    </span>
+
+    <input pInputText
+           [(ngModel)]="dateText"
+           (blur)="onInputBlur()"
+           (keydown.enter)="onInputBlur()"
+           [readOnly]="datePickerIsVisible"
+           [disabled]="disabled"
+           autocomplete="off" />
+
+    <span class="p-inputgroup-addon o-h-40">
+
+      @if(!datePickerIsVisible) {
+      <o-icon key="arrow-down"
+              (click)="showDatePicker($event, opTarget)" />
+      }
+
+    </span>
+  </div>
+</div>
+
+
+<p-overlayPanel #op
+                styleClass="o-date-picker-panel"
+                (onHide)="datePickerIsVisible = false"
+                [appendTo]="appendOverlayTo">
+
+  <ng-template pTemplate="content">
+    <div class="calendar"
+         [style.width.px]="opTarget.clientWidth">
+
+      <div class="calendar__header">
+
+        @if(canMoveBack) {
+        <div class="calendar__header-action"
+             (click)="moveToPrev()">
+          <o-icon key="arrow-back" />
+        </div>
+        }
+
+
+        <div class="calendar__header-period o-font-h4">{{period}}</div>
+
+        <div class="calendar__header-action"
+             (click)="moveToNext()">
+          <o-icon key="arrow-forward" />
+        </div>
+      </div>
+
+      <div class="calendar__weeks-header o-color-grey-600 o-text-main">
+        <span class="day-name">Sun</span>
+        <span class="day-name">Mon</span>
+        <span class="day-name">Tue</span>
+        <span class="day-name">Wed</span>
+        <span class="day-name">Thu</span>
+        <span class="day-name">Fri</span>
+        <span class="day-name">Sat</span>
+      </div>
+
+      @for (w of weeks; track $index) {
+      <div class="calendar__week">
+
+        @for (d of w.days; track $index) {
+        <span class="calendar__week-day"
+              [class.another-period-day]="d.isFromAnotherPeriod"
+              [class.disabled-day]="d.isDisabled"
+              [class.selected-day]="isSelectedDate(d.date)"
+              (click)="onDateSelected(d)">{{d.dayOfMonth}}</span>
+        }
+
+
+      </div>
+      }
+
+
+
+    </div>
+  </ng-template>
+
+</p-overlayPanel>

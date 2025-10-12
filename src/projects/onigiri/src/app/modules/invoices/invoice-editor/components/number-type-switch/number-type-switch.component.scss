@@ -1,0 +1,69 @@
+:host {
+  display: inline-block;
+  // width: 76px;
+}
+
+.number-type-btn {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.12);
+  background-color: transparent;
+  color: var(--color-grey-600);
+
+
+  transition: color 0.2s ease-in-out;
+
+  :hover {
+    color: var(--color-grey-1000);
+  }
+}
+
+:host ::ng-deep {
+  .p-selectbutton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 76px;
+
+    background-color: var(--color-grey-450);
+    border-radius: var(--border-radius);
+
+    .p-button {
+      padding: 0;
+      background-color: transparent;
+      border: none;
+      min-width: unset;
+      min-height: unset;
+      width: 32px;
+      height: 32px;
+
+
+
+      border-radius: var(--border-radius) !important;
+      overflow: hidden;
+
+      &:not(.p-disabled):not(.p-highlight):hover {
+        background-color: transparent;
+      }
+
+      &.p-highlight {
+        background-color: transparent;
+        border: none;
+
+        .number-type-btn {
+          background-color: white;
+          color: var(--color-grey-1000);
+        }
+      }
+    }
+
+  }
+}

@@ -1,0 +1,86 @@
+<p-table [value]="toShow()"
+         [loading]="loadingData()"
+         [scrollable]="true"
+         [scrollHeight]="tableScrollHeight()">
+
+  <ng-template pTemplate="caption">
+    <div class="flex w-full justify-content-between">
+      <div class="flex align-items-center column-gap-6">
+        <div class="flex align-items-center">
+          <span class="font-normal">Total:</span>
+          <span class="font-semibold ml-1">{{users().length}}</span>
+        </div>
+
+        @if(filter()) {
+        <div class="flex align-items-center">
+          <span class="font-normal">Filtered:</span>
+          <span class="font-semibold ml-1">{{toShow().length}}</span>
+        </div>
+        }
+
+      </div>
+
+
+      <p-iconField iconPosition="left"
+                   class="ml-auto">
+        <p-inputIcon>
+          <i class="pi pi-search"></i>
+        </p-inputIcon>
+        <input pInputText
+               type="text"
+               [formControl]="filterInput"
+               placeholder="Search" />
+      </p-iconField>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr class="sticky top-0">
+      <th>Email</th>
+      <th>Page key</th>
+      <th pSortableColumn="created_at">Created <p-sortIcon field="created_at" /></th>
+      <th>Subscription</th>
+      <th>Expires</th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body"
+               let-usr>
+    <tr>
+      <td>{{ usr.email }}</td>
+      <td>
+        <div class="flex align-items-center column-gap-4">
+
+          @if(usr.onee) {
+          <a [href]="toOneePageUrl(usr.onee.page_key)"
+             target="_blank"
+             class="no-underline">
+            {{ usr.onee.page_key }}
+          </a>
+          <i class="pi pi-copy cursor-pointer"
+             (click)="copyPageUrl(usr.onee.page_key)"></i>
+          }
+
+        </div>
+      </td>
+      <td>{{ usr.created_at | date:'dd/MM/yyyy' }}</td>
+      <td>{{ usr.onigiri?.subscription.type }}</td>
+      <td>{{ usr.onigiri?.subscription.expires_at | date:'dd/MM/yyyy' }}</td>
+      <td>
+        <div class="flex align-items-center justify-content-end column-gap-3">
+          <p-button icon="pi pi pi-ellipsis-v"
+                    [rounded]="true"
+                    [text]="true"
+                    (onClick)="onShowInlineMenu(usr, $event)" />
+        </div>
+
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-menu #inlineMenu
+        [popup]="true"
+        [model]="inlineMenuItems()"
+        (onHide)="onInlineMenuHide()" />

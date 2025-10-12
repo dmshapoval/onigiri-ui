@@ -1,0 +1,45 @@
+<div class="flex flex-column">
+
+  <div class="relative">
+    <span class="pages-app-link">onee.page/</span>
+
+    <input pInputText
+           type="text"
+           [formControl]="keyInput"
+           [pKeyFilter]="blockInvalidSymbols"
+           autocomplete="off"
+           class="key-input o-h-40 w-full" />
+
+    <div class="status-icon">
+      @if(keyInput.valid) {
+      <o-icon key="solid-check"
+              class="o-color-green-800" />
+      }
+
+      @if(keyInput.invalid) {
+      <o-icon key="close-rounded"
+              class="cursor-pointer o-color-grey-800"
+              (click)="keyInput.setValue(null)" />
+      }
+    </div>
+
+
+  </div>
+
+  @if(keyInput.invalid) {
+
+  <p @errorBox
+     class="error-notification o-text-tooltip o-mb-20 o-mt-20">
+    @if( keyInput.hasError('required')) {
+    Page address cannot be empty
+    } @else if( keyInput.hasError('minlength')) {
+    Your address should be longer than 2 symbols
+    } @else if(keyInput.hasError('maxlength')) {
+    Your adress should be shorten than 50 symbols
+    } @else if(keyInput.hasError('notAvailable')) {
+    Someone already took this link or it is not acceptable. Maybe you’ve got something else on your mind?
+    }
+  </p>
+
+  }
+</div>

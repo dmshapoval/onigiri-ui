@@ -1,0 +1,139 @@
+@import '../../../mixins.scss';
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+// .mobile-actions,
+.tile-drag-handler {
+  display: none;
+}
+
+.mobile-actions {
+
+  position: absolute;
+  z-index: 2;
+  height: 40px;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-grey-1000);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+
+  padding: 5px 5px 5px 10px;
+  column-gap: 30px;
+
+  &__action {
+    &--delete {
+      color: var(--color-grey-100);
+    }
+
+    &--edit {
+      height: 30px;
+      background-color: var(--color-grey-100);
+      color: var(--color-grey-1000);
+    }
+  }
+}
+
+.tile-drag-handler {
+  position: absolute;
+  // bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--color-grey-1000);
+  color: var(--color-grey-100);
+}
+
+.tile {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+
+  will-change: width,
+    height, outline-color;
+
+  transition: width 0.3s ease-in-out,
+    height 0.3s ease-in-out,
+    outline-color 0.2s ease-in-out;
+
+  border-radius: var(--tile-border-radius);
+
+  outline-width: 3px;
+  outline-style: solid;
+  outline-color: transparent;
+
+  &--selected {
+    outline-color: var(--color-grey-1000);
+  }
+
+  &__cmp {
+    width: 100%;
+    height: 100%;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+
+    //overflow: hidden;
+    border-radius: var(--tile-border-radius);
+  }
+
+  &.tile--dragging {
+    cursor: grabbing;
+  }
+
+}
+
+
+
+@include onDesktop() {
+
+  .tile {
+
+    pointer-events: auto;
+    cursor: grab;
+
+    &--selected {
+      outline: none;
+    }
+
+    .desktop-actions {
+      // opacity: 0;
+
+      position: absolute;
+      bottom: -30px;
+      transform: translateX(-50%);
+      left: 50%;
+      z-index: 3;
+      border-radius: 10px;
+      overflow: hidden;
+
+      transition: opacity 0.4s 0.2s ease-in-out, bottom 0.4s 0.2s ease-in-out;
+    }
+  }
+
+
+
+  ::ng-deep {
+    .ui-draggable-dragging {
+      .tile {
+        cursor: grabbing;
+      }
+    }
+  }
+
+}

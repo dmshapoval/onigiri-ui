@@ -1,0 +1,157 @@
+:host {
+  display: inline-block;
+  width: 100%;
+}
+
+
+.p-inputgroup-addon {
+  transition: border-color 0.2s, color 0.2s;
+  width: 37px;
+
+  padding: 5px 5px 5px 12px;
+  border-top-color: var(--color-grey-500);
+  border-bottom-color: var(--color-grey-500);
+
+  o-icon {
+    width: 100%;
+    cursor: pointer;
+  }
+
+  &:first-child {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    border-left-color: var(--color-grey-500);
+  }
+
+  &:last-child {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    border-right-color: var(--color-grey-500);
+  }
+}
+
+.p-inputgroup {
+
+  &:focus-within {
+
+    .p-inputgroup-addon {
+      border-top-color: var(--color-grey-1000);
+      border-bottom-color: var(--color-grey-1000);
+
+      &:first-child {
+        border-left-color: var(--color-grey-1000);
+      }
+
+      &:last-child {
+        border-right-color: var(--color-grey-1000);
+      }
+    }
+  }
+
+}
+
+
+.p-inputtext {
+  border-left: 0;
+  border-right: 0;
+  padding-left: 0;
+  border-radius: 0;
+
+  &:enabled:hover {
+    border-top: 1px solid var(--color-grey-500);
+    border-bottom: 1px solid var(--color-grey-500);
+    border-left: 0;
+    border-right: 0;
+  }
+
+  &:enabled:focus {
+    border-top: 1px solid var(--color-grey-1000);
+    border-bottom: 1px solid var(--color-grey-1000);
+    border-left: 0;
+    border-right: 0;
+  }
+}
+
+
+
+.calendar {
+  padding: 12px;
+
+  &__header {
+
+    display: flex;
+    align-items: center;
+
+    &-period {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+    &-action {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+      background-color: var(--color-grey-400);
+      border-radius: var(--border-radius);
+    }
+
+  }
+
+  &__week {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+
+  &__weeks-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .day-name {
+      display: inline-block;
+      width: 32px;
+    }
+  }
+
+
+
+  &__week-day {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--border-radius);
+    color: var(--color-grey-1000);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.another-period-day {
+      color: var(--color-grey-450);
+    }
+
+    &.disabled-day {
+      color: var(--color-grey-600);
+    }
+
+    &:hover:not(.selected-day):not(.disabled-day):not(.another-period-day) {
+      background-color: var(--color-grey-200);
+    }
+
+    &.selected-day {
+      background-color: var(--color-green-200);
+    }
+  }
+
+
+
+}

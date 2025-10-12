@@ -1,0 +1,58 @@
+<input type="file"
+       #file
+       placeholder="Choose file"
+       (change)="onUpload(file.files)"
+       style="display:none;">
+
+<button *ngrxLet="imageUrl$ as imageUrl"
+        type="button"
+        class="img-btn cursor-pointer"
+        [class.img-btn--filled]="!!imageUrl">
+
+  @if(isUploading()) {
+  <p-skeleton [width]="skeletonWidth"
+              [height]="skeletonHeight" />
+  } @else {
+
+  @if(imageUrl) {
+
+  <img [src]="imageUrl"
+       alt="Uploaded image">
+
+  } @else {
+
+  <svg version="2.0"
+       class="dummy-img">
+    <use xlink:href="#onigiri_dummy_img" />
+  </svg>
+
+  }
+
+  <div class="img-btn__overlay"></div>
+
+  @if(imageUrl) {
+
+  <div class="img-btn__actions">
+    <div class="img-btn__action o-w-30 o-h-30">
+      <o-icon key="trash"
+              (click)="onClean()" />
+    </div>
+
+    <div class="img-btn__action o-w-30 o-h-30">
+      <o-icon key="upload"
+              (click)="file.click()" />
+    </div>
+  </div>
+
+  } @else {
+
+  <div class="img-btn__placeholder"
+       (click)="file.click()">
+    <span class="o-text-main o-color-grey-1000 font-semibold">{{placeholder}}</span>
+  </div>
+
+  }
+
+  }
+
+</button>

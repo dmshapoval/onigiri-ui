@@ -1,0 +1,27 @@
+@let projectData = data();
+
+<div class="project-card"
+     [class.project-card--sample]="projectData.isSample">
+
+  @if(projectData.isSample) {
+  <sample-project-chip />
+  }
+
+  <h3 class="project-card__title">{{projectData.name}}</h3>
+
+  <div class="project-card__description o-text-main">{{projectData.description}}</div>
+
+  <div class="project-card__customer">
+
+    @if(customerName()) {
+    <span class="o-color-grey-600">for</span>
+    <span class="project-card__customer-name o-text-main">{{customerName()}}</span>
+    } @else {
+    <span class="o-color-grey-600">no client attached</span>
+    }
+
+
+
+
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<input type="file"
+       #thumbImageSelector
+       (change)="vm.uploadCustom(thumbImageSelector.files)"
+       style="display:none;">
+
+
+<div class="tile-menu link-tile-img-edit-menu"
+     @imgEditMenuAnimation>
+  @for (thumbAction of vm.actions(); track $index) {
+  <div class="action-icon"
+       (click)="thumbAction.handler()">
+    <o-icon [key]="thumbAction.iconKey" />
+  </div>
+  }
+</div>

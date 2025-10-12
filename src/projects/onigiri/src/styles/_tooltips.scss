@@ -1,0 +1,20 @@
+.p-tooltip {
+  z-index: 10;
+
+  border-radius: 5px;
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.10);
+
+  &.p-tooltip-top {
+    padding-top: 0;
+  }
+
+  .p-tooltip-text {
+    padding: 6px 10px;
+
+    font-size: 10px;
+    font-weight: 400;
+
+    color: var(--color-grey-600);
+    background: var(--color-grey-100);
+  }
+}

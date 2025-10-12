@@ -1,0 +1,59 @@
+<div class="tile-mobile-editor__header">
+  <div class="font-bold">Page settings</div>
+
+  <button mobileEditorClose
+          class="o-button o-button--black w-min">Save</button>
+</div>
+
+<div class="tile-mobile-editor__body">
+
+  <div class="field">
+    <label class="o-text-tooltip o-mb-10">Page link</label>
+    <page-key-input [value]="pageKey()"
+                    (valueChange)="pageData.updatePageKey($event)" />
+  </div>
+
+  <div class="field with-progress-counter">
+    <div class="relative o-mb-10">
+      <label class="o-text-tooltip">Page Title</label>
+      <div class="progress-counter">
+        <progress-counter [maxValue]="70"
+                          [currentValue]="titleInput.value?.length || 0" />
+      </div>
+    </div>
+
+    <div class="text-editor text-editor--title">
+
+      <input pInputText
+             type="text"
+             maxlength="70"
+             [formControl]="titleInput"
+             autocomplete="off"
+             [placeholder]="titlePlaceholder()"
+             class="o-h-40 w-full" />
+    </div>
+  </div>
+
+  <div class="field with-progress-counter">
+    <div class="relative o-mb-10">
+      <label class="o-text-tooltip">Page Description</label>
+      <div class="progress-counter">
+        <progress-counter [maxValue]="160"
+                          [currentValue]="descriptionInput.value?.length || 0" />
+      </div>
+    </div>
+
+    <div class="text-editor text-editor--description">
+      <textarea style="height: 80px;"
+                class="w-full"
+                maxlength="160"
+                pInputTextarea
+                [formControl]="descriptionInput"
+                autocomplete="off"
+                [placeholder]="descriptionPlaceholder()"></textarea>
+
+    </div>
+
+  </div>
+
+</div>

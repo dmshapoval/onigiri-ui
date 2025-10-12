@@ -1,0 +1,49 @@
+.tile-mobile-editor__body {
+
+  padding: 0 20px 30px;
+}
+
+.field {
+
+  .progress-counter {
+    position: absolute;
+    right: 0;
+    top: -3px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .text-editor {
+    border-radius: 5px;
+    // background-color: var(--color-grey-200);
+
+    font-size: 12px;
+    font-weight: 400;
+
+    // &--title {
+    //   align-content: center;
+    //   line-height: normal;
+    //   min-height: 40px;
+    // }
+
+    // &--description {
+    //   line-height: normal;
+    //   min-height: 75px;
+    // }
+  }
+
+
+  &.with-progress-counter {
+
+    label {
+      display: inline-block;
+    }
+
+    &:focus-within {
+      .progress-counter {
+        opacity: 1;
+        padding-block: 5px;
+      }
+    }
+  }
+}

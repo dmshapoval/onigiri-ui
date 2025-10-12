@@ -1,0 +1,82 @@
+<div class="flex justify-content-between align-items-center">
+  <h1>Page</h1>
+</div>
+
+<div class="o-mt-40">
+  <empty-state-placeholder title="Create your page"
+                           subTitle="Showcase yourself and attract more clients with your beautiful link in bio page."
+                           btnText="Create page">
+
+    <ng-template oTemplate="sample">
+
+      <div class="sample-img">
+        <img src="../../../../assets/page_sample.png"
+             alt="Sample">
+      </div>
+
+    </ng-template>
+
+    <ng-template oTemplate="action">
+
+      <div class="page-key-input-wrap flex align-items-center">
+        <div class="relative flex-1"
+             style="max-width: 300px;">
+          <span class="pages-app-link o-text-main">onee.page/</span>
+
+          <input pInputText
+                 id="page_key_input"
+                 type="text"
+                 [formControl]="keyInput"
+                 autocomplete="off"
+                 [pKeyFilter]="blockInvalidSymbols"
+                 class="o-text-main w-full o-h-40" />
+
+          <div class="status-icon">
+            @if(keyInput.valid && validationStatus() === 'available') {
+            <o-icon key="solid-check"
+                    class="o-color-green-800" />
+            }
+
+            @if(validationStatus() === 'not_available') {
+            <o-icon key="close-rounded"
+                    class="cursor-pointer o-color-grey-800"
+                    (click)="keyInput.setValue(null)" />
+            }
+          </div>
+        </div>
+
+        <o-button class="claim-btn"
+                  (onClick)="onCreate()"
+                  [disabled]="validationStatus() !== 'available'">Create page</o-button>
+      </div>
+
+      @if(keyInput.invalid) {
+      @if(keyInput.hasError('minlength')) {
+      <p class="o-text-tooltip o-mt-20">
+        You address should be longer than 2 symbols
+      </p>
+      }
+
+      @if(keyInput.hasError('maxlength')) {
+      <p class="error-notification o-text-tooltip o-mt-20">
+        You adress should be shorten than 50 symbols
+      </p>
+      }
+      }
+
+
+      @if(validationStatus() === 'not_available') {
+      <p class="error-notification o-text-tooltip o-mt-20">
+        Someone already took this link. Maybe you’ve got something else on your mind?
+      </p>
+      }
+
+      @if(pageSetupError()) {
+      <p class="error-notification o-text-tooltip o-mt-20">
+        Failed to create page. Please contact administrator or try later.
+      </p>
+      }
+
+    </ng-template>
+  </empty-state-placeholder>
+</div>

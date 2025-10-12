@@ -1,0 +1,78 @@
+@let selectedLayout =pageDataStore.layout();
+
+<div class="page-editor-menu__section justify-content-center"
+     style="padding-inline: 0; width: 46px;">
+  <div class="action-icon"
+       (click)="onMoveBack()">
+    <o-icon key="arrow-back" />
+  </div>
+</div>
+
+
+@if(!viewStore.onMobileDevice()) {
+<div class="page-editor-menu__section">
+  <div class="action-icon"
+       [class.action-icon--selected]="selectedLayout === 'profile_left'"
+       (click)="pageDataStore.updatePageLayout('profile_left')">
+    <o-icon key="page_layout_left" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="selectedLayout === 'profile_right'"
+       (click)="pageDataStore.updatePageLayout('profile_right')">
+    <o-icon key="page_layout_right" />
+  </div>
+  <div class="action-icon"
+       [class.action-icon--selected]="selectedLayout === 'profile_top'"
+       (click)="pageDataStore.updatePageLayout('profile_top')">
+    <o-icon key="page_layout_bottom" />
+  </div>
+</div>
+}
+
+
+
+<div class="page-editor-menu__section">
+  <div class="action-icon"
+       #bgSelectorTrigger
+       (click)="showBGColorSelector()">
+    <div class="div"
+         [style.color]="pageDataStore.selectedBGColor()"
+         style="width: 16px; height: 16px; border-radius: 50%;">
+      <o-icon key="circle_filled" />
+    </div>
+  </div>
+  <div class="action-icon"
+       style="opacity: 0.2;"
+       [pTooltip]="patternTooltipTpl"
+       [positionTop]="-4"
+       tooltipPosition="top">
+    <o-icon key="page_bg_pattern" />
+  </div>
+</div>
+
+<!-- 
+
+<div class="page-editor-menu__section">
+  <div class="action-icon action-icon--selected">
+    <o-icon key="light_theme" />
+  </div>
+  <div class="action-icon">
+    <o-icon key="dark_theme" />
+  </div>
+</div> -->
+
+<ng-template #patternTooltipTpl>
+  <div class="icon-tooltip">
+    <span>Pattern</span>
+    <coming-soon-chip text="SOON"
+                      style="width: 48px; margin-left: 5px;" />
+  </div>
+</ng-template>
+
+<ng-template cdkPortal
+             #bgSelectPanel>
+  <div class="bg-select-panel">
+    <page-bg-selector />
+  </div>
+</ng-template>

@@ -1,0 +1,51 @@
+<div class="tile-mobile-editor__header">
+  <div class="flex align-items-center"
+       style="column-gap: 15px;">
+    <link-tile-favicon />
+    <div class="font-bold">Link details</div>
+  </div>
+
+  <button class="o-button o-button--black w-min"
+          mobileEditorClose>Save</button>
+</div>
+
+<div class="tile-mobile-editor__body">
+
+  <div class="title-input">
+    <label class="block o-text-tooltip o-mb-10">Link title</label>
+    <div class="title-input__editor">
+      <rich-text-editor [value]="title()"
+                        [maxLength]="600"
+                        [placeholder]="titlePlaceholder()"
+                        (valueChange)="updateTile({title: $event?.html || null})" />
+    </div>
+
+  </div>
+
+  <div class="image-input o-mt-40">
+    <label class="block o-text-tooltip o-mb-10">Thumb image</label>
+    <div class="w-full h-full flex align-items-center o-c-gap-40">
+
+      <div class="image-input__actions o-color-grey-100">
+        @for (thumbAction of thumbImage.actions(); track $index) {
+        <div class="action-icon"
+             (click)="thumbAction.handler()">
+          <o-icon [key]="thumbAction.iconKey" />
+        </div>
+        }
+      </div>
+
+      <div class="image-input__image">
+
+        <link-tile-thumb-image />
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<input type="file"
+       #thumbImageSelector
+       (change)="thumbImage.uploadCustom(thumbImageSelector.files)"
+       style="display:none;">

@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.icon-wrap {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-grey-200);
+  border-radius: var(--border-radius);
+
+  img {
+    width: 60%;
+    aspect-ratio: 1 / 1;
+  }
+}

@@ -1,0 +1,43 @@
+@let size = selectedSize();
+
+<div class="page-editor-menu__section">
+
+  @if(size) {
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width=== 1 && size.height === 2"
+       (click)="updateTileSize(1, 2)">
+    <o-icon key="sm_square_tile" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width === 2 && size.height === 1"
+       (click)="updateTileSize( 2, 1)">
+    <o-icon key="sm_horizontal_tile" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width === 2 && size.height === 2"
+       (click)="updateTileSize(2, 2)">
+    <o-icon key="md_horizontal_tile" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width === 1 && size.height === 4"
+       (click)="updateTileSize(1, 4)">
+    <o-icon key="md_vertical_tile" />
+  </div>
+
+  <div class="action-icon"
+       [class.action-icon--selected]="size.width === 2 && size.height === 4"
+       (click)="updateTileSize(2, 4)">
+    <o-icon key="lg_square_tile" />
+  </div>
+
+  }
+
+  <div class="edit-block-menu__divider"></div>
+
+  <button class="o-button o-button--primary"
+          (click)="onDone()">Done</button>
+
+</div>

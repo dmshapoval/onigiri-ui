@@ -1,0 +1,79 @@
+$sizes: 10, 20, 25, 30, 40;
+
+@each $size in $sizes {
+  .o-h-#{$size} {
+    height: #{$size}px !important;
+  }
+
+  .o-w-#{$size} {
+    width: #{$size}px !important;
+  }
+
+  .o-gap-#{$size} {
+    gap: #{$size}px;
+  }
+
+  .o-c-gap-#{$size} {
+    column-gap: #{$size}px;
+  }
+
+
+  // PADDINGS
+  .o-p-#{$size} {
+    padding: #{$size}px;
+  }
+
+  .o-px-#{$size} {
+    padding-inline: #{$size}px;
+  }
+
+  .o-py-#{$size} {
+    padding-block: #{$size}px;
+  }
+
+  .o-pl-#{$size} {
+    padding-left: #{$size}px;
+  }
+
+  .o-pr-#{$size} {
+    padding-right: #{$size}px;
+  }
+
+  .o-pb-#{$size} {
+    padding-bottom: #{$size}px;
+  }
+
+  .o-pt-#{$size} {
+    padding-top: #{$size}px;
+  }
+
+  // MARGINS
+
+  .o-m-#{$size} {
+    margin: #{$size}px;
+  }
+
+  .o-ml-#{$size} {
+    margin-left: #{$size}px;
+  }
+
+  .o-mr-#{$size} {
+    margin-right: #{$size}px;
+  }
+
+  .o-mb-#{$size} {
+    margin-bottom: #{$size}px;
+  }
+
+  .o-mt-#{$size} {
+    margin-top: #{$size}px;
+  }
+}
+
+.o-cursor-grab {
+  cursor: grab;
+}
+
+.o-cursor-grabbing {
+  cursor: grabbing;
+}

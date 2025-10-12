@@ -1,0 +1,77 @@
+<div class="p-4 flex flex-column row-gap-4 w-full">
+
+  <p-button label="Back"
+            icon="pi pi-arrow-left"
+            (onClick)="location.back()" />
+
+  @if(loading()) {
+  <p-skeleton width="100%"
+              height="20rem" />
+  }
+
+
+  @if(data(); as userData) {
+
+  <div class="flex flex-column gap-2">
+    <div class="font-bold">Email</div>
+    <div>{{userData.email}}</div>
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <div class="font-bold">Subscription</div>
+
+    <div class="flex column-gap-2">
+      <div>Type:</div>
+      <div class="font-semibold">{{userData.subscription.type}}</div>
+    </div>
+
+    <div class="flex column-gap-2">
+      <div>Starts at:</div>
+      <div class="font-semibold">{{userData.subscription.starts_at | date:'dd/MM/yyyy'}}</div>
+    </div>
+
+    <div class="flex column-gap-2">
+      <div>Expires at:</div>
+      <div class="font-semibold">{{userData.subscription.expires_at | date:'dd/MM/yyyy'}}</div>
+    </div>
+
+  </div>
+
+  <div class="flex flex-column gap-2">
+    <div class="font-bold">Invoices</div>
+    <p-table [value]="userData.invoices">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>No</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Link</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body"
+                   let-invoice>
+        <tr>
+          <td>{{ invoice.no }}</td>
+          <td>{{ invoice.date }}</td>
+          <td>{{ invoice.amount }} {{invoice.currency}}</td>
+          <td>{{ invoice.status }}</td>
+          <td>
+            @if(invoice.publicLink) {
+            <div class="flex align-items-center column-gap-3">
+              <span>{{ invoice.publicLink }}</span>
+              <i class="pi pi-copy cursor-pointer"
+                 (click)="copyUrl(invoice.publicLink)"></i>
+            </div>
+            } @else {
+            <span> - </span>
+            }
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  }
+
+</div>

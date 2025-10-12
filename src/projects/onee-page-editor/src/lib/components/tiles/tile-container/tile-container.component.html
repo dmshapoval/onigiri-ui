@@ -1,0 +1,56 @@
+@let pageTileType = tileType();
+@let onMobile = viewStore.onMobileDevice();
+
+
+@if(pageTileType) {
+
+<div class="tile"
+     withTileSize
+     [class.tile--selected]="isSelected()"
+     [class.tile--hovered]="isHovered()"
+     (mouseover.zoneless)="onMouseOver()"
+     (mouseleave.zoneless)="onMouseLeave()">
+
+
+  @if(onMobile && isSelected()) {
+  <div class="mobile-actions"
+       @mobileActions>
+
+    <o-icon key="trash"
+            height="20px"
+            class="mobile-actions__action--delete"
+            (click)="onDeleteTile()" />
+
+    <button class="o-button mobile-actions__action--edit"
+            (click)="showMobileEditor()">Edit</button>
+
+  </div>
+  }
+
+  <div #tileEl
+       class="tile__cmp"
+       (click)="onClick()">
+
+    @if(tileCmp()) {
+    <ng-template [ngComponentOutlet]="tileCmp()" />
+    }
+
+  </div>
+
+  @if(onMobile) {
+  <div class="tile-drag-handler"
+       [@dragHandler]="onMobile && isSelected() ? 'visible' : 'hidden'">
+    <o-icon key="tap" />
+  </div>
+  } @else if(tileMenuCmp() && isHovered()) {
+  <div class="desktop-actions"
+       @desktopMenu>
+    <ng-template [ngComponentOutlet]="tileMenuCmp()" />
+  </div>
+
+  }
+
+
+</div>
+
+}

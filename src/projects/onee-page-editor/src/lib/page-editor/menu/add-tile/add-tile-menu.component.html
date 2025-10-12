@@ -1,0 +1,123 @@
+@switch(mode()) {
+@case ('default') {
+<div class="page-editor-menu__section">
+
+  <div class="action-icon"
+       pTooltip="Link"
+       tooltipPosition="top"
+       [positionTop]="-4"
+       (click)="mode.set('link_input')">
+    <o-icon key="link" />
+  </div>
+
+  <div class="action-icon"
+       pTooltip="Image"
+       tooltipPosition="top"
+       [positionTop]="-4"
+       (click)="imageSelector.click()">
+    <o-icon key="image" />
+  </div>
+
+  <div class="action-icon"
+       pTooltip="Text"
+       tooltipPosition="top"
+       [positionTop]="-4"
+       (click)="addTextTile()">
+    <o-icon key="text_note" />
+  </div>
+
+  <div class="action-icon"
+       pTooltip="Section Title"
+       tooltipPosition="top"
+       [positionTop]="-4"
+       (click)="addTitleTile()">
+    <o-icon key="title" />
+  </div>
+
+  @if(!viewStore.onMobileDevice()) {
+
+  <div class="action-icon action-icon--disabled"
+       hideOnMobile
+       [pTooltip]="formTooltipTpl"
+       [positionTop]="-4"
+       tooltipPosition="top">
+    <o-icon key="form" />
+  </div>
+
+  <div class="action-icon action-icon--disabled"
+       hideOnMobile
+       [pTooltip]="servicesTooltipTpl"
+       [positionTop]="-4"
+       tooltipPosition="top">
+    <o-icon key="services" />
+  </div>
+
+  }
+
+  <div class="page-editor-menu__divider"></div>
+
+  <div class="action-icon"
+       (click)="menuEditor.setMode('appearance')">
+    <o-icon key="appearance" />
+  </div>
+
+  <div class="action-icon"
+       (click)="onEditPageSettings()">
+    <o-icon key="settings_2" />
+  </div>
+
+</div>
+
+}
+
+@case ('link_input') {
+<div class="link-input-view">
+  <div class="page-editor-menu__section"
+       style="width: 50px;">
+    <div class="action-icon"
+         (click)="mode.set('default')">
+      <o-icon key="arrow-back" />
+    </div>
+  </div>
+
+  <div class="page-editor-menu__section link-input">
+
+    <input type="text"
+           class="o-text-main o-h-30"
+           [formControl]="linkInput"
+           autocomplete="off"
+           placeholder="Add link here"
+           (keydown.enter)="addLinkTile()" />
+
+    <button class="o-button o-button--primary o-text-main font-semibold o-h-30"
+            [disabled]="linkInput.invalid"
+            (click)="addLinkTile()">Paste</button>
+
+  </div>
+</div>
+
+}
+}
+
+
+<input type="file"
+       #imageSelector
+       (change)="onImageSelected(imageSelector.files)"
+       accept=".gif,.jpg,.jpeg,.png,.svg,.webp"
+       style="display:none;">
+
+<ng-template #formTooltipTpl>
+  <div class="icon-tooltip">
+    <span>Forms</span>
+    <coming-soon-chip text="SOON"
+                      style="width: 48px; margin-left: 5px;" />
+  </div>
+</ng-template>
+
+<ng-template #servicesTooltipTpl>
+  <div class="icon-tooltip">
+    <span>Services</span>
+    <coming-soon-chip text="SOON"
+                      style="width: 48px; margin-left: 5px;" />
+  </div>
+</ng-template>

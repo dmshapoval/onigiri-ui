@@ -1,0 +1,103 @@
+:host {
+  display: block;
+}
+
+.tiles-editor {
+  display: block;
+  // margin-right: -20px;
+  // margin-top: -20px;
+  // margin-left: -20px;
+
+  width: 860px;
+
+  &--mobile {
+    width: 430px;
+  }
+}
+
+:host ::ng-deep {
+  .grid-stack {
+    .grid-stack-item {
+      // .tile {
+      //   cursor: grab;
+      // }
+
+      // &.ui-draggable-dragging {
+
+      //   .tile {
+      //     pointer-events: auto;
+      //     cursor: grabbing;
+      //   }
+      // }
+
+
+      .grid-stack-item-content {
+        overflow-x: visible;
+        overflow-y: visible;
+
+        border-radius: var(--tile-border-radius);
+        background-color: transparent;
+      }
+
+      &.grid-stack-placeholder {
+        transition: left 0.4s, top 0.4s, height 0.4s, width 0.4s;
+
+        .placeholder-content {
+          overflow: hidden;
+          border-radius: var(--tile-border-radius);
+        }
+      }
+    }
+  }
+
+  // @function scaled($size) {
+  //   @return calc($size * var(--edit-tile-ratio));
+  // }
+
+  // .edit-block-menu {
+  //   display: flex;
+  //   align-items: center;
+  //   column-gap: scaled(15px);
+  //   color: var(--color-grey-100);
+  //   border-radius: 10px;
+  //   background-color: var(--color-grey-1000);
+  //   height: scaled(46px);
+  //   padding: scaled(7.5px) scaled(7.5px);
+  //   overflow: hidden;
+  //   box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.25);
+
+  //   &__divider {
+  //     width: scaled(2px);
+  //     height: scaled(7.5px);
+  //     background-color: #343434;
+  //   }
+  // }
+
+  // .tile-action-icon {
+  //   height: 30px;
+  //   width: 30px;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   border-radius: 10px;
+
+  //   &--disabled {
+  //     color: var(--color-grey-600);
+  //   }
+
+  //   &--selected,
+  //   &:hover {
+  //     background-color: #343434;
+  //   }
+
+  //   o-icon {
+  //     height: 28px;
+  //   }
+
+  //   &:not(.tile-action-icon--disabled) {
+  //     o-icon {
+  //       cursor: pointer;
+  //     }
+  //   }
+  // }
+}

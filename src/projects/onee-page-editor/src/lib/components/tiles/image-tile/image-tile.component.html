@@ -1,0 +1,21 @@
+<div class="image-tile">
+  @if(imageId()) {
+
+  <img [src]="imageId() | oImageUrl"
+       [alt]="caption()">
+
+  <div class="caption-input o-text-main"
+       [class.caption-input--empty]="captionIsEmpty()">
+
+    <div class="caption-input__wrap">
+      <rich-text-editor [value]="caption()"
+                        [isReadOnly]="viewStore.onMobileDevice()"
+                        [maxLength]="300"
+                        placeholder="Caption..."
+                        [lineClamp]="tileSize().height > 2 ? 2 : 1"
+                        (valueChange)="updateTile({caption: $event?.html || null})" />
+    </div>
+
+  </div>
+  }
+</div>

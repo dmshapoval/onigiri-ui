@@ -1,0 +1,74 @@
+:root {
+  --color-grey-100: #fcfcfc;
+  --color-grey-200: #f5f5f5;
+  --color-grey-400: #ededed;
+  --color-grey-450: #e6e6e6;
+  --color-grey-500: #d3d3d3;
+  --color-grey-600: #a3a3a3;
+  --color-grey-800: #666666;
+  --color-grey-1000: #262626;
+
+  --color-green-200: #e8f4e0;
+  --color-green-800: #72a531;
+  --color-green-1000: #497313;
+
+  --color-blue-200: #e0f3f4;
+
+  --color-yellow-200: #f4f2e0;
+  --color-yellow-400: #fff7ae;
+  --color-yellow-600: #faeb65;
+
+  --color-red-600: #fa6e65;
+  --color-red-800: #a53131;
+  --color-red-1000: #731313;
+
+  --color-orange-600: #fab565;
+
+  --border-radius: 5px;
+
+  --input-border-radius: 5px;
+  --input-border-color: #d3d3d3;
+  --input-border-color-focus: #262626;
+}
+
+// COLORS
+
+.o-color-grey-100 {
+  color: var(--color-grey-100);
+}
+
+.o-color-grey-600 {
+  color: var(--color-grey-600);
+}
+
+.o-color-grey-800 {
+  color: var(--color-grey-800);
+}
+
+.o-color-grey-1000 {
+  color: var(--color-grey-1000);
+}
+
+.o-color-green-800 {
+  color: var(--color-green-800);
+}
+
+.o-hover-color-green-1000 {
+  &:hover {
+    color: var(--color-green-1000);
+  }
+}
+
+.o-color-red-600 {
+  color: var(--color-red-600);
+}
+
+// BACKGROUNDS
+
+.o-bg-grey-400 {
+  background-color: var(--color-grey-400);
+}
+
+.o-bg-grey-450 {
+  background-color: var(--color-grey-450);
+}

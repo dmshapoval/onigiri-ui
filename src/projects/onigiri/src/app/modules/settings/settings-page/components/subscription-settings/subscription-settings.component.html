@@ -1,0 +1,63 @@
+@if(showUpgradeOptions()) {
+<div class="flex align-items-center">
+  <h2>Choose a plan</h2>
+  <div class="flex align-items-center period-selector">
+
+    <label for="period_selector"
+           class="period-selector__lbl o-text-main">Monthly</label>
+
+    <p-inputSwitch [(ngModel)]="showYearly"
+                   inputId="period_selector" />
+
+    <span class="o-color-grey-800 o-font-h4 font-semibold period-selector__comment">Yearly (Save up to 35%)</span>
+  </div>
+</div>
+
+<div class="flex products justify-content-center">
+  @for (product of subscriptionOptions; track $index) {
+  <div>
+
+    <subscription-card [product]="product"
+                       [showYearly]="showYearly"
+                       class="h-full"
+                       (selected)="onUpgradeSubscription(product.key)" />
+
+  </div>
+  }
+
+</div>
+}
+
+@if(showSubscriptionInfo()) {
+@let subscrData = subscriptionInfo()!;
+
+<div class="subscription-details">
+
+  <div class="subscription-details__section">
+
+    <div class="subscription-name">
+      <span class="o-text-tooltip o-color-grey-1000">Plan</span>
+      <h2>{{subscrData.name}}</h2>
+    </div>
+
+    <o-button (onClick)="onEditCurrentSubscription()">Manage subscription</o-button>
+  </div>
+
+  <div class="subscription-details__section">
+    <div class="subscription-price">
+      <div>
+        <span class="o-font-h1">${{subscrData.monthlyPrice}}</span>
+        <span class="o-text-main">/month</span>
+      </div>
+      <span class="o-text-tooltip o-color-grey-800">Billed {{subscrData.billingInterval}}</span>
+    </div>
+
+    @if(subscrData.status === 'active') {
+    <p>Renewal on {{ subscrData.expiresOn }}</p>
+    } @else {
+    <p>Expires on {{ subscrData.expiresOn }}</p>
+    }
+
+  </div>
+</div>
+}

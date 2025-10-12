@@ -1,0 +1,21 @@
+<div class="o-dialog">
+
+  <div class="o-dialog__closing">
+    <div class="o-dialog__close-icon"
+         (click)="onCancel()">
+      <o-icon key="close" />
+    </div>
+  </div>
+
+  <div class="o-dialog__body">
+
+    @if(isLoading()) {
+    <p-skeleton width="100%"
+                height="20rem" />
+    }
+
+    <div #checkoutEl>
+    </div>
+
+  </div>
+</div>

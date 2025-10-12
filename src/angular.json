@@ -1,0 +1,457 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "onigiri": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        }
+      },
+      "root": "projects/onigiri",
+      "sourceRoot": "projects/onigiri/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/onigiri",
+            "index": "projects/onigiri/src/index.html",
+            "browser": "projects/onigiri/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/onigiri/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/onigiri/src/staticwebapp.config.json",
+              "projects/onigiri/src/onigiri_logo.png",
+              "projects/onigiri/src/assets",
+              "projects/onigiri/src/_redirects",
+              {
+                "glob": "**/*",
+                "input": "./projects/oni-shared/src/assets",
+                "output": "/assets/oni-shared/"
+              }
+            ],
+            "styles": [
+              "node_modules/flag-icons/css/flag-icons.min.css",
+              "node_modules/primeng/resources/themes/mdc-light-indigo/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css",
+              "node_modules/primeicons/primeicons.css",
+              "projects/onigiri/src/styles/styles.scss"
+            ],
+            "outputHashing": "media",
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "35kb",
+                  "maximumError": "50kb"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/onigiri/src/environments/environment.ts",
+                  "with": "projects/onigiri/src/environments/environment.production.ts"
+                }
+              ],
+              "scripts": [
+                "projects/onigiri/src/clarity.js",
+                "projects/onigiri/src/crisp.js"
+              ]
+            },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "35kb",
+                  "maximumError": "50kb"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/onigiri/src/environments/environment.ts",
+                  "with": "projects/onigiri/src/environments/environment.staging.ts"
+                }
+              ],
+              "scripts": []
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "onigiri:build:production"
+            },
+            "development": {
+              "buildTarget": "onigiri:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "onigiri:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/onigiri/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/onigiri/src/favicon.ico",
+              "projects/onigiri/src/assets"
+            ],
+            "styles": [
+              "projects/onigiri/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "onee": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        }
+      },
+      "root": "projects/onee",
+      "sourceRoot": "projects/onee/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/onee",
+            "index": "projects/onee/src/index.html",
+            "browser": "projects/onee/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/onee/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/onee/src/staticwebapp.config.json",
+              "projects/onee/src/onee_logo.svg",
+              "projects/onee/src/assets",
+              "projects/onee/src/_redirects",
+              {
+                "glob": "**/*",
+                "input": "./projects/oni-shared/src/assets",
+                "output": "/assets/oni-shared/"
+              }
+            ],
+            "styles": [
+              "node_modules/primeng/resources/themes/mdc-light-indigo/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css",
+              "projects/onee/src/styles/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "35kb",
+                  "maximumError": "50kb"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/onee/src/environments/environment.ts",
+                  "with": "projects/onee/src/environments/environment.production.ts"
+                }
+              ],
+              "scripts": [
+                "projects/onee/src/clarity.js",
+                "projects/onee/src/crisp.js"
+              ]
+            },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "35kb",
+                  "maximumError": "50kb"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/onee/src/environments/environment.ts",
+                  "with": "projects/onee/src/environments/environment.staging.ts"
+                }
+              ],
+              "scripts": []
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "onee:build:production"
+            },
+            "development": {
+              "buildTarget": "onee:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "onee:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/onee/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/onee/src/favicon.ico",
+              "projects/onee/src/assets"
+            ],
+            "styles": [
+              "projects/onee/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "onee-page-editor": {
+      "projectType": "library",
+      "root": "projects/onee-page-editor",
+      "sourceRoot": "projects/onee-page-editor/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/onee-page-editor/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/onee-page-editor/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/onee-page-editor/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/onee-page-editor/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "oni-shared": {
+      "projectType": "library",
+      "root": "projects/oni-shared",
+      "sourceRoot": "projects/oni-shared/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/oni-shared/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/oni-shared/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/oni-shared/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/oni-shared/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "onigiri-admin": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "skipTests": true,
+          "style": "scss"
+        }
+      },
+      "root": "projects/onigiri-admin",
+      "sourceRoot": "projects/onigiri-admin/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/onigiri-admin",
+            "index": "projects/onigiri-admin/src/index.html",
+            "browser": "projects/onigiri-admin/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/onigiri-admin/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/onigiri-admin/src/staticwebapp.config.json",
+              {
+                "glob": "**/*",
+                "input": "projects/onigiri-admin/public"
+              }
+            ],
+            "styles": [
+              "node_modules/primeng/resources/themes/aura-light-noir/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css",
+              "node_modules/primeicons/primeicons.css",
+              "projects/onigiri-admin/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "8MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kB",
+                  "maximumError": "10kB"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/onigiri-admin/src/environments/environment.ts",
+                  "with": "projects/onigiri-admin/src/environments/environment.production.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "onigiri-admin:build:production"
+            },
+            "development": {
+              "buildTarget": "onigiri-admin:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/onigiri-admin/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/onigiri-admin/public"
+              }
+            ],
+            "styles": [
+              "projects/onigiri-admin/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  }
+}

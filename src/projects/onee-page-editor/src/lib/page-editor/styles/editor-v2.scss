@@ -1,0 +1,144 @@
+@import '../../mixins.scss';
+
+
+.editor {
+
+  width: 430px;
+  min-height: 80vh;
+  margin-top: 30px;
+  margin-inline: auto;
+
+  background-color: var(--editor-bg-color, #F5F5F5);
+  transition: background-color 0.3s ease;
+
+  border-radius: 20px;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__profile {
+    margin-bottom: 50px;
+    padding: 0 20px;
+
+    order: 1;
+  }
+
+  &__tiles {
+    order: 2;
+  }
+}
+
+
+.page-editor-menu-container {
+  position: fixed;
+  bottom: 50px;
+  z-index: 10;
+  transform: translateX(-50%);
+  left: 50%;
+  border-radius: 10px;
+}
+
+
+@include onDesktop() {
+
+  .editor {
+    will-change: width;
+    transition: width 0.3s ease-in-out;
+
+    margin-top: 50px;
+
+    &.mobile-view {
+      width: 430px;
+
+      .editor {
+        &__body {
+          padding-top: 40px;
+        }
+      }
+    }
+
+    &:not(.mobile-view) {
+      .editor {
+        &__body {
+          display: block;
+          position: relative;
+        }
+
+        &__profile {
+          position: absolute;
+          transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
+        }
+
+        &__tiles {
+          position: absolute;
+          transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
+        }
+      }
+
+
+      &.profile-top {
+        width: 860px;
+
+        .editor {
+          &__profile {
+            width: 860px;
+            top: 0;
+            left: 0;
+          }
+
+          &__tiles {
+            width: 100%;
+            left: 0;
+          }
+        }
+      }
+
+      &.profile-left {
+        width: clamp(1170px, 100%, 1250px);
+
+        .profile-editor-wrap {
+          position: sticky;
+          top: 50px;
+        }
+
+        .editor {
+          &__profile {
+            left: 0;
+            width: 300px;
+            height: 100%; // for sticky positioning
+          }
+
+          &__tiles {
+            width: 860px;
+            left: calc(100% - 860px);
+          }
+        }
+      }
+
+      &.profile-right {
+        width: clamp(1170px, 100%, 1250px);
+
+        .profile-editor-wrap {
+          position: sticky;
+          top: 50px;
+        }
+
+        .editor {
+          &__profile {
+            left: calc(100% - 300px);
+            width: 300px;
+            height: 100%; // for sticky positioning
+          }
+
+          &__tiles {
+            left: 0;
+            width: 860px;
+          }
+        }
+      }
+    }
+  }
+
+}

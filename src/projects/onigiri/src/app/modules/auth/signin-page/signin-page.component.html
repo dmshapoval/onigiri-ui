@@ -1,0 +1,114 @@
+<main>
+  <div class="w-full">
+    <a class="logo flex no-underline align-items-center justify-content-start"
+       href="#">
+      <svg version="2.0"
+           class="logo__img">
+        <use xlink:href="#onigiri_logo_svg" />
+      </svg>
+
+      <span class="logo__text o-logo-text o-color-grey-1000">
+        ONIGIRI
+      </span>
+    </a>
+  </div>
+
+  @if(signInLinkSent()) {
+
+  <h2 class="w-full">Magic link was sent to your email address</h2>
+
+  <p class="w-full o-color-grey-1000"
+     style="font-size: 18px; margin-top: 10px;">
+    Click on the link in the email we sent to {{emailInput.value}}
+  </p>
+
+
+  } @else {
+  <h2>Welcome Back</h2>
+
+  <button class="signin-btn o-button o-text-main w-full"
+          (click)="signInWithGoogle()"
+          style="margin-top: 50px;">
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         viewBox="0 0 48 48">
+      <defs>
+        <path id="a"
+              d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
+      </defs>
+      <clipPath id="b">
+        <use xlink:href="#a"
+             overflow="visible" />
+      </clipPath>
+      <path clip-path="url(#b)"
+            fill="#FBBC05"
+            d="M0 37V11l17 13z" />
+      <path clip-path="url(#b)"
+            fill="#EA4335"
+            d="M0 11l17 13 7-6.1L48 14V0H0z" />
+      <path clip-path="url(#b)"
+            fill="#34A853"
+            d="M0 37l30-23 7.9 1L48 0v48H0z" />
+      <path clip-path="url(#b)"
+            fill="#4285F4"
+            d="M48 48L17 24l-4-3 35-10z" />
+    </svg>
+    <span>Sign in with Google</span>
+  </button>
+
+  <div class="auth-divider o-mt-20 o-mb-20">
+    <span class="auth-divider__line"></span>
+    <span class="auth-divider__text">OR</span>
+    <span class="auth-divider__line"></span>
+  </div>
+
+  <div class="email-auth flex flex-column">
+
+    <div class="w-full">
+      <input pInputText
+             type="email"
+             [formControl]="emailInput"
+             placeholder="Your email"
+             class="w-full o-h-40">
+
+      @if(invalidEmail) {
+      <p class="o-text-tooltip o-mt-10 o-color-red-600">
+        The email field must contain a valid email address.
+      </p>
+      }
+
+    </div>
+
+    <button class="signin-btn o-button o-text-main"
+            [disabled]="emptyEmail || emailInput.invalid || pendingServer()"
+            (click)="signinWithEmail()">
+
+      <span>Continue</span>
+    </button>
+  </div>
+
+
+  @if(authError()) {
+  <p class="error-notification o-text-tooltip o-mt-20 o-mb-20">
+    {{ authError() }}
+  </p>
+  }
+  }
+
+  <div class="flex align-items-center justify-content-center w-full o-c-gap-10 o-mt-25">
+
+    @if(signInLinkSent()) {
+    <span class="o-text-secondary o-color-grey-600 cursor-pointer underline"
+          (click)="onStartOver()">Start over</span>
+    <span class="inline-block border-circle"
+          style="width: 4px;height:4px;background-color: var(--color-grey-500);"></span>
+    }
+
+
+    <a class="block o-text-secondary o-color-green-800"
+       routerLink="/signup">Don’t have an account? Create one</a>
+  </div>
+
+
+</main>

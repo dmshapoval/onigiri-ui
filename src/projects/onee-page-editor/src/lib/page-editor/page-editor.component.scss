@@ -1,0 +1,22 @@
+@import '../mixins.scss';
+
+
+:host {
+  display: block;
+
+  min-width: 430px;
+  min-height: 100vh;
+
+  background-color: var(--page-bg-color, #F5F5F5);
+  transition: background-color 0.3s ease;
+
+
+  padding-bottom: 120px;
+
+
+  --tile-border-radius: 20px;
+  --icon-border-radius: 10px;
+  --edit-tile-ratio: 0.8;
+
+  --animate-duration: 300ms;
+}

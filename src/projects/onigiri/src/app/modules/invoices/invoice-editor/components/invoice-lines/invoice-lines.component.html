@@ -1,0 +1,105 @@
+<div class="invoice-lines__header">
+  <div class="invoice-lines__data-cells">
+    <div class="invoice-lines__line-cell text-left">Description</div>
+    <div class="invoice-lines__line-cell text-left">Qty</div>
+    <div class="invoice-lines__line-cell text-left">Rate</div>
+    <div class="invoice-lines__line-cell text-right">Amount</div>
+  </div>
+</div>
+
+<div cdkDropList
+     (cdkDropListDropped)="onItemsReordered($event)">
+
+
+  @for(line of lineControls.controls;let idx = $index;track idx) {
+  <div cdkDrag
+       [formGroup]="line"
+       class="invoice-lines__line o-pt-10 o-pb-10">
+
+    <div class="invoice-lines__actions-cell reorder-item-icon">
+      <o-icon class="o-color-grey-800 o-h-30"
+              key="drag"
+              cdkDragHandle />
+    </div>
+
+    <div class="invoice-lines__data-cells">
+
+      <div class="invoice-lines__data-cell item-input-wrap">
+
+        <div class="flex flex-column">
+          <div class="relative o-h-40">
+            <invoice-item-input formControlName="item" />
+            <span class="icon-wrapper">
+              <o-icon class="cursor-pointer o-color-grey-800"
+                      [key]="line._showItemDetails ? 'close-rounded' : 'add_text'"
+                      (click)="line._showItemDetails ? clearLineDetails(line) : addLineDetails(line)"
+                      cdkDragHandle />
+            </span>
+          </div>
+
+          @if(line._showItemDetails) {
+          <div style="margin-top: 10px;">
+            <textarea rows="4"
+                      id="invoice_notes"
+                      class="w-full o-scroll"
+                      pInputTextarea
+                      formControlName="details"
+                      autocomplete="off"
+                      placeholder="Thank you for your business"></textarea>
+          </div>
+          }
+
+        </div>
+      </div>
+
+      <div class="invoice-lines__data-cell">
+        <p-inputNumber formControlName="quantity"
+                       mode="decimal"
+                       [maxFractionDigits]="2"
+                       styleClass="w-full o-h-40"
+                       placeholder="0" />
+      </div>
+
+      <div class="invoice-lines__data-cell">
+        <p-inputNumber formControlName="rate"
+                       mode="decimal"
+                       [maxFractionDigits]="2"
+                       [minFractionDigits]="2"
+                       [locale]="'en-US'"
+                       styleClass="w-full o-h-40"
+                       placeholder="0,00" />
+      </div>
+
+      <div class="invoice-lines__data-cell text-right invoice-lines__line-total o-h-40"
+           [class.o-color-grey-600]="!getLineTotal(line.value)">
+        {{invoiceCurrencySymbol()}} {{getLineTotal(line.value)}}
+      </div>
+
+    </div>
+
+
+    <div class="invoice-lines__actions-cell">
+      <o-icon class="remove-item-icon cursor-pointer o-color-grey-800 o-h-30"
+              key="close-rounded"
+              (click)="onDeleteLine(idx)" />
+    </div>
+
+  </div>
+  }
+
+</div>
+
+<div class="flex justify-content-between o-mt-20 o-pr-40"
+     style="padding-left: 32px;">
+  <o-button icon="plus"
+            style="height: 40px;"
+            textButton
+            (onClick)="onAddLine()">Add Item</o-button>
+
+  <div class="invoice-lines__subtotal o-font-h4 text-right o-color-grey-1000">
+    <span class="font-semibold"
+          style="width: 80px;">Subtotal</span>
+    <span class="o-font-h4"
+          style="width: 100px;">{{invoiceCurrencySymbol()}} {{subTotal()}}</span>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+@if(mode() === 'page') {
+<button class="skip-btn skip-btn--desktop o-button o-button--secondary o-button--text"
+        (click)="onSkip()">Skip</button>
+}
+
+<div class="wrapper">
+
+  <div class="header">
+    <p class="header__title">
+      Let’s add some social links to your page
+    </p>
+
+    <p class="header__subtitle">You can add more anytime</p>
+  </div>
+
+  <div class="inputs"
+       [formGroup]="form">
+
+    <div class="inputs__item">
+      <img [src]="icons.twitter | oImageUrl"
+           alt="twitter favicon"
+           class="inputs__favicon">
+      <input type="text"
+             formControlName="twitter"
+             class="inputs__input"
+             placeholder="Username">
+    </div>
+
+    <div class="inputs__item">
+      <img [src]="icons.instagram | oImageUrl"
+           alt="instagram favicon"
+           class="inputs__favicon">
+      <input type="text"
+             formControlName="instagram"
+             class="inputs__input"
+             placeholder="Username">
+    </div>
+
+    <div class="inputs__item">
+      <img [src]="icons.facebook | oImageUrl"
+           alt="facebook favicon"
+           class="inputs__favicon">
+      <input type="text"
+             formControlName="facebook"
+             class="inputs__input"
+             placeholder="Username">
+    </div>
+
+    <div class="inputs__item">
+      <img [src]="icons.linkedin | oImageUrl"
+           alt="linkedin favicon"
+           class="inputs__favicon">
+      <input type="text"
+             formControlName="linkedin"
+             class="inputs__input"
+             placeholder="Username">
+    </div>
+
+    <div class="inputs__item">
+      <img [src]="icons.youtube | oImageUrl"
+           alt="youtube favicon"
+           class="inputs__favicon">
+      <input type="text"
+             formControlName="youtube"
+             class="inputs__input"
+             placeholder="Username">
+    </div>
+
+    <div class="inputs__item">
+      <img [src]="icons.dribbble | oImageUrl"
+           alt="dribbble favicon"
+           class="inputs__favicon">
+      <input type="text"
+             formControlName="dribbble"
+             class="inputs__input"
+             placeholder="Username">
+    </div>
+
+    <div class="inputs__item">
+      <img [src]="icons.github | oImageUrl"
+           alt="github favicon"
+           class="inputs__favicon">
+      <input type="text"
+             formControlName="github"
+             class="inputs__input"
+             placeholder="Username">
+    </div>
+
+    @if(mode() === 'embedded' ) {
+    <button class="submit-btn submit-btn--embedded o-button"
+            [disabled]="!canContinue"
+            (click)="onContinueClick()">Add social networks</button>
+    }
+
+  </div>
+
+
+  @if(mode() === 'page') {
+  <div class="actions actions--bottom">
+    <button class="skip-btn skip-btn--mobile o-button o-button--secondary o-button--text"
+            (click)="onSkip()">Skip</button>
+    <button class="submit-btn o-button"
+            [disabled]="!canContinue"
+            (click)="onContinueClick()">Continue</button>
+  </div>
+  }
+
+</div>

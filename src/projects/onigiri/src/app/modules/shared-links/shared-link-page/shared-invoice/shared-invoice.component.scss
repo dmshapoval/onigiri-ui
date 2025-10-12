@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+
+.paid-invoice-mark {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  column-gap: 10px;
+  color: var(--color-green-800);
+  background-color: var(--color-green-100);
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media print {
+
+  .header {
+    display: none;
+  }
+
+  .paid-invoice-mark {
+    display: none;
+  }
+}

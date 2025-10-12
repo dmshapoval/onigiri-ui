@@ -1,0 +1,16 @@
+<div class="w-screen h-screen flex align-items-center justify-content-center">
+
+  @if(authError()) {
+
+  <div class="flex flex-column align-items-center">
+    <p class="o-mt-10 o-color-red-600">{{ authError() }}</p>
+    <span class="o-text-secondary o-color-grey-600 cursor-pointer underline mt-2"
+          (click)="onStartOver()">Start over</span>
+  </div>
+
+  } @else {
+  <p-progressSpinner ariaLabel="loading"
+                     strokeWidth="6" />
+  }
+
+</div>

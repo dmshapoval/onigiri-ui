@@ -1,0 +1,19 @@
+<h1>Settings</h1>
+
+<p-tabView class="block o-mt-40"
+           [activeIndex]="activeTab"
+           (activeIndexChange)="onTabChanged($event)">
+
+  <p-tabPanel header="Business Details">
+    <business-settings />
+  </p-tabPanel>
+
+  <p-tabPanel header="Payment details">
+    <payments-settings />
+  </p-tabPanel>
+
+  <p-tabPanel header="Subscription">
+    <subscription-settings />
+  </p-tabPanel>
+
+</p-tabView>

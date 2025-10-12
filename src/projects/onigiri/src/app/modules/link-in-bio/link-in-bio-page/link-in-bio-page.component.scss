@@ -1,0 +1,76 @@
+:host {
+  display: block;
+  padding: 36px 30px;
+}
+
+.sample-img {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.10);
+  width: 250px;
+  height: 213px;
+  overflow: hidden;
+  padding: 15px 10px;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.page-key-input-wrap {
+  margin: 30px 121px 0 0;
+
+  .claim-btn {
+    margin-left: 20px;
+  }
+}
+
+#page_key_input {
+
+  padding-left: 92px;
+  color: var(--color-grey-1000);
+  border-color: var(--color-grey-500);
+  background-color: transparent;
+
+  &.ng-invalid {
+    border-color: var(--color-grey-500);
+  }
+}
+
+.status-icon {
+  position: absolute;
+  right: 8px;
+  top: 5px;
+
+  height: 30px;
+  width: 30px;
+
+  display: flex;
+  justify-content: center;
+
+  o-icon {
+    scale: 1.1;
+  }
+}
+
+.error-notification {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  border-radius: 5px;
+  padding: 20px 22px;
+  background-color: rgba(250, 110, 101, 0.05);
+  color: #DA362C;
+}
+
+.pages-app-link {
+  position: absolute;
+  color: var(--color-grey-600);
+  top: 10px;
+  left: 12px;
+}
+
+empty-state-placeholder {
+  height: min-content;
+}

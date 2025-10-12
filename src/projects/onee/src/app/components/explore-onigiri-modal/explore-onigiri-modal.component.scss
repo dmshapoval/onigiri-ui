@@ -1,0 +1,88 @@
+:host {}
+
+.logo {
+  gap: 10px;
+
+  &__img {
+    width: 34px;
+    height: 26px;
+  }
+
+  &__text {
+    font-size: 24px;
+  }
+}
+
+.o-dialog {
+  &__body {
+    padding: 60px 25px 30px;
+    background-color: var(--color-grey-200);
+  }
+}
+
+.feature-card {
+  height: 250px;
+  width: 345px;
+
+  border-radius: 10px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+
+  padding: 30px 25px;
+
+  &__img {
+    svg {
+      max-height: 50px;
+      max-width: 50px;
+    }
+  }
+}
+
+.slide-nav-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--color-grey-1000);
+
+  &:not(.slide-nav-icon--disabled) {
+    cursor: pointer;
+  }
+
+  &--disabled {
+    color: var(--color-grey-600);
+  }
+}
+
+.move-to-oni-btn ::ng-deep {
+  .o-button {
+    height: unset;
+  }
+}
+
+:host ::ng-deep {
+  .p-carousel {
+    .p-carousel-container {
+      column-gap: 20px;
+    }
+
+    .p-carousel-indicators {
+      margin-top: 30px;
+      column-gap: 10px;
+
+      .p-carousel-indicator {
+        button {
+          width: 25px;
+          border-radius: 5px;
+          height: 5px;
+          background-color: var(--color-grey-500);
+        }
+
+        &.p-highlight {
+          button {
+            background-color: var(--color-grey-600);
+          }
+        }
+      }
+    }
+  }
+}

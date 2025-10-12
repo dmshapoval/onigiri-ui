@@ -1,0 +1,12 @@
+@let viewType = store.selectedViewType();
+
+<div class="view-option"
+     [class.view-option--selected]="viewType === 'desktop'"
+     (click)="store.selectViewType('desktop')">
+  <o-icon key="laptop" />
+</div>
+<div class="view-option"
+     [class.view-option--selected]="viewType === 'mobile'"
+     (click)="store.selectViewType('mobile')">
+  <o-icon key="phone" />
+</div>

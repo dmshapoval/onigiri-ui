@@ -1,0 +1,114 @@
+@import "../../mixins.scss";
+
+
+:host {
+  display: block;
+  width: 100%;
+
+
+}
+
+.editor {
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
+
+  &__img {
+    width: 100px;
+    height: 100px;
+  }
+
+  &__name-descr {
+    flex: 1 1 0;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+  }
+
+}
+
+
+.name-input {
+  width: 100%;
+  background-color: transparent;
+  color: var(--color-grey-1000);
+}
+
+.with-progress-counter {
+  position: relative;
+
+  .text-limit-counter {
+    position: absolute;
+    left: 2px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  &:focus-within {
+    .text-limit-counter {
+      opacity: 1;
+    }
+  }
+}
+
+@include onDesktop() {
+
+  .editor {
+    &.desktop-view {
+
+      .editor__img {
+        width: 200px;
+        height: 200px;
+      }
+
+      &.profile-left {
+        flex-direction: column;
+        row-gap: 50px;
+      }
+
+
+      &.profile-right {
+        flex-direction: column;
+        row-gap: 50px;
+      }
+
+      &.profile-top {
+        flex-direction: row;
+        column-gap: 30px;
+
+        .editor__name-descr {
+          width: 570px;
+        }
+      }
+
+    }
+
+  }
+
+}
+
+
+.description-input {
+  font-size: 16px;
+  width: 100%;
+  background-color: transparent;
+  // border: none;
+  // outline: none;
+  // color: var(--color-grey-1000);
+  // word-break: break-word;
+
+  // resize: none;
+  // overflow: hidden;
+
+  // &::placeholder {
+  //   color: var(--color-grey-600);
+  // }
+
+  // &.empty {
+  //   &::before {
+  //     content: "Write few words about yourself here";
+  //     color: var(--color-grey-600);
+  //   }
+  // }
+}

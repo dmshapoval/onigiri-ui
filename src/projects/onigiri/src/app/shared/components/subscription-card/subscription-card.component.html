@@ -1,0 +1,45 @@
+@if(product.disabled) {
+<div class="coming-soon-wrap">
+  <coming-soon-chip />
+</div>
+}
+
+
+@if(product) {
+<div class="product"
+     [class.disabled]="product.disabled">
+
+  <h3 style="margin-bottom: 10px;">{{product.name}}</h3>
+
+  <div class="product__prices">
+    <div class="product__prices-title">
+      <span class="o-font-h1">${{ price }}</span>
+      <span class="o-text-main">&nbsp;/month</span>
+    </div>
+
+    @if(showYearly) {
+    <span class="o-text-tooltip">${{price * 12}} billed yearly</span>
+    }
+
+  </div>
+
+  <o-button [disabled]="product.disabled"
+            [secondary]="product.disabled || product.key === 'free'"
+            class="w-full"
+            (onClick)="onSelect()">{{buttonText}}</o-button>
+
+  <div class="product__features">
+
+    <div class="o-text-main font-semibold">{{product.features.title}}</div>
+    <ul class="product__features-list">
+
+      @for (feature of product.features.list; track $index) {
+      <li class="o-text-main">{{feature}}</li>
+      }
+
+    </ul>
+
+  </div>
+
+</div>
+}

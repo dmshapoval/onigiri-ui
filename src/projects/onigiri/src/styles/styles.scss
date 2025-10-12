@@ -1,0 +1,70 @@
+@import "./variables";
+@import "./typography";
+@import "./dialogs";
+@import "./forms";
+@import "./buttons";
+@import "./tables";
+@import "./tabview";
+@import "./tooltips";
+@import "./notifications";
+@import "./utils";
+
+@import "@angular/cdk/overlay-prebuilt.css";
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    color: #666666;
+    /* Safari and Chrome */
+  }
+
+  //
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.o-page-title {
+  margin-bottom: 40px;
+}
+
+.o-border-radius {
+  border-radius: var(--border-radius);
+}
+
+.p-button {
+  border-radius: var(--border-radius);
+}
+
+.p-button-icon {
+  margin-right: 10px;
+}
+
+.o-scroll {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-grey-600);
+    border-radius: 3px;
+    cursor: default;
+  }
+}
+
+// *[contenteditable] {
+//   p {
+//     margin-top: 6px;
+//   }
+// }

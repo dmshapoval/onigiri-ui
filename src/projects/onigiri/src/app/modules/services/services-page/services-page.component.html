@@ -1,0 +1,70 @@
+@let data = store.services();
+
+<div class="flex justify-content-between align-items-center">
+  <h1>Services</h1>
+
+  @if(!isLoading() && data.length) {
+  <o-button (onClick)="onCreate()">Add Service</o-button>
+  }
+
+</div>
+
+<div class="o-mt-40">
+
+  @if(isLoading()) {
+  <p-skeleton width="100%"
+              height="300px" />
+
+  } @else if(data.length) {
+
+  <p-table [value]="data"
+           class="entities-table">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body"
+                 let-service>
+      <tr>
+        <td>
+          <span class="entity-name"
+                (click)="onEdit(service.id)"> {{ service.name || '(Not named)' }}</span>
+        </td>
+        <td>{{ service.price }} </td>
+        <td>
+          <div class="entity-actions">
+            <div class="entity-action">
+              <o-icon key="trash"
+                      (click)="onDelete(service.id)" />
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  } @else {
+
+  <empty-state-placeholder title="Create your first service or item"
+                           subTitle="Have items & services pre-made to add them into invoices & proposals with one click"
+                           btnText="Create service"
+                           (onCreateClick)="onCreate()">
+
+    <ng-template oTemplate="sample">
+
+      <div class="sample-img">
+        <img src="../../../../assets/services_sample.jpg"
+             alt="Sample">
+      </div>
+
+    </ng-template>
+
+  </empty-state-placeholder>
+
+  }
+
+</div>
