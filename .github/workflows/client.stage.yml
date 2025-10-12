@@ -1,0 +1,50 @@
+name: Onigiri Client (Stage)
+
+on: workflow_dispatch
+
+defaults:
+  run:
+    working-directory: src
+
+permissions:
+  contents: read
+
+jobs:
+  build_and_deploy_app:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      pull-requests: write # for Azure/static-web-apps-deploy to comment on PRs
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Shared Lib
+        run: npm run build-shared-lib
+
+      - name: Build Page editor
+        run: npm run build-page-editor
+
+      - name: Build App
+        run: npm run build-onigiri-staging
+
+      - name: Deploy App
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.CLIENT_APP_DEPLOYMENT_TOKEN_DEV }} # secret containing api token for app
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          skip_app_build: true
+          app_location: "src/dist/onigiri/browser"
+          skip_api_build: true
