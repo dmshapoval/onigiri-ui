@@ -1,63 +1,76 @@
-<nav class="nav min-h-screen"
-     [class.nav--visible]="showNavSidebar()">
-
+<nav
+  class="nav min-h-screen"
+  [class.nav--visible]="showNavSidebar()">
   <div class="nav__top">
-
-    <a class="logo flex no-underline align-items-center w-full"
-       href="#">
+    <a
+      class="logo flex no-underline align-items-center w-full"
+      href="#">
       <svg version="2.0">
         <use xlink:href="#onigiri_logo_svg" />
       </svg>
 
-      <span class="logo__text flex-1 text-xl text-900 font-semibold">ONIGIRI</span>
+      <span class="logo__text flex-1 text-xl text-900 font-semibold"
+        >ONIGIRI</span
+      >
     </a>
 
-    <div style="margin-top: 50px;">
-
+    <div class="nav-menu-container">
       <div class="nav-menu">
-
-        @for (item of navLinks; track $index) {
-        @if(item.disabled) {
+        @for (item of navLinks; track $index) { @if(item.disabled) {
         <div class="nav-link nav-link--disabled">
           <div class="nav-link__icon-wrap">
             <o-icon [key]="item.icon" />
           </div>
 
-          <span class="nav-link__label o-text-secondary">{{item.label}}</span>
+          <span class="nav-link__label o-text-secondary">
+            @if(item.icon === 'services') {
+            <span class="label-desktop">Items & Services</span>
+            <span class="label-mobile">Items</span>
+            } @else {
+            {{ item.label }}
+            }
+          </span>
 
-          <coming-soon-chip text="SOON"
-                            style="width: auto;padding-left: 12px; padding-right: 12px;" />
+          <coming-soon-chip
+            text="SOON"
+            style="width: auto; padding-left: 12px; padding-right: 12px" />
         </div>
         } @else {
 
-        <a class="nav-link"
-           [routerLink]="item.route"
-           routerLinkActive="is-active">
-
+        <a
+          class="nav-link"
+          [routerLink]="item.route"
+          routerLinkActive="is-active">
           <div class="nav-link__icon-wrap">
             <o-icon [key]="item.icon" />
           </div>
 
-          <span class="nav-link__label o-text-secondary">{{item.label}}</span>
+          <span class="nav-link__label o-text-secondary">
+            @if(item.icon === 'services') {
+            <span class="label-desktop">Items & Services</span>
+            <span class="label-mobile">Items</span>
+            } @else {
+            {{ item.label }}
+            }
+          </span>
 
           @if(item.isNew) {
-          <is-new-chip style="width: auto;padding-left: 12px; padding-right: 12px;" />
+          <is-new-chip
+            style="width: auto; padding-left: 12px; padding-right: 12px" />
           }
         </a>
 
-        }
-        }
+        } }
       </div>
     </div>
-
   </div>
 
   <div class="nav__bottom flex flex-column">
-
     @let upgradeBtnState = upgradeSubscriptionBtn();
     @if(upgradeBtnState.showBtn) {
-    <button class="upgrade-subscr-btn o-button o-h-30 o-mb-20"
-            (click)="upgradeSubscription()">
+    <button
+      class="upgrade-subscr-btn o-button o-h-30 o-mb-20"
+      (click)="upgradeSubscription()">
       <span class="upgrade-subscr-btn__text">{{ upgradeBtnState.text }}</span>
     </button>
     }
@@ -74,31 +87,27 @@
         <span>Integrations</span>
       </a> -->
 
-    <a class="nav-link o-mb-20"
-       routerLink="./settings"
-       routerLinkActive="is-active">
-
+    <a
+      class="nav-link o-mb-20"
+      routerLink="./settings"
+      routerLinkActive="is-active">
       <div class="nav-link__icon-wrap">
-        <o-icon class="o-color-grey-800"
-                key="settings_2" />
+        <o-icon
+          class="o-color-grey-800"
+          key="settings_2" />
       </div>
-
-
 
       <span>Settings</span>
     </a>
 
     <user-profile-btn />
-
   </div>
-
 </nav>
 
-
-<main class="min-h-screen"
-      [class.with-nav]="showNavSidebar()">
+<main
+  class="min-h-screen"
+  [class.with-nav]="showNavSidebar()">
   <router-outlet></router-outlet>
 </main>
-
 
 <p-toast />

@@ -12,8 +12,6 @@
   grid-template-columns: 3fr 4fr 3fr;
   grid-template-rows: 100px 95px 95px;
 
-
-
   &__header {
     display: flex;
     align-items: center;
@@ -49,7 +47,6 @@
   }
 
   &__actions {
-
     grid-row: 2 / 4;
     grid-column: 3 / 4;
 
@@ -82,7 +79,7 @@
     .text {
       margin-left: 8px;
 
-      font-family: "Open Sans";
+      font-family: 'Open Sans';
       font-size: 16px;
       font-style: normal;
       font-weight: 600;
@@ -91,7 +88,7 @@
   }
 
   &__section-number {
-    font-family: "Open Sans";
+    font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -107,11 +104,94 @@
     }
   }
 
-
   &.empty {
     .dashboard__section {
       opacity: 0.5;
     }
   }
+}
 
+@media (max-width: 1199px) {
+  :host {
+    padding: 20px 16px;
+  }
+
+  .dashboard {
+    margin-top: 28px;
+  }
+
+  .dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .dashboard__header {
+    grid-row: auto;
+    grid-column: 1 / 2;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 12px;
+    padding: 26px 18px;
+  }
+
+  .dashboard__filters {
+    width: 100%;
+    justify-content: flex-start;
+    column-gap: 12px;
+
+    currency-selector,
+    period-selector {
+      flex: 1;
+      width: 100%;
+    }
+  }
+
+  .dashboard__section--paid {
+    grid-row: auto;
+    grid-column: 1 / 2;
+    border-right: none;
+    border-bottom: 1px solid var(--color-grey-450);
+    padding: 26px 0 26px 18px;
+  }
+
+  .dashboard__section--paid .o-pl-40 {
+    padding-left: 0;
+  }
+
+  .dashboard__section--overdue {
+    grid-row: auto;
+    grid-column: 1 / 2;
+    border-bottom: 1px solid var(--color-grey-450);
+
+    .o-p-30 {
+      padding: 26px 18px;
+    }
+  }
+
+  .dashboard__section--waiting {
+    grid-row: auto;
+    grid-column: 1 / 2;
+    border-bottom: 1px solid var(--color-grey-450);
+
+    .o-p-30 {
+      padding: 26px 18px;
+    }
+  }
+
+  .dashboard__actions {
+    grid-row: auto;
+    grid-column: 1 / 2;
+    border-left: none;
+    padding: 20px;
+
+    .o-text-tooltip {
+      font-size: 14px;
+    }
+
+    o-button {
+      width: 100% !important;
+    }
+  }
 }

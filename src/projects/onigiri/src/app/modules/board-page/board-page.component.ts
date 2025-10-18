@@ -4,30 +4,30 @@ import {
   OnInit,
   computed,
   inject
-} from "@angular/core";
-import { IconKey } from "@onigiri-models";
-import { IsNewChipComponent } from "@oni-shared";
-import { differenceInCalendarDays } from "date-fns";
-import { UntilDestroy } from "@ngneat/until-destroy";
-import { MessageService } from "primeng/api";
-import { AsyncPipe } from "@angular/common";
+} from '@angular/core';
+import { IconKey } from '@onigiri-models';
+import { IsNewChipComponent } from '@oni-shared';
+import { differenceInCalendarDays } from 'date-fns';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { MessageService } from 'primeng/api';
+import { AsyncPipe } from '@angular/common';
 import {
   OnigiriButtonComponent,
   ComingSoonChipComponent,
   OnigiriIconComponent
-} from "@oni-shared";
-import { UserProfileBtnComponent } from "./user-profile-btn/user-profile-btn.component";
-import { ToastModule } from "primeng/toast";
+} from '@oni-shared';
+import { UserProfileBtnComponent } from './user-profile-btn/user-profile-btn.component';
+import { ToastModule } from 'primeng/toast';
 import {
   ActivatedRoute,
   Router,
   RouterLink,
   RouterLinkActive,
   RouterOutlet
-} from "@angular/router";
-import { AppNavStore } from "../../store/app-nav.store";
-import { isNil } from "lodash";
-import { AccountStore } from "@onigiri-store";
+} from '@angular/router';
+import { AppNavStore } from '../../store/app-nav.store';
+import { isNil } from 'lodash';
+import { AccountStore } from '@onigiri-store';
 
 interface NavLinkItem {
   label: string;
@@ -39,10 +39,10 @@ interface NavLinkItem {
 
 @UntilDestroy()
 @Component({
-  selector: "board-page",
+  selector: 'board-page',
   standalone: true,
-  templateUrl: "./board-page.component.html",
-  styleUrls: ["./board-page.component.scss"],
+  templateUrl: './board-page.component.html',
+  styleUrls: ['./board-page.component.scss'],
   providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -78,39 +78,39 @@ export class BoardPageComponent implements OnInit {
 
   showNavSidebar = computed(() => {
     const navData = this.#navStore.navData();
-    return navData && !navData["hideNav"];
+    return navData && !navData['hideNav'];
   });
 
   upgradeSubscriptionBtn = computed(() => {
     const subscription = this.#account.subscription();
     const expiresInDays = this.expiresInDays();
 
-    const isTrial = subscription?.type === "trial";
+    const isTrial = subscription?.type === 'trial';
     const expired = isNil(expiresInDays) || expiresInDays <= 0;
     const notActive =
-      subscription?.type === "enterprise" && subscription.status !== "active";
+      subscription?.type === 'enterprise' && subscription.status !== 'active';
 
     return {
       showBtn: isTrial || expired || notActive,
       text:
         isTrial && expiresInDays
           ? `${expiresInDays} days left. Upgrade`
-          : "Upgrade"
+          : 'Upgrade'
     };
   });
 
   navLinks: NavLinkItem[] = [
     {
-      label: "Dashboard",
-      icon: "dashboard",
-      route: "./dashboard",
+      label: 'Dashboard',
+      icon: 'dashboard',
+      route: './dashboard',
       disabled: false,
       isNew: false
     },
     {
-      label: "Clients",
-      icon: "customers",
-      route: "./clients",
+      label: 'Clients',
+      icon: 'customers',
+      route: './clients',
       disabled: false,
       isNew: false
     },
@@ -121,9 +121,9 @@ export class BoardPageComponent implements OnInit {
     disabled: false,
     isNew: false
   }, */ {
-      label: "Invoices",
-      icon: "invoices",
-      route: "./invoices",
+      label: 'Invoices',
+      icon: 'invoices',
+      route: './invoices',
       disabled: false,
       isNew: false
     },
@@ -134,16 +134,16 @@ export class BoardPageComponent implements OnInit {
     disabled: true,
     isNew: false
   },*/ {
-      label: "Items & Services",
-      icon: "services",
-      route: "./services",
+      label: 'Items & Services',
+      icon: 'services',
+      route: './services',
       disabled: false,
       isNew: false
     },
     {
-      label: "Page",
-      icon: "page",
-      route: "./page",
+      label: 'Page',
+      icon: 'page',
+      route: './page',
       disabled: false,
       isNew: false
     }
@@ -152,6 +152,6 @@ export class BoardPageComponent implements OnInit {
   ngOnInit() {}
 
   upgradeSubscription() {
-    this.#router.navigateByUrl("/upgrade-subscription");
+    this.#router.navigateByUrl('/upgrade-subscription');
   }
 }
