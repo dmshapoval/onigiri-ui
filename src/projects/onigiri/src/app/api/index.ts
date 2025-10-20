@@ -1,4 +1,5 @@
-export * from './account-api.service';
+// export * from './account-api.service';
+export * from '../api-v2/account-api.service';
 export * from './subscriptions-api.service';
 export * from './businesses-api.service';
 export * from './services-api.service';

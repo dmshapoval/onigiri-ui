@@ -3,7 +3,7 @@ import { computed, effect, inject } from "@angular/core";
 import { takeUntilDestroyed, toObservable } from "@angular/core/rxjs-interop";
 import { concatMap, filter, pipe, retry, switchMap, take, takeUntil, tap, timer } from "rxjs";
 import { tapResponse } from "@ngrx/operators";
-import { constVoid } from "fp-ts/es6/function";
+import { constVoid } from "fp-ts/function";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { Auth, authState } from "@angular/fire/auth";
 import { isNil } from "lodash";
