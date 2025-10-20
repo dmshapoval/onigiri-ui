@@ -1,24 +1,23 @@
-@if(imgTemplate) {
-
-
-<div class="empty-state__img-wrap">
-  <ng-container *ngTemplateOutlet="imgTemplate"></ng-container>
-</div>
-}
-
-
 <div class="empty-state__content">
-  <h2 class="empty-state__title"
-      style="margin-bottom: 12px;">{{title}}</h2>
+  <h2 class="empty-state__title">
+    {{ title }}
+  </h2>
 
-  <p class="o-text-main"
-     style="width: 338px; margin-bottom: 28px;">{{subTitle}}</p>
+  <p class="empty-state__subtitle">
+    {{ subTitle }}
+  </p>
 
-  @if(actionTemplate) {
-  <ng-container *ngTemplateOutlet="actionTemplate"></ng-container>
+  <div class="empty-state__action">
+    @if(actionTemplate) {
+    <ng-container *ngTemplateOutlet="actionTemplate"></ng-container>
+    } @else {
+    <o-button (onClick)="onCreateClick.emit()">{{ btnText }}</o-button>
+    }
+  </div>
+
+  @if(imgTemplate) {
+  <div class="empty-state__img-wrap">
+    <ng-container *ngTemplateOutlet="imgTemplate"></ng-container>
+  </div>
   }
-  @else {
-  <o-button (onClick)="onCreateClick.emit()">{{btnText}}</o-button>
-  }
-
 </div>
