@@ -70,13 +70,19 @@ export class ClientsPageComponent implements OnInit {
   onCreate() {
     this.#dialogs.open(EditCustomerDialogComponent, {
       injector: this.#injector,
-      data: {}
+      data: {},
+      disableClose: false,
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop'
     });
   }
 
   onEdit(customerId: string) {
     this.#dialogs.open(EditCustomerDialogComponent, {
-      data: { customerId }
+      data: { customerId },
+      disableClose: false,
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-dark-backdrop'
     });
   }
 
