@@ -1,0 +1,33 @@
+<div class="client-card">
+  <div class="client-card__row">
+    <div class="client-card__field">
+      <span class="client-card__label">NAME</span>
+      <span class="client-card__value client-card__value--name">
+        {{ customer.contactName || '(Not named)' }}
+      </span>
+    </div>
+    <div class="client-card__field">
+      <span class="client-card__label">COMPANY</span>
+      <span class="client-card__value">{{
+        customer.companyName || '-'
+      }}</span>
+    </div>
+  </div>
+  <div class="client-card__row">
+    <div class="client-card__field">
+      <span class="client-card__label">CONTACT EMAIL</span>
+      <span class="client-card__value">{{ customer.email }}</span>
+    </div>
+    <div class="client-card__field">
+      <span class="client-card__label">COUNTRY</span>
+      <span class="client-card__value">{{ customer.country || '-' }}</span>
+    </div>
+  </div>
+  @if(showActions) {
+  <div class="client-card__actions">
+    <ng-content select="[actions]"></ng-content>
+  </div>
+  }
+</div>
+
+
