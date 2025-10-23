@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, Signal, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BusinessDetails, Email } from '@onigiri-models';
+import { BusinessDetails, BusinessEntityData, Email } from '@onigiri-models';
 import { BusinessInfoStore, } from '@onigiri-store';
 import { concatMap, map } from 'rxjs';
 import { BusinessesApiService } from '@onigiri-api';
@@ -25,8 +25,7 @@ import { constVoid } from 'fp-ts/es6/function';
 export class BusinessSettingsComponent implements OnInit {
 
   #api = inject(BusinessesApiService);
-  #businesses = inject(BusinessInfoStore);
-  #cdr = inject(ChangeDetectorRef);
+  #businessEntitiesStore = inject(BusinessInfoStore);
 
   form = new FormGroup({
     companyName: new FormControl<string | null>(null, { updateOn: 'blur' }),
@@ -49,26 +48,28 @@ export class BusinessSettingsComponent implements OnInit {
 
   ngOnInit() {
 
+    const entityId = this.#businessEntitiesStore.entityId();
+
     this.form.valueChanges.pipe(
       map(fv => toBusinessDetails(fv, this.logoControl.value)),
-      concatMap(data => this.#api.updateBusinessDetails(data).pipe(
+      concatMap(data => this.#api.updateBusinessEntity(entityId, data).pipe(
         tapResponse(
-          () => this.#businesses.businessDetailsUpdated(data),
+          () => this.#businessEntitiesStore.dataChanged(data),
           constVoid
         ))
       ),
       untilDestroyed(this)
     ).subscribe();
 
-    this.logoControl.valueChanges.pipe(
-      concatMap(imageId => this.#api.updateLogo(imageId).pipe(
-        tapResponse(
-          () => this.#businesses.logoUpdated(imageId),
-          constVoid
-        ))
-      ),
-      untilDestroyed(this)
-    ).subscribe();
+    // this.logoControl.valueChanges.pipe(
+    //   concatMap(imageId => this.#api.updateLogo(imageId).pipe(
+    //     tapResponse(
+    //       () => this.#businessEntitiesStore.logoUpdated(imageId),
+    //       constVoid
+    //     ))
+    //   ),
+    //   untilDestroyed(this)
+    // ).subscribe();
   }
 
   #setupSync() {
@@ -86,58 +87,58 @@ export class BusinessSettingsComponent implements OnInit {
     };
 
     setupFor(
-      this.#businesses.logo,
+      this.#businessEntitiesStore.logo,
       this.logoControl
     );
 
     setupFor(
-      this.#businesses.companyName,
+      this.#businessEntitiesStore.companyName,
       this.form.controls.companyName
     );
 
     setupFor(
-      this.#businesses.contactName,
+      this.#businessEntitiesStore.contactName,
       this.form.controls.contactName
     );
 
     setupFor(
-      this.#businesses.phone,
+      this.#businessEntitiesStore.phone,
       this.form.controls.phone
     );
 
     setupFor(
-      this.#businesses.email,
+      this.#businessEntitiesStore.email,
       this.form.controls.email
     );
 
     setupFor(
-      this.#businesses.address,
+      this.#businessEntitiesStore.address,
       this.form.controls.address
     );
 
     setupFor(
-      this.#businesses.city,
+      this.#businessEntitiesStore.city,
       this.form.controls.city
     );
 
 
     setupFor(
-      this.#businesses.country,
+      this.#businessEntitiesStore.country,
       this.form.controls.country
     );
 
     setupFor(
-      this.#businesses.postalCode,
+      this.#businessEntitiesStore.postalCode,
       this.form.controls.postalCode
     );
 
     setupFor(
-      this.#businesses.state,
+      this.#businessEntitiesStore.state,
       this.form.controls.state
     );
 
     setupFor(
-      this.#businesses.vatNumber,
+      this.#businessEntitiesStore.vatNumber,
       this.form.controls.vatNumber
     );
 
@@ -146,7 +147,7 @@ export class BusinessSettingsComponent implements OnInit {
 
 
 type InneFormValue = BusinessSettingsComponent['form']['value'];
-function toBusinessDetails(fv: InneFormValue, logo: string | null): BusinessDetails {
+function toBusinessDetails(fv: InneFormValue, logo: string | null): BusinessEntityData {
   return {
     companyName: fv.companyName || null,
     contactName: fv.contactName || null,

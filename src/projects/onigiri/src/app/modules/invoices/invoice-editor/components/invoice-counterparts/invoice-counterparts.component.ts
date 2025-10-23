@@ -6,7 +6,7 @@ import { or } from 'fp-ts/es6/Predicate';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 import { exhaustMap, pipe, switchMap, take, tap } from 'rxjs';
-import { BusinessDetails } from '@onigiri-models';
+import { BusinessDetails, BusinessEntityData } from '@onigiri-models';
 import { InvoiceEditorStore } from '../../invoice-editor.store';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -132,7 +132,7 @@ export class InvoiceCounterpartsComponent implements OnInit {
   }
 }
 
-function toBilledFromData(data: BusinessDetails): BilledFromData {
+function toBilledFromData(data: BusinessEntityData): BilledFromData {
   let cityStateCode: string = '';
   if (data.city) {
     cityStateCode += data.city
@@ -149,16 +149,16 @@ function toBilledFromData(data: BusinessDetails): BilledFromData {
   }
 
   const result: BilledFromData = {
-    companyName: data.companyName,
-    contactName: data.contactName,
-    address: data.address,
-    country: data.country,
-    email: data.email,
-    city: data.city,
-    phone: data.phone,
-    postalCode: data.postalCode,
-    state: data.state,
-    vatNumber: data.vatNumber
+    companyName: data.companyName || null,
+    contactName: data.contactName || null,
+    address: data.address || null,
+    country: data.country || null,
+    email: data.email || null,
+    city: data.city || null,
+    phone: data.phone || null,
+    postalCode: data.postalCode || null,
+    state: data.state || null,
+    vatNumber: data.vatNumber || null
   };
 
   return result;

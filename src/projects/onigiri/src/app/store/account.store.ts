@@ -145,7 +145,7 @@ export const AccountStore = signalStore(
         if (isAuthenticated) {
           setTimeout(() => {
             store.syncUserTimezone();
-          }, 10_000);
+          }, 30_000);
         }
       });
     }

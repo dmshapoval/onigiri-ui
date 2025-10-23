@@ -1,4 +1,5 @@
 export * from './account';
+export * from './business-entities';
 export * from './common';
 export * from './customer';
 export * from './services';

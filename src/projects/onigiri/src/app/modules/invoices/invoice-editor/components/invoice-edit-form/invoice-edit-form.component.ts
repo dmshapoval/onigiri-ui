@@ -61,11 +61,12 @@ import { SkeletonModule } from 'primeng/skeleton';
 })
 export class InvoiceEditFormComponent implements OnInit {
 
-  #businesses = inject(BusinessInfoStore);
+  #businessEntitiesStore = inject(BusinessInfoStore);
+  #businessEntitiesApi = inject(BusinessesApiService);
+
   #customers = inject(CustomersStore);
   #tracking = inject(TrackingStore);
 
-  #accountApi = inject(BusinessesApiService);
   editorStore = inject(InvoiceEditorStore);
 
 
@@ -96,7 +97,7 @@ export class InvoiceEditFormComponent implements OnInit {
   #setupBusinessDetailsChangeHandler() {
 
     effect(() => {
-      const logo = this.#businesses.logo();
+      const logo = this.#businessEntitiesStore.logo();
       if (logo !== this.logoControl.value) {
         this.logoControl.setValue(logo);
       }
@@ -104,13 +105,14 @@ export class InvoiceEditFormComponent implements OnInit {
 
 
     // logo update handler 
+    const entityId = this.#businessEntitiesStore.entityId();
     this.logoControl.valueChanges
       .pipe(
-        filter(imageId => imageId !== this.#businesses.logo()),
-        concatMap(imageId => {
-          return this.#accountApi.updateLogo(imageId).pipe(
+        filter(imageId => imageId !== this.#businessEntitiesStore.logo()),
+        concatMap(logo => {
+          return this.#businessEntitiesApi.updateBusinessEntity(entityId, { logo }).pipe(
             tapResponse(
-              () => this.#businesses.logoUpdated(imageId),
+              () => this.#businessEntitiesStore.dataChanged({ logo }),
               constVoid
             )
           );

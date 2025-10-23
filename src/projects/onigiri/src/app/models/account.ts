@@ -64,6 +64,7 @@ export interface UserIntegrations {
 }
 
 export interface BusinessDetails {
+  id: string;
   companyName: string | null;
   contactName: string | null;
   email: string | null;

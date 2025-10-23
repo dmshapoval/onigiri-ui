@@ -8,6 +8,7 @@ import {
 
 import { } from "../../models";
 import { match } from "ts-pattern";
+import { AppImageDto } from "./common";
 
 export interface AppUserDto {
   name: string;
@@ -77,32 +78,8 @@ export interface SignUpResultDto {
   is_new_for_onigiri: boolean;
 }
 
-export interface BusinessDetailsDto {
-  company_name: string | null;
-  contact_name: string | null;
-  logo: string | null;
-  address: string | null;
-  email: string | null;
-  phone: string | null;
-  city: string | null;
-  country: string | null;
-  state: string | null;
-  postal_code: string | null;
-  vat_number: string | null;
-}
 
-export interface BusinessDetailsUpdateDto {
-  company_name: string | null;
-  contact_name: string | null;
-  address: string | null;
-  email: string | null;
-  phone: string | null;
-  city: string | null;
-  country: string | null;
-  state: string | null;
-  postal_code: string | null;
-  vat_number: string | null;
-}
+
 
 export interface BusinessLogoUpdateDto {
   logo: string | null;
@@ -141,36 +118,6 @@ interface EnterpriseUserSubscriptionDto {
 //   };
 // }
 
-function toBusinessDetails(dto: BusinessDetailsDto): BusinessDetails {
-  return {
-    companyName: dto.company_name,
-    contactName: dto.contact_name,
-    email: dto.email,
-    logo: dto.logo,
-    phone: dto.phone,
-    address: dto.address,
-    city: dto.city,
-    country: dto.country,
-    state: dto.state,
-    postalCode: dto.postal_code,
-    vatNumber: dto.vat_number
-  };
-}
-
-export function toBusinessDetailsDto(data: BusinessDetails): BusinessDetailsUpdateDto {
-  return {
-    company_name: data.companyName,
-    contact_name: data.contactName,
-    email: data.email,
-    phone: data.phone,
-    address: data.address,
-    city: data.city,
-    state: data.state,
-    country: data.country,
-    postal_code: data.postalCode,
-    vat_number: data.vatNumber
-  };
-}
 
 type OnigiriSubscriptionDto = TrialUserSubscriptionDto | EnterpriseUserSubscriptionDto;
 

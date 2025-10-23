@@ -47,7 +47,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class PaymentsSettingsComponent implements OnInit {
   #api = inject(BusinessesApiService);
-  #businesses = inject(BusinessInfoStore);
+  #businessEntitiesStore = inject(BusinessInfoStore);
   #integrationsApi = inject(IntegrationsApiService);
   #activatedRoute = inject(ActivatedRoute);
 
@@ -70,7 +70,7 @@ export class PaymentsSettingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const paymentDefaults = this.#businesses.paymentDefaults();
+    const paymentDefaults = this.#businessEntitiesStore.paymentDefaults();
     this.paymentDefaultsControl.setValue(paymentDefaults, { emitEvent: false });
   }
 
@@ -131,18 +131,18 @@ export class PaymentsSettingsComponent implements OnInit {
   }
 
   #setupFormValueSync() {
+    const entityId = this.#businessEntitiesStore.entityId();
+
     this.paymentDefaultsControl.valueChanges
       .pipe(
         debounceTime(300),
         concatMap(paymentDefaults =>
-          this.#api
-            .updatePaymentDefaults(paymentDefaults)
-            .pipe(
-              tapResponse(
-                () => this.#businesses.paymentDefaultsUpdated(paymentDefaults),
-                constVoid
-              )
+          this.#api.updateBusinessEntity(entityId, { paymentDefaults }).pipe(
+            tapResponse(
+              () => this.#businessEntitiesStore.dataChanged({ paymentDefaults }),
+              constVoid
             )
+          )
         ),
         takeUntilDestroyed()
       )

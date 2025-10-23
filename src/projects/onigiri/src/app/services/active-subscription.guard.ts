@@ -1,10 +1,12 @@
 import { inject } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
+import { Auth, authState } from '@angular/fire/auth';
 import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { tapResponse } from '@ngrx/operators';
+import { isTruthy } from '@oni-shared';
 import { AccountApiService } from '@onigiri-api';
 import { OnigiriSubscription } from '@onigiri-models';
 import { AccountStore } from '@onigiri-store';
-import { catchError, map, of, retry } from 'rxjs';
+import { catchError, filter, map, of, retry, switchMap, take } from 'rxjs';
 
 
 export const isActiveSubscriptionGuard: CanActivateChildFn | CanActivateFn = (
@@ -83,20 +85,31 @@ export function userIsAuthorizedGuard({ validateExpiration }: Options): CanActiv
         : true;
     }
 
-    return api.getUserInfo().pipe(
-      retry({ count: 3, delay: 1000 }),
-      map(r => {
+    // NOTE: we do not expect this guard to be called for not authenticated users
+    // but due to race conditions there are cases when user is authenticated 
+    // for firebase but access token is not set yet
+    
+    return authState(auth).pipe(
+      filter(isTruthy),
+      take(1),
+      switchMap(() => {
+        return api.getUserInfo().pipe(
+          retry({ count: 3, delay: 1000 }),
+          map(r => {
 
-        account.userAuthenticated(r);
+            account.userAuthenticated(r);
 
-        return validateExpiration
-          ? userSubscriptionIsExpired(r.subscription) ? navigateToUpgrade() : true
-          : true;
-      }),
-      catchError(() => {
-        console.error('Failed to check account info');
-        return of(signOutAndNavigateToSignup())
-      })
-    );
+            return validateExpiration
+              ? userSubscriptionIsExpired(r.subscription) ? navigateToUpgrade() : true
+              : true;
+          }),
+          catchError(() => {
+            console.error('Failed to check account info');
+            return of(signOutAndNavigateToSignup())
+          })
+        );
+      }))
+
+
   }
 }

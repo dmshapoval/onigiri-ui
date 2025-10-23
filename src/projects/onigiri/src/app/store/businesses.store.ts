@@ -3,27 +3,29 @@ import { tapResponse } from "@ngrx/operators";
 import { patchState, signalStore, withHooks, withMethods, withState } from "@ngrx/signals";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { BusinessesApiService } from "@onigiri-api";
-import { BusinessDetails } from "@onigiri-models";
-import { constVoid } from "fp-ts/es6/function";
-import { exhaustMap, pipe, retry } from "rxjs";
+import { BusinessDetails, BusinessEntity, BusinessEntityData, BusinessEntityProperty, BusinessEntityPropertyKey } from "@onigiri-models";
+import { constVoid } from "fp-ts/function";
+import { concatMap, exhaustMap, pipe, retry } from "rxjs";
 import { AccountStore } from "./account.store";
 
-export interface BusinessInfoState {
-  paymentDefaults: string | null;
-  companyName: string | null;
-  contactName: string | null;
-  email: string | null;
-  phone: string | null;
-  logo: string | null;
-  address: string | null;
-  city: string | null;
-  country: string | null;
-  state: string | null;
-  postalCode: string | null;
-  vatNumber: string | null;
-}
+// export interface BusinessInfoState {
+//   id: string;
+//   companyName: string | null;
+//   contactName: string | null;
+//   email: string | null;
+//   phone: string | null;
+//   logo: string | null;
+//   address: string | null;
+//   city: string | null;
+//   country: string | null;
+//   state: string | null;
+//   postalCode: string | null;
+//   vatNumber: string | null;
+//   paymentDefaults: string | null;
+// }
 
-const initialState: BusinessInfoState = {
+const initialState: BusinessEntity = {
+  entityId: '',
   paymentDefaults: null,
   companyName: null,
   contactName: null,
@@ -37,6 +39,7 @@ const initialState: BusinessInfoState = {
   postalCode: null,
   vatNumber: null
 };
+
 
 export const BusinessInfoStore = signalStore(
   { providedIn: 'root' },
@@ -55,28 +58,33 @@ export const BusinessInfoStore = signalStore(
     },
 
     restoreBusinessInfo: rxMethod<void>(pipe(
-      exhaustMap(() => api.getInfo().pipe(
+      exhaustMap(() => api.getDefaultBusinessEntity().pipe(
         retry({ count: 3, delay: 1000 }),
         tapResponse(
-          dto => {
-            patchState(store, {
-              companyName: dto.company_name,
-              contactName: dto.contact_name,
-              email: dto.email,
-              logo: dto.logo,
-              phone: dto.phone,
-              address: dto.address,
-              city: dto.city,
-              country: dto.country,
-              state: dto.state,
-              postalCode: dto.postal_code,
-              vatNumber: dto.vat_number,
-              paymentDefaults: dto.payment_defaults
-            });
-          },
+          response => patchState(store, response),
           constVoid
         )))
     )),
+
+    dataChanged(data: BusinessEntityData) {
+      patchState(store, s => {
+        return {...s, ...data};
+      })
+    },
+
+   
+    // updateProperty: rxMethod<BusinessEntityProperty>(pipe(concatMap(props => {
+    //   const entityId = store.entityId();
+    //   return api.updateBusinessEntity(entityId, [props]).pipe(
+    //     tapResponse(
+    //       () => {
+    //         patchState(store, s => ({...s, [props.key]: props.value}))
+    //       },
+    //       constVoid
+    //     )
+    //   )
+    // }))),
+     
 
     logoUpdated(imageId: string | null) {
       patchState(store, state => {
