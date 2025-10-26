@@ -74,7 +74,7 @@ export class InvoiceEditFormComponent implements OnInit {
     // NOTES: needed here as rxMethod uses injector
     this.#setupChangeHandlers();
     this.#setupBusinessDetailsChangeHandler();
-    this.#setupSelectedCustomer();
+    // this.#setupSelectedCustomer();
   }
 
   logoControl = new FormControl<string | null>(null);
@@ -87,7 +87,7 @@ export class InvoiceEditFormComponent implements OnInit {
   dueDateInput = new FormControl<Date | null>(null);
 
 
-  selectedCustomer = signal<Customer | null>(null);
+  // selectedCustomer = signal<Customer | null>(null);
 
 
   ngOnInit(): void {
@@ -184,19 +184,19 @@ export class InvoiceEditFormComponent implements OnInit {
 
 
 
-  #setupSelectedCustomer() {
-    // TODO: refactor
-    const customerId = toSignal(this.editorStore.billedTo, { initialValue: null });
-    effect(() => {
-      const cId = customerId();
+  // #setupSelectedCustomer() {
+  //   // TODO: refactor
+  //   const customerId = toSignal(this.editorStore.billedTo, { initialValue: null });
+  //   effect(() => {
+  //     const cId = customerId();
 
-      const custromer = cId
-        ? this.#customers.customers().find(x => x.id === cId) || null
-        : null;
+  //     const custromer = cId
+  //       ? this.#customers.customers().find(x => x.id === cId) || null
+  //       : null;
 
-      this.selectedCustomer.set(custromer);
-    }, { allowSignalWrites: true })
-  }
+  //     this.selectedCustomer.set(custromer);
+  //   }, { allowSignalWrites: true })
+  // }
 
 }
 

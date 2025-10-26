@@ -66,7 +66,13 @@ export const BusinessInfoStore = signalStore(
         )))
     )),
 
-    dataChanged(data: BusinessEntityData) {
+    setState(data: BusinessEntityData) {
+      patchState(store, s => {
+        return {...s, ...data};
+      })
+    },
+
+    dataChanged(data: Partial<BusinessEntityData>) {
       patchState(store, s => {
         return {...s, ...data};
       })

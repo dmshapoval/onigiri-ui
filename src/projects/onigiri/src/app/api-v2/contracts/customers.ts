@@ -1,4 +1,4 @@
-import { Customer, CustomerData } from "@onigiri-models";
+import { Customer, CustomerData, CustomerListItem } from "@onigiri-models";
 
 export interface CustomerDto {
   id: string;
@@ -13,6 +13,29 @@ export interface CustomerDto {
   postal_code: string | null;
   vat_number: string | null;
   notes: string | null;
+}
+
+export interface CustomerListItemDto {
+  id: string;
+  company_name: string | null;
+  contact_name: string | null;
+  address: string | null;
+  email: string | null;
+  phone: string | null;
+  city: string | null;
+  country: string | null;
+}
+
+export function toCustomerListItem(dto:CustomerListItemDto): CustomerListItem {
+  return {
+    id: dto.id,
+    contactName: dto.contact_name,
+    companyName: dto.company_name,
+    email: dto.email,
+    phone: dto.phone,
+    city: dto.city,
+    country: dto.country
+  };
 }
 
 export function toCustomer(dto: CustomerDto): Customer {

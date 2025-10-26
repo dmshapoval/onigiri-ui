@@ -36,6 +36,8 @@ import { BackgroundRequestsService } from '../../../services/bg-requests.service
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomersStore } from '@onigiri-store';
 import { ActivatedRoute } from '@angular/router';
+import { CustomersApiService } from '@onigiri-api';
+import { constVoid } from 'fp-ts/lib/function';
 
 interface InvoiceEditorState {
   loadingState: 'loading' | 'loaded' | 'failed';
@@ -49,6 +51,7 @@ type ApiRequestFactory = (invoiceId: string) => Observable<any>;
 @Injectable()
 export class InvoiceEditorStore extends ComponentStore<InvoiceEditorState> {
   #api = inject(InvoicesApiService);
+  #customersApi = inject(CustomersApiService);
   #backgroundRequests = inject(BackgroundRequestsService);
   #customers = inject(CustomersStore);
   #route = inject(ActivatedRoute);
@@ -375,16 +378,24 @@ export class InvoiceEditorStore extends ComponentStore<InvoiceEditorState> {
 
   #setupSelectedCustomer() {
     // TODO: refactor
+    
     const customerId = toSignal(this.billedTo, { initialValue: null });
+    
+    const loadCustomerDetails = rxMethod<string>(pipe(switchMap(id =>
+      this.#customersApi.getCustomer(id).pipe(tapResponse(
+        customer => this.selectedCustomer.set(customer),
+        constVoid
+    )))));
+
     effect(
       () => {
         const cId = customerId();
 
-        const custromer = cId
-          ? this.#customers.customers().find(x => x.id === cId) || null
-          : null;
-
-        this.selectedCustomer.set(custromer);
+        if (!cId) {
+          this.selectedCustomer.set(null);
+        } else {
+          loadCustomerDetails(cId);
+        }
       },
       { allowSignalWrites: true }
     );

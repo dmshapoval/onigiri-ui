@@ -6,9 +6,9 @@ import {
   inject
 } from "@angular/core";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { map } from "rxjs";
+import { exhaustMap, map, pipe, tap } from "rxjs";
 import * as A from "fp-ts/es6/Array";
-import { Customer, NOT_NAMED } from "@onigiri-models";
+import { Customer, CustomerListItem, NOT_NAMED } from "@onigiri-models";
 import { EditCustomerDialogComponent } from "../edit-customer-dialog/edit-customer-dialog.component";
 import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { CustomersStore } from "@onigiri-store";
 import { toObservable } from "@angular/core/rxjs-interop";
+import { rxMethod } from "@ngrx/signals/rxjs-interop";
 
 interface CustomerSuggestion {
   id: string;
@@ -83,7 +84,7 @@ export class CustomerSelectorComponent
     this._cdr.markForCheck();
   }
 
-  onCreateNew() {
+  onCreateNew = rxMethod<void>(pipe(exhaustMap(() => {
     const dialogRef = this._dialogs.open<Customer | null>(
       EditCustomerDialogComponent,
       {
@@ -94,13 +95,13 @@ export class CustomerSelectorComponent
       }
     );
 
-    dialogRef.closed.pipe(untilDestroyed(this)).subscribe(v => {
+    return dialogRef.closed.pipe(tap(v => {
       if (v) {
         this._selectedCustomerId = v.id;
         this.onChange(v.id);
       }
-    });
-  }
+    }));
+  })));
 
   onSearch(ev: { originalEvent: Event; query: string }) {
     this._search = ev.query;
@@ -133,7 +134,7 @@ export class CustomerSelectorComponent
   }
 }
 
-function toSuggestion(customer: Customer): CustomerSuggestion {
+function toSuggestion(customer: CustomerListItem): CustomerSuggestion {
   return {
     id: customer.id,
     name: customer.contactName || NOT_NAMED

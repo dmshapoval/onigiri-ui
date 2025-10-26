@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject }
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomerData, Email, TRACKING } from '@onigiri-models';
 import { CustomersApiService } from '@onigiri-api';
-import { pipe, exhaustMap, tap } from 'rxjs';
+import { pipe, exhaustMap, tap, switchMap } from 'rxjs';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -30,7 +30,6 @@ import isNil from 'lodash/isNil';
 })
 export class EditCustomerDialogComponent implements OnInit {
   #api = inject(CustomersApiService);
-  #store = inject(CustomersStore);
   #tracking = inject(TrackingStore);
   #cdr = inject(ChangeDetectorRef);
 
@@ -76,7 +75,6 @@ export class EditCustomerDialogComponent implements OnInit {
     exhaustMap(data => this.#api.createCustomer(data).pipe(
       tapResponse(
         customer => {
-          this.#store.customerCreated(customer);
           this.#tracking.trackEvent(TRACKING.CUSTOMER.CREATE);
           this.#dialogRef.close(customer);
         },
@@ -89,7 +87,6 @@ export class EditCustomerDialogComponent implements OnInit {
     exhaustMap(data => this.#api.updateCustomer(this._customerId!, data).pipe(
       tapResponse(
         customer => {
-          this.#store.customerUpdated(customer);
           this.#dialogRef.close(customer);
         },
         constVoid
@@ -118,19 +115,19 @@ export class EditCustomerDialogComponent implements OnInit {
     this.form.updateValueAndValidity();
   }
 
-  #setupFromCustomerId(customerId: string) {
-
-    const customer = this.#store.customers()
-      .find(x => x.id === customerId)
-
-    if (!customer) {
-      return;
-    }
-
-    const fv = toFormValue(customer);
-    this.form.patchValue(fv, { emitEvent: false });
-    this.form.updateValueAndValidity();
-  }
+  #setupFromCustomerId = rxMethod<string>(pipe(
+    switchMap((customerId: string) => {
+      return this.#api.getCustomer(customerId).pipe(
+        tapResponse(
+          customer => {
+            const fv = toFormValue(customer);
+            this.form.patchValue(fv, { emitEvent: false });
+            this.form.updateValueAndValidity();
+          },
+          constVoid)
+      );
+    })
+  ));
 }
 
 type InnerForm = EditCustomerDialogComponent['form'];

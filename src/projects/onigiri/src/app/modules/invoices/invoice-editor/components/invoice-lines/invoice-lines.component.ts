@@ -6,8 +6,8 @@ import {
   getInvoiceLineTotal, getInvoiceSubtotal
 } from '@onigiri-models';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { Subject, debounceTime, exhaustMap, filter, map, pipe, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs';
-import * as A from 'fp-ts/es6/Array';
+import { Observable, Subject, debounceTime, exhaustMap, filter, map, pipe, race, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs';
+import * as A from 'fp-ts/Array';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { OnigiriButtonComponent, OnigiriIconComponent, castTo, isNotNil, whenIsNotNull } from '@oni-shared';
@@ -19,6 +19,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ServicesStore } from '@onigiri-store';
+import { ServicesApiService } from '@onigiri-api';
+import { tapResponse } from '@ngrx/operators';
+import { constVoid } from 'fp-ts/function';
 
 
 type LineForm = FormGroup<{
@@ -46,6 +49,7 @@ type LineForm = FormGroup<{
 })
 export class InvoiceLinesEditorComponent implements OnInit {
   #services = inject(ServicesStore);
+  #servicesApi = inject(ServicesApiService);
   #editorStore = inject(InvoiceEditorStore);
   #cdr = inject(ChangeDetectorRef);
 
@@ -120,32 +124,36 @@ export class InvoiceLinesEditorComponent implements OnInit {
       details: new FormControl<string | null>(v?.details || null)
     });
 
-    const lineFormDeleted$ = this.#lineFormDeleted
-      .pipe(filter(x => x === lineForm), take(1));
+    const lineFormDeleted$: Observable<void> = this.#lineFormDeleted
+      .pipe(filter(x => x === lineForm), take(1), map(constVoid));
 
     lineForm.controls.item.valueChanges
       .pipe(
         filter(v => isNotNil(v) && v.type === 'predefined'),
         castTo<PredefinedServiceInvoiceItem>(),
-        map(v => this.#services.services().find(x => x.id === v.serviceId)),
-        whenIsNotNull,
-        takeUntil(lineFormDeleted$),
-        untilDestroyed(this))
-      .subscribe(service => {
-        const fv = lineForm.value;
+        switchMap(v => this.#servicesApi.getServiceDetails(v.serviceId).pipe(
+          tapResponse(
+            svc => {
+              const fv = lineForm.value;
 
-        if (service.price && !fv.rate) {
-          lineForm.controls.rate.setValue(service.price, { emitEvent: false });
-        }
+              if (svc.price && !fv.rate) {
+                lineForm.controls.rate.setValue(svc.price, { emitEvent: false });
+              }
 
-        if (service.details) {
-          lineForm.controls.details.setValue(service.details, { emitEvent: false });
-          (<LineForm>lineForm)._showItemDetails = true;
-        }
+              if (svc.details) {
+                lineForm.controls.details.setValue(svc.details, { emitEvent: false });
+                (<LineForm>lineForm)._showItemDetails = true;
+              }
 
-        lineForm.updateValueAndValidity();
-        this.#cdr.markForCheck();
-      });
+              lineForm.updateValueAndValidity();
+              this.#cdr.markForCheck();
+
+            },
+            constVoid
+          )
+        )),
+        takeUntil(race([lineFormDeleted$, untilDestroyed(this)])))
+      .subscribe();
 
     (<LineForm>lineForm)._showItemDetails = isNotNil(v?.details);
 

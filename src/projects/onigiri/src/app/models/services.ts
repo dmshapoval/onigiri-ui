@@ -1,4 +1,9 @@
-import { MoneyAmount } from "./common";
+
+export interface ServiceListItem {
+  id: string;
+  name: string | null;
+  price: number | null;
+}
 
 export interface Service {
   id: string;
@@ -8,3 +13,11 @@ export interface Service {
 }
 
 export type ServiceData = Omit<Service, 'id'>;
+
+export function toServiceListItem(service: Service): ServiceListItem {
+  return {
+    id: service.id,
+    name: service.name,
+    price: service.price
+  };
+}

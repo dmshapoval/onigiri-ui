@@ -131,19 +131,21 @@ export class PaymentsSettingsComponent implements OnInit {
   }
 
   #setupFormValueSync() {
-    const entityId = this.#businessEntitiesStore.entityId();
+
 
     this.paymentDefaultsControl.valueChanges
       .pipe(
         debounceTime(300),
-        concatMap(paymentDefaults =>
-          this.#api.updateBusinessEntity(entityId, { paymentDefaults }).pipe(
+        concatMap(paymentDefaults => {
+          const entityId = this.#businessEntitiesStore.entityId();
+
+          return this.#api.updateBusinessEntity(entityId, { paymentDefaults }).pipe(
             tapResponse(
               () => this.#businessEntitiesStore.dataChanged({ paymentDefaults }),
               constVoid
             )
           )
-        ),
+        }),
         takeUntilDestroyed()
       )
       .subscribe();

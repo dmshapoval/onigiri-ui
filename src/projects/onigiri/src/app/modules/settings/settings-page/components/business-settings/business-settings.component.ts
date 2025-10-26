@@ -48,16 +48,18 @@ export class BusinessSettingsComponent implements OnInit {
 
   ngOnInit() {
 
-    const entityId = this.#businessEntitiesStore.entityId();
+
 
     this.form.valueChanges.pipe(
       map(fv => toBusinessDetails(fv, this.logoControl.value)),
-      concatMap(data => this.#api.updateBusinessEntity(entityId, data).pipe(
-        tapResponse(
-          () => this.#businessEntitiesStore.dataChanged(data),
-          constVoid
-        ))
-      ),
+      concatMap(data => {
+        const entityId = this.#businessEntitiesStore.entityId();
+        return this.#api.updateBusinessEntity(entityId, data).pipe(
+          tapResponse(
+            () => this.#businessEntitiesStore.dataChanged(data),
+            constVoid
+          ));
+      }),
       untilDestroyed(this)
     ).subscribe();
 

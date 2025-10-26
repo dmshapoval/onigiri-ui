@@ -94,9 +94,9 @@ export class InvoiceEditorComponent implements OnInit {
 
   constructor() {
     // preload dictionaries
-    this.#customers.getAll();
+    // this.#customers.getAll();
     this.#projects.getAll();
-    this.#services.getAll();
+    //this.#services.getAll();
 
     // NOTES: needed here as rxMethod uses injector
     this.#setupChangeHandlers();

@@ -2,15 +2,15 @@ import { effect, inject } from "@angular/core";
 import { tapResponse } from "@ngrx/operators";
 import { patchState, signalStore, withHooks, withMethods, withState } from "@ngrx/signals";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
-import { Customer } from "@onigiri-models";
+import { Customer, CustomerListItem, toCustomerListItem } from "@onigiri-models";
 import { constVoid } from "fp-ts/es6/function";
-import { exhaustMap, map, pipe, switchMap } from "rxjs";
+import { exhaustMap, firstValueFrom, map, pipe, switchMap } from "rxjs";
 import { CustomersApiService } from "@onigiri-api";
 import { Callback } from "@oni-shared";
 import { AccountStore } from "./account.store";
 
 export interface CustomersState {
-  customers: Customer[];
+  customers: CustomerListItem[];
 }
 
 const initialState: CustomersState = {
@@ -33,27 +33,36 @@ export const CustomersStore = signalStore(
       patchState(store, initialState);
     },
 
-    getAll: rxMethod<Callback | void>(pipe(
-      map(cb => cb || constVoid),
-      exhaustMap(cb => api.getAllCustomers().pipe(tapResponse(
-        customers => {
-          patchState(store, { customers });
-          cb();
-        },
-        cb
-      )))
-    )),
+    // getAll: rxMethod<Callback | void>(pipe(
+    //   map(cb => cb || constVoid),
+    //   exhaustMap(cb => api.getAllCustomers().pipe(tapResponse(
+    //     customers => {
+    //       patchState(store, { customers });
+    //       cb();
+    //     },
+    //     cb
+    //   )))
+    // )),
+
+    async refreshState() {
+      await firstValueFrom(api.getAllCustomers().pipe(
+        tapResponse(
+          customers => patchState(store, { customers }),
+          constVoid
+        )
+      ));
+    },
 
     customerCreated(customer: Customer) {
       patchState(store, state => {
-        const customers = [customer, ...state.customers];
+        const customers = [toCustomerListItem(customer), ...state.customers];
         return { ...state, customers };
       });
     },
 
     customerUpdated(customer: Customer) {
       patchState(store, state => {
-        const customers = state.customers.map(c => c.id === customer.id ? customer : c);
+        const customers = state.customers.map(c => c.id === customer.id ? toCustomerListItem(customer) : c);
         return { ...state, customers };
       });
     },

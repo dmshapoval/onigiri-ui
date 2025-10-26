@@ -64,7 +64,6 @@ export class InvoicesPageComponent {
   #router = inject(Router);
   #invoicesApi = inject(InvoicesApiService);
   #dialogs = inject(Dialog);
-  #customers = inject(CustomersStore);
   #tracking = inject(TrackingStore);
 
   store = inject(InvoicesStore);
@@ -72,14 +71,13 @@ export class InvoicesPageComponent {
   isLoading = signal(true);
 
   invoicesData = computed(() => buildRecords(
-    this.store.invoices(),
-    this.#customers.customers())
+    this.store.invoices(),[/* this.#customers.customers()*/]) 
   );
 
   constructor() {
     this.#setupTrackingSourcePropagation();
 
-    this.#customers.getAll();
+    //this.#customers.getAll();
     this.store.getAll(() => this.isLoading.set(false));
   }
 

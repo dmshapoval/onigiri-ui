@@ -6,7 +6,7 @@ import {
   signal
 } from '@angular/core';
 import { ServicesApiService } from '@onigiri-api';
-import { pipe, exhaustMap } from 'rxjs';
+import { pipe, exhaustMap, switchMap, tap, concatMap } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { ServicesStore, TrackingStore } from '@onigiri-store';
@@ -22,6 +22,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { constVoid } from 'fp-ts/es6/function';
 import { SkeletonModule } from 'primeng/skeleton';
+import { Service, ServiceListItem, toServiceListItem } from '@onigiri-models';
 
 @UntilDestroy()
 @Component({
@@ -50,45 +51,86 @@ export class ServicesPageComponent {
 
   constructor() {
     this.#setupEffects();
-    this.store.getAll(() => this.isLoading.set(false));
+    this.#loadServices();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  onCreate() {
-    this.#dialogs.open(EditServiceDialogComponent, {
-      data: { trackingSource: 'Services page' }
-    });
-  }
 
-  onEdit(serviceId: string) {
-    this.#dialogs.open(EditServiceDialogComponent, {
-      data: { serviceId }
-    });
-  }
+  onCreate = rxMethod<void>(pipe(
+    exhaustMap(() => {
+      const dialogRef = this.#dialogs.open<Service>(EditServiceDialogComponent, {
+        data: { trackingSource: 'Services Page' }
+      }); 
 
-  onDelete = rxMethod<string>(
-    pipe(
-      exhaustMap(serviceId =>
-        this.#api
-          .deleteService(serviceId)
-          .pipe(
-            tapResponse(() => this.store.serviceDeleted(serviceId), constVoid)
-          )
-      )
-    )
+      return dialogRef.closed.pipe(tap(
+        (created) => {
+          if (created) {
+            this.store.serviceCreated(created);
+          }
+        }
+      ));
+    })
+  ));
+
+  onEdit = rxMethod<string>(pipe(
+    switchMap(serviceId => {
+      const dialogRef = this.#dialogs.open<Service>(EditServiceDialogComponent, {
+        data: { serviceId }
+      });
+
+      return dialogRef.closed.pipe(tap(
+        (updated) => {
+          if (updated) {
+            this.store.serviceUpdated(updated);
+          }
+        }
+      ));
+    })
+  ));
+
+  onDelete = rxMethod<string>(pipe(
+    concatMap(serviceId =>
+      this.#api.deleteService(serviceId).pipe(
+        tapResponse(
+          () => this.store.serviceDeleted(serviceId),
+          constVoid
+        ))
+    ))
   );
 
-  #setupEffects() {
-    effect(
-      () => {
-        const trackingSource = this.store.services().length
-          ? 'Services Page'
-          : 'Services Page: Empty State';
+  async #loadServices() {
+    if (this.store.services().length > 0) { return; }
+    this.isLoading.set(true);
+    await this.store.refreshState();
+    this.isLoading.set(false);
+  }
 
-        this.#tracking.setTrackingSource(trackingSource);
-      },
-      { allowSignalWrites: true }
-    );
+  // #loadAll = rxMethod<void>(pipe(
+  //   tap(() => this.isLoading.set(true)),
+  //   exhaustMap(() => this.#api.getAllServices().pipe(
+  //     tapResponse(
+  //       services => {
+  //         this.isLoading.set(false);
+  //         this.allServices.set(services);
+  //       },
+  //       () => {
+  //         this.isLoading.set(false);
+  //       }
+  //     )
+  //   )))
+  // );
+
+  #setupEffects() {
+    // effect(
+    //   () => {
+    //     const trackingSource = this.store.services().length
+    //       ? 'Services Page'
+    //       : 'Services Page: Empty State';
+
+    //     this.#tracking.setTrackingSource(trackingSource);
+    //   },
+    //   { allowSignalWrites: true }
+    // );
   }
 }

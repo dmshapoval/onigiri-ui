@@ -36,7 +36,6 @@ export class EditServiceDialogComponent implements OnInit {
 
   #tracking = inject(TrackingStore);
   #api = inject(ServicesApiService);
-  #store = inject(ServicesStore);
   #cdr = inject(ChangeDetectorRef);
   _waitingForServer = false;
 
@@ -69,7 +68,6 @@ export class EditServiceDialogComponent implements OnInit {
     exhaustMap(data => this.#api.createService(data).pipe(
       tapResponse(
         svc => {
-          this.#store.serviceCreated(svc);
           this.#tracking.trackEvent(TRACKING.SERVICE.CREATE);
           this.#dialogRef.close(svc);
         },
@@ -81,10 +79,7 @@ export class EditServiceDialogComponent implements OnInit {
   #onEdit = rxMethod<ServiceData>(pipe(
     exhaustMap(data => this.#api.updateService(this._serviceId!, data).pipe(
       tapResponse(
-        svc => {
-          this.#store.serviceUpdated(svc);
-          this.#dialogRef.close(svc);
-        },
+        svc => this.#dialogRef.close(svc),
         constVoid
       )
     ))
@@ -105,18 +100,31 @@ export class EditServiceDialogComponent implements OnInit {
     this.#cdr.markForCheck();
   }
 
-  #setupFromServiceId(serviceId: string) {
+  #setupFromServiceId = rxMethod<string>(pipe(
+    exhaustMap(serviceId => this.#api.getServiceDetails(serviceId).pipe(
+      tapResponse(
+        service => {
+          const fv = toFormValue(service);
+          this.form.patchValue(fv, { emitEvent: false });
+          this.form.updateValueAndValidity();
+        },
+        constVoid
+      )
+    ))
+  ));
 
-    const service = this.#store.services().find(x => x.id === serviceId);
+  // #setupFromServiceId(serviceId: string) {
 
-    if (!service) {
-      return;
-    }
+  //   const service = this.#store.services().find(x => x.id === serviceId);
 
-    const fv = toFormValue(service);
-    this.form.patchValue(fv, { emitEvent: false });
-    this.form.updateValueAndValidity();
-  }
+  //   if (!service) {
+  //     return;
+  //   }
+
+  //   const fv = toFormValue(service);
+  //   this.form.patchValue(fv, { emitEvent: false });
+  //   this.form.updateValueAndValidity();
+  // }
 
   #setupPrepopulatedData(data: Partial<ServiceData>) {
     const fv = toFormValue(data);

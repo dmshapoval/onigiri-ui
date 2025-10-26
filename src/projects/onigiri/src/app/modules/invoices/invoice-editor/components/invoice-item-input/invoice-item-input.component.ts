@@ -12,7 +12,8 @@ import {
   InvoiceItem,
   NOT_NAMED,
   PredefinedServiceInvoiceItem,
-  Service
+  Service,
+  ServiceListItem
 } from "@onigiri-models";
 import isNil from "lodash/isNil";
 import isEmpty from "lodash/isEmpty";
@@ -246,7 +247,7 @@ export class InvoiceItemInputComponent
   }
 }
 
-function toSuggestion(service: Service): ItemSuggestion {
+function toSuggestion(service: ServiceListItem): ItemSuggestion {
   return {
     id: service.id,
     name: service.name || NOT_NAMED
