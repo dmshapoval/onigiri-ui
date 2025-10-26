@@ -13,6 +13,7 @@
     "build-shared-lib": "ng build oni-shared",
     "build-page-editor": "ng build onee-page-editor",
     "build-onigiri-staging": "ng build onigiri --configuration staging",
+    "build-onigiri-temp": "ng build onigiri --configuration temporary",
     "build-onigiri-admin-prod": "ng build onigiri-admin --configuration production",
     "build-onigiri-prod": "ng build onigiri --configuration production",
     "build-onee-staging": "ng build onee --configuration staging",

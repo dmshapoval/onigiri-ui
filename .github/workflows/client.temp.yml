@@ -36,7 +36,7 @@ jobs:
         run: npm run build-page-editor
 
       - name: Build App
-        run: npm run build-onigiri-staging
+        run: npm run build-onigiri-temp
 
       - name: Deploy App
         id: builddeploy
