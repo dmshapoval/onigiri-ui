@@ -1,4 +1,3 @@
-
 export interface Customer {
   id: string;
   contactName: string | null;
@@ -12,6 +11,8 @@ export interface Customer {
   postalCode: string | null;
   vatNumber: string | null;
   notes: string | null;
+  status?: string;
+  no?: string | null;
 }
 
 export type CustomerData = Omit<Customer, 'id'>;

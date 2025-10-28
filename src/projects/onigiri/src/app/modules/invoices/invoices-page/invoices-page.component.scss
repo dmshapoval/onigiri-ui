@@ -3,17 +3,23 @@
   padding: 36px 30px;
 }
 
+.mobile-cards {
+  display: none;
+}
+
 .sample-img {
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
   width: 250px;
   height: 212px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  // .mobile-cards {
+  //   display: block;
+  // }
 
   img {
     scale: 1.075;
@@ -21,4 +27,35 @@
     max-height: 100%;
     transform: translateY(6px);
   }
+}
+
+@media (min-width: 1200px) {
+  .mobile-cards {
+    display: none;
+  }
+}
+
+@media (max-width: 1199px) {
+  .entities-table {
+    display: none;
+  }
+  .mobile-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+  }
+
+  @media screen and (max-width: 1050px) {
+    .mobile-cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .mobile-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+  // .invoice-card {
+  //   display: block;
+  // }
 }

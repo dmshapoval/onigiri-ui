@@ -1,4 +1,4 @@
-import { Customer, CustomerData, Currency } from "@onigiri-models";
+import { Customer, CustomerData, Currency } from '@onigiri-models';
 
 export interface CustomerDto {
   id: string;

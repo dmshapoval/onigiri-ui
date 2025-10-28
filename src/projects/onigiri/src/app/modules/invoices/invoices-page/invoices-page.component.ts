@@ -1,20 +1,29 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import {
-  pipe,
-  exhaustMap,
-  tap,
-  filter,
-  concatMap
-} from 'rxjs';
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  signal
+} from '@angular/core';
+import { pipe, exhaustMap, tap, filter, concatMap } from 'rxjs';
+import { CustomersStore, InvoicesStore, TrackingStore } from '@onigiri-store';
 import {
-  CustomersStore, InvoicesStore,
-  TrackingStore,
-
-} from '@onigiri-store';
-import { Customer, InvoiceInfo, InvoiceStatus, TRACKING, toCurrencySymbol } from '@onigiri-models';
+  Customer,
+  InvoiceInfo,
+  InvoiceStatus,
+  TRACKING,
+  toCurrencySymbol
+} from '@onigiri-models';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { TableModule } from 'primeng/table';
-import { OnigiriButtonComponent, OnigiriIconComponent, OnigiriTemplate, isTruthy } from '@oni-shared';
+import { CommonModule } from '@angular/common';
+import {
+  OnigiriButtonComponent,
+  OnigiriIconComponent,
+  OnigiriTemplate,
+  isTruthy
+} from '@oni-shared';
 import { OnigiriDatePipe } from '@onigiri-shared/pipes/date';
 import { EmptyStatePlaceholderComponent } from '@onigiri-shared/components/empty-state-placeholder/empty-state-placeholder.component';
 import { InvoicesApiService } from '../../../api/invoices-api.service';
@@ -25,24 +34,13 @@ import { tapResponse } from '@ngrx/operators';
 import { Dialog } from '@angular/cdk/dialog';
 import { DeleteInvoiceDialogComponent } from '../components/delete-invoice-dialog/delete-invoice-dialog.component';
 import { CustomerNamePipe } from '@onigiri-shared/pipes/customer';
-import { AsyncPipe } from '@angular/common';
+// AsyncPipe/JsonPipe not required here (using CommonModule)
 import { OnigiriCurrencyPipe } from '@onigiri-shared/pipes/currency';
 import { InvoiceStatusChipComponent } from './invoice-status-chip.component';
 import { constVoid } from 'fp-ts/es6/function';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Router } from '@angular/router';
-
-
-interface DataRecord {
-  id: string;
-  title: string | null;
-  no: string | null;
-  date: Date | null;
-  dueDate: Date | null;
-  amount: string; // {currency}{amount}
-  customer: Customer | null;
-  status: InvoiceStatus;
-}
+import { InvoiceCardComponent } from '../invoice-card/invoice-card.component';
 
 @UntilDestroy()
 @Component({
@@ -52,15 +50,23 @@ interface DataRecord {
   styleUrls: ['./invoices-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    TableModule, OnigiriDatePipe, SkeletonModule,
-    EmptyStatePlaceholderComponent, OnigiriCurrencyPipe,
-    OnigiriButtonComponent, OnigiriIconComponent, LetDirective,
-    OnigiriTemplate, DeleteInvoiceDialogComponent,
-    CustomerNamePipe, AsyncPipe, InvoiceStatusChipComponent
+    TableModule,
+    CommonModule,
+    OnigiriDatePipe,
+    SkeletonModule,
+    EmptyStatePlaceholderComponent,
+    // OnigiriCurrencyPipe,
+    OnigiriButtonComponent,
+    OnigiriIconComponent,
+    // LetDirective,
+    OnigiriTemplate,
+    // DeleteInvoiceDialogComponent,
+    // CustomerNamePipe,
+    InvoiceStatusChipComponent,
+    InvoiceCardComponent
   ]
 })
 export class InvoicesPageComponent {
-
   #router = inject(Router);
   #invoicesApi = inject(InvoicesApiService);
   #dialogs = inject(Dialog);
@@ -71,9 +77,8 @@ export class InvoicesPageComponent {
 
   isLoading = signal(true);
 
-  invoicesData = computed(() => buildRecords(
-    this.store.invoices(),
-    this.#customers.customers())
+  invoicesData = computed(() =>
+    buildRecords(this.store.invoices(), this.#customers.customers())
   );
 
   constructor() {
@@ -83,28 +88,26 @@ export class InvoicesPageComponent {
     this.store.getAll(() => this.isLoading.set(false));
   }
 
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  onCreate = rxMethod<void>(
+    pipe(
+      exhaustMap(() =>
+        this.#invoicesApi.createInvoice().pipe(
+          tapResponse(invoice => {
+            this.store.invoiceDraftCreated(invoice);
 
-  }
+            // TODO: verify
+            this.#router.navigate(['./invoices', invoice.id], {
+              queryParams: { rtn_to: `/invoices` }
+            });
 
-  onCreate = rxMethod<void>(pipe(
-    exhaustMap(() => this.#invoicesApi.createInvoice().pipe(
-      tapResponse(
-        invoice => {
-          this.store.invoiceDraftCreated(invoice);
-
-          // TODO: verify
-          this.#router.navigate(['./invoices', invoice.id], {
-            queryParams: { rtn_to: `/invoices` }
-          });
-
-          this.#tracking.trackEvent(TRACKING.INVOICE.CREATE);
-        },
-        constVoid
+            this.#tracking.trackEvent(TRACKING.INVOICE.CREATE);
+          }, constVoid)
+        )
       )
-    ))
-  ));
+    )
+  );
 
   onEdit(id: string) {
     this.#router.navigate(['./invoices', id], {
@@ -112,12 +115,11 @@ export class InvoicesPageComponent {
     });
   }
 
-  onCopy = rxMethod<string>(pipe(
-    exhaustMap(invoiceId => {
-      return this.#invoicesApi.createInvoiceCopy(invoiceId).pipe(
-        tapResponse(
-          invoice => {
-
+  onCopy = rxMethod<string>(
+    pipe(
+      exhaustMap(invoiceId => {
+        return this.#invoicesApi.createInvoiceCopy(invoiceId).pipe(
+          tapResponse(invoice => {
             this.store.invoiceDraftCreated(invoice);
             this.#tracking.trackEvent(TRACKING.INVOICE.CREATE);
 
@@ -125,43 +127,49 @@ export class InvoicesPageComponent {
             this.#router.navigate(['./invoices', invoice.id], {
               queryParams: { rtn_to: `/invoices` }
             });
-          },
-          constVoid
-        )
-      )
-    })
-  ));
+          }, constVoid)
+        );
+      })
+    )
+  );
 
-  onDelete = rxMethod<DataRecord>(pipe(
-    exhaustMap(record => {
+  trackById(_index: number, item: any) {
+    return item.id;
+  }
 
-      const dialogRef = this.#dialogs.open(DeleteInvoiceDialogComponent, {
-        width: '600px',
-        data: {
-          invoiceId: record.id,
-          invoiceName: record.title,
-          customer: record.customer?.contactName || null
-        }
-      });
+  onDelete = rxMethod<any>(
+    pipe(
+      exhaustMap(record => {
+        const dialogRef = this.#dialogs.open(DeleteInvoiceDialogComponent, {
+          width: '600px',
+          data: {
+            invoiceId: record.id,
+            invoiceName: record.title,
+            customer: record.customer?.contactName || null
+          }
+        });
 
-      return dialogRef.closed;
-    })
-  ));
+        return dialogRef.closed;
+      })
+    )
+  );
 
   #setupTrackingSourcePropagation() {
-    effect(() => {
-      const hasInvoices = this.invoicesData().length > 0;
+    effect(
+      () => {
+        const hasInvoices = this.invoicesData().length > 0;
 
-      this.#tracking.setTrackingSource(hasInvoices
-        ? 'Invoices Page'
-        : 'Invoices Page: Empty State')
-
-    }, { allowSignalWrites: true })
+        this.#tracking.setTrackingSource(
+          hasInvoices ? 'Invoices Page' : 'Invoices Page: Empty State'
+        );
+      },
+      { allowSignalWrites: true }
+    );
   }
 }
 
 function buildRecords(invoices: InvoiceInfo[], customers: Customer[]) {
-  const result: DataRecord[] = invoices.map(x => ({
+  const result: any[] = invoices.map(x => ({
     id: x.id,
     no: x.no,
     status: x.status,
@@ -171,7 +179,7 @@ function buildRecords(invoices: InvoiceInfo[], customers: Customer[]) {
     amount: `${toCurrencySymbol(x.currency)}${x.amount}`,
     customer: x.customerId
       ? customers.find(c => c.id === x.customerId) || null
-      : null,
+      : null
   }));
 
   return result;

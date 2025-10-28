@@ -1,5 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { CustomerData, Email, TRACKING } from '@onigiri-models';
 import { CustomersApiService } from '@onigiri-api';
 import { pipe, exhaustMap, tap } from 'rxjs';
@@ -13,17 +24,19 @@ import { tapResponse } from '@ngrx/operators';
 import { constVoid } from 'fp-ts/es6/function';
 import isNil from 'lodash/isNil';
 
-
 @Component({
   selector: 'app-edit-customer-dialog',
   templateUrl: './edit-customer-dialog.component.html',
   styleUrls: ['./edit-customer-dialog.component.scss'],
   imports: [
-    FormsModule, ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
 
-    InputTextModule, InputTextareaModule,
+    InputTextModule,
+    InputTextareaModule,
 
-    OnigiriIconComponent, OnigiriButtonComponent
+    OnigiriIconComponent,
+    OnigiriButtonComponent
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -48,59 +61,61 @@ export class EditCustomerDialogComponent implements OnInit {
     state: new FormControl<string | null>(null),
     postalCode: new FormControl<string | null>(null),
     vatNumber: new FormControl<string | null>(null),
-    notes: new FormControl<string | null>(null),
+    notes: new FormControl<string | null>(null)
   });
 
   private _customerId: string | null = null;
-
 
   ngOnInit(): void {
     this.#setupInitialData();
   }
 
-  onSave = rxMethod<void>(tap(
-    () => {
+  onSave = rxMethod<void>(
+    tap(() => {
       const isNewCustomer = isNil(this._customerId);
       const data = toCustomerData(this.form.getRawValue());
 
       isNewCustomer ? this.#onCreate(data) : this.#onEdit(data);
-    }
-  ));
-
+    })
+  );
 
   onCancel() {
     this.#dialogRef.close();
   }
 
-  #onCreate = rxMethod<CustomerData>(pipe(
-    exhaustMap(data => this.#api.createCustomer(data).pipe(
-      tapResponse(
-        customer => {
-          this.#store.customerCreated(customer);
-          this.#tracking.trackEvent(TRACKING.CUSTOMER.CREATE);
-          this.#dialogRef.close(customer);
-        },
-        constVoid
+  #onCreate = rxMethod<CustomerData>(
+    pipe(
+      exhaustMap(data =>
+        this.#api.createCustomer(data).pipe(
+          tapResponse(customer => {
+            this.#store.customerCreated(customer);
+            this.#tracking.trackEvent(TRACKING.CUSTOMER.CREATE);
+            this.#dialogRef.close(customer);
+          }, constVoid)
+        )
       )
-    ))
-  ));
+    )
+  );
 
-  #onEdit = rxMethod<CustomerData>(pipe(
-    exhaustMap(data => this.#api.updateCustomer(this._customerId!, data).pipe(
-      tapResponse(
-        customer => {
-          this.#store.customerUpdated(customer);
-          this.#dialogRef.close(customer);
-        },
-        constVoid
+  #onEdit = rxMethod<CustomerData>(
+    pipe(
+      exhaustMap(data =>
+        this.#api.updateCustomer(this._customerId!, data).pipe(
+          tapResponse(customer => {
+            this.#store.customerUpdated(customer);
+            this.#dialogRef.close(customer);
+          }, constVoid)
+        )
       )
-    ))
-  ));
+    )
+  );
 
   #setupInitialData() {
     const data = this.#data;
 
-    if (!data) { return; }
+    if (!data) {
+      return;
+    }
 
     if (data.customerId) {
       this._customerId = data.customerId;
@@ -119,9 +134,7 @@ export class EditCustomerDialogComponent implements OnInit {
   }
 
   #setupFromCustomerId(customerId: string) {
-
-    const customer = this.#store.customers()
-      .find(x => x.id === customerId)
+    const customer = this.#store.customers().find(x => x.id === customerId);
 
     if (!customer) {
       return;

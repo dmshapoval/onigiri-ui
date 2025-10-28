@@ -6,43 +6,47 @@
   @if(!isLoading() && data.length) {
   <o-button (onClick)="onCreate()">New Invoice</o-button>
   }
-
 </div>
 
 <div class="o-mt-40">
-
-
   @if(isLoading()) {
-  <p-skeleton width="100%"
-              height="300px" />
+  <p-skeleton
+    width="100%"
+    height="300px" />
 
   } @else if (data.length) {
 
-  <p-table [value]="data"
-           class="entities-table">
-
+  <p-table
+    [value]="data"
+    class="entities-table">
     <ng-template pTemplate="header">
       <tr>
         <th>No.</th>
         <th>Client</th>
         <th>Issue Date</th>
         <th>Total</th>
-        <th style="width: 80px;"></th>
-        <th style="width: 70px;"></th>
+        <th style="width: 80px"></th>
+        <th style="width: 70px"></th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body"
-                 let-entry>
+    <ng-template
+      pTemplate="body"
+      let-entry>
       <tr>
         <td>
-          <span class="entity-name"
-                (click)="onEdit(entry.id)"> {{ entry.no || '(Not named)' }}</span>
+          <span
+            class="entity-name"
+            (click)="onEdit(entry.id)">
+            {{ entry.no || '(Not named)' }}</span
+          >
         </td>
         <!-- <td>{{ entry.no }}</td> -->
         <td>
           @if(entry.customer) {
-          <span class="o-color-grey-1000">{{entry.customer.contactName || '(Not named)'}}</span>
+          <span class="o-color-grey-1000">{{
+            entry.customer.contactName || '(Not named)'
+          }}</span>
           } @else {
           <span class="o-color-grey-500">no client</span>
           }
@@ -52,38 +56,47 @@
         <td><invoice-status-chip [status]="entry.status" /></td>
         <td>
           <div class="entity-actions">
-
             <div class="entity-action">
-              <o-icon key="copy"
-                      (click)="onCopy(entry.id)" />
+              <o-icon
+                key="copy"
+                (click)="onCopy(entry.id)" />
             </div>
 
             <div class="entity-action">
-              <o-icon key="trash"
-                      (click)="onDelete(entry)" />
+              <o-icon
+                key="trash"
+                (click)="onDelete(entry)" />
             </div>
           </div>
         </td>
       </tr>
     </ng-template>
-
   </p-table>
+  <div class="mobile-cards">
+    <ng-container *ngFor="let entry of data; trackBy: trackById">
+      <invoice-card
+        (clickMore)="onEdit($event)"
+        [customer]="entry.customer"
+        [entry]="entry"
+        [date]="entry.date"
+        [showActions]="true">
+      </invoice-card>
+    </ng-container>
+  </div>
 
   } @else {
 
-  <empty-state-placeholder title="Create your first invoice"
-                           subTitle="Easily make, send and share invoices — get paid faster than ever"
-                           btnText="Create invoice"
-                           (onCreateClick)="onCreate()">
-
-
+  <empty-state-placeholder
+    title="Create your first invoice"
+    subTitle="Easily make, send and share invoices — get paid faster than ever"
+    btnText="Create invoice"
+    (onCreateClick)="onCreate()">
     <ng-template oTemplate="sample">
-
       <div class="sample-img">
-        <img src="../../../../assets/invoice_sample.png"
-             alt="Sample">
+        <img
+          src="../../../../assets/invoice_sample.png"
+          alt="Sample" />
       </div>
-
     </ng-template>
   </empty-state-placeholder>
 
