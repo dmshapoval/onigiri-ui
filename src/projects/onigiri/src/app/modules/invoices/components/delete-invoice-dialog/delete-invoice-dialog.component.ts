@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/cor
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { OnigiriButtonComponent, OnigiriIconComponent } from '@oni-shared';
 import { InvoicesStore } from '@onigiri-store';
-import { InvoicesApiService } from '../../../../api/invoices-api.service';
 import { exhaustMap, pipe } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { InvoicesApiService } from '@onigiri-api';
 
 @Component({
   selector: 'delete-invoice-dialog',
@@ -40,7 +40,7 @@ export class DeleteInvoiceDialogComponent implements OnInit {
           this.#store.invoiceDeleted(this.invoiceId!);
           this.#dialogRef.close(true);
         },
-        () => this.#store.getAll()
+        () => this.#store.refreshState()
       )
     ))
   ));

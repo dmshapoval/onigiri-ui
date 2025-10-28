@@ -6,6 +6,7 @@ import { catchError, concatMap, map, of, pipe } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { AccountStore } from "./account.store";
+import { constVoid } from "fp-ts/function";
 
 
 interface TrackingEvent {
@@ -44,9 +45,11 @@ export const TrackingStore = signalStore(
           }
         };
 
-        return http
-          .post(`${environment.onigiriApi}/api/tracking`, data)
-          .pipe(catchError(() => of()))
+        return of(constVoid());
+
+        // return http
+        //   .post(`${environment.onigiriApi}/api/tracking`, data)
+        //   .pipe(catchError(() => of()))
       })
     ))
   })),

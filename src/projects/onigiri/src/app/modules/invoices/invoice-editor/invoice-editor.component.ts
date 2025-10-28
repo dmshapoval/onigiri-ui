@@ -30,6 +30,7 @@ import {
   Currency,
   InvoiceData,
   InvoiceStatus,
+  InvoiceStatusType,
   SharedInvoiceLinkData,
   TRACKING
 } from '@onigiri-models';
@@ -42,7 +43,6 @@ import { InvoiceEditorStore } from './invoice-editor.store';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { OnigiriButtonComponent, exhaustiveCheck } from '@oni-shared';
 import { DownloadInvoicePDFButtonComponent } from '../components/download-invoice-pdf-button.component';
-import { InvoicesApiService } from '../../../api/invoices-api.service';
 import {
   SendInvoiceDialogComponent,
   ShareLinkDialogComponent
@@ -58,6 +58,7 @@ import { InvoiceViewComponent } from '../components/invoice-view/invoice-view.co
 import { MarkAsPaidDialogComponent } from './components/mark-as-paid-dialog/mark-as-paid-dialog.component';
 import { CurrencySelectorComponent } from '@onigiri-shared/components/currency-selector/currency-selector.component';
 import { constVoid } from 'fp-ts/es6/function';
+import { InvoicesApiService } from '@onigiri-api';
 
 @UntilDestroy()
 @Component({
@@ -103,18 +104,19 @@ export class InvoiceEditorComponent implements OnInit {
     this.#setupStatusChangeHandlers();
   }
 
-  invoiceStatusInput = new FormControl<InvoiceStatus>('draft', {
+  invoiceStatusInput = new FormControl<InvoiceStatus>({ type: 'draft' }, {
     nonNullable: true
   });
+
   currencyInput = new FormControl<Currency>('USD', { nonNullable: true });
   projectInput = new FormControl<string | null>(null);
 
   sharedInvoiceData = signal<SharedInvoiceLinkData | null>(null);
 
-  status = toSignal(this.editorStore.status, { initialValue: 'draft' });
+  status = toSignal(this.editorStore.status, { initialValue: { type: 'draft' } });
 
-  isPaid = computed(() => this.status() === 'paid');
-  isNotPaid = computed(() => this.status() !== 'paid');
+  isPaid = computed(() => this.status()?.type === 'paid');
+  isNotPaid = computed(() => this.status()?.type !== 'paid');
 
   isLoadingPreviewData = signal(false);
 
@@ -190,8 +192,8 @@ export class InvoiceEditorComponent implements OnInit {
 
         return dialog.closed.pipe(
           tap(invoiceWasSent => {
-            if (invoiceWasSent && this.status() === 'draft') {
-              this.editorStore.setSentStatus();
+            if (invoiceWasSent && this.status()?.type === 'draft') {
+              this.editorStore.setSentStatus(new Date());
             }
           })
         );
@@ -252,7 +254,7 @@ export class InvoiceEditorComponent implements OnInit {
     const clearFormValues = () => {
       this.projectInput.setValue(null, { emitEvent: false });
       this.currencyInput.setValue('USD', { emitEvent: false });
-      this.invoiceStatusInput.setValue('draft', { emitEvent: false });
+      this.invoiceStatusInput.setValue({ type: 'draft' }, { emitEvent: false });
     };
 
     const updateControlValues = (data: InvoiceData) => {
@@ -297,7 +299,7 @@ export class InvoiceEditorComponent implements OnInit {
     this.invoiceStatusInput.valueChanges
       .pipe(untilDestroyed(this))
       .subscribe(v => {
-        switch (v) {
+        switch (v.type) {
           case 'draft': {
             hideInvoicePreview();
             this.editorStore.setDraftStatus();
@@ -305,7 +307,7 @@ export class InvoiceEditorComponent implements OnInit {
           }
           case 'sent': {
             hideInvoicePreview();
-            this.editorStore.setSentStatus();
+            this.editorStore.setSentStatus(new Date());
             return;
           }
           case 'paid': {

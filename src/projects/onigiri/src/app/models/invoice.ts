@@ -5,14 +5,15 @@ import sum from "lodash/sum";
 
 export interface InvoiceInfo {
   id: string;
+  no: string | null;
   title: string | null;
   status: InvoiceStatus;
-  no: string | null;
   date: Date | null;
   dueDate: Date | null;
-  customerId: string | null;
+  customer: string | null;
   currency: Currency;
   amount: number;
+  createdAt: Date;
 }
 
 export interface Invoice {
@@ -32,7 +33,15 @@ export interface Invoice {
   paymentOptions: InvoicePaymentOption[];
 }
 
-export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue';
+// export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue';
+
+export type InvoiceStatus =
+| { type: 'draft' }
+| { type: 'sent', sentOn: Date }
+| { type: 'paid', paidOn: Date }
+| { type: 'overdue' };
+
+export type InvoiceStatusType = InvoiceStatus['type'];
 
 export interface InvoiceTax { text: string | null, value: PercentOrFixedNumber }
 
@@ -80,21 +89,21 @@ export type InvoicePaymentOption =
 
 export type InovicePaymentOptionType = InvoicePaymentOption['type'];
 
-export function toInvoiceInfo(data: Invoice): InvoiceInfo {
-  const r: InvoiceInfo = {
-    id: data.id,
-    title: data.title,
-    status: data.status,
-    no: data.no,
-    date: data.date,
-    dueDate: data.dueDate,
-    customerId: data.billedTo,
-    currency: data.currency,
-    amount: getInvoiceTotal(data)
-  };
+// export function toInvoiceInfo(data: Invoice): InvoiceInfo {
+//   const r: InvoiceInfo = {
+//     id: data.id,
+//     title: data.title,
+//     status: data.status,
+//     no: data.no,
+//     date: data.date,
+//     dueDate: data.dueDate,
+//     customerId: data.billedTo,
+//     currency: data.currency,
+//     amount: getInvoiceTotal(data)
+//   };
 
-  return r;
-}
+//   return r;
+// }
 
 export function getInvoiceLineTotal(invoiceLine: InvoiceLineNumbers) {
   return invoiceLine.rate && invoiceLine.quantity ? invoiceLine.rate * invoiceLine.quantity : 0;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit, computed, input } from '@angular/core';
-import { InvoiceStatus } from '../../../models/invoice';
+import { InvoiceStatus, InvoiceStatusType } from '../../../models/invoice';
 import { exhaustiveCheck } from '@oni-shared';
 
 @Component({
@@ -28,7 +28,7 @@ import { exhaustiveCheck } from '@oni-shared';
   `]
 })
 export class InvoiceStatusChipComponent {
-  status = input.required<InvoiceStatus>();
+  status = input.required<InvoiceStatusType>();
 
   @HostBinding("style.background-color")
   get bgColor() {

@@ -26,7 +26,6 @@ import {
   withLatestFrom
 } from 'rxjs';
 
-import { InvoicesApiService } from '../../../api/invoices-api.service';
 import { ComponentStore } from '@ngrx/component-store';
 import { tapResponse } from '@ngrx/operators';
 
@@ -36,7 +35,7 @@ import { BackgroundRequestsService } from '../../../services/bg-requests.service
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomersStore } from '@onigiri-store';
 import { ActivatedRoute } from '@angular/router';
-import { CustomersApiService } from '@onigiri-api';
+import { CustomersApiService, InvoicesApiService } from '@onigiri-api';
 import { constVoid } from 'fp-ts/lib/function';
 
 interface InvoiceEditorState {
@@ -217,30 +216,29 @@ export class InvoiceEditorStore extends ComponentStore<InvoiceEditorState> {
 
   setDraftStatus = this.effect<void>(t$ =>
     t$.pipe(
-      tap(() => this.#updateInvoiceState({ status: 'draft' })),
+      tap(() => this.#updateInvoiceState({ status: { type: 'draft' } })),
       tap(() => this.#createRequest(id => this.#api.setDraftStatus(id)))
     )
   );
 
-  setSentStatus = this.effect<void>(t$ =>
-    t$.pipe(
-      tap(() => this.#updateInvoiceState({ status: 'sent' })),
-      tap(() =>
-        this.#createRequest(id => this.#api.setSentStatus(id, new Date()))
-      )
-    )
-  );
+  setSentStatus = this.effect<Date>(t$ => {
+    return t$.pipe(
+      tap(sentOn => this.#updateInvoiceState({ status: { type: 'sent', sentOn } })),
+      tap(sentOn => this.#createRequest(id => this.#api.setSentStatus(id, sentOn)))
+    );
+  });
 
-  setPaidStatus = this.effect<Date>(t$ =>
-    t$.pipe(
-      tap(() => this.#updateInvoiceState({ status: 'paid' })),
-      tap(date => this.#createRequest(id => this.#api.setPaidStatus(id, date)))
-    )
+  setPaidStatus = this.effect<Date>(t$ => {
+    return t$.pipe(
+      tap(paidOn => this.#updateInvoiceState({ status: { type: 'paid', paidOn } })),
+      tap(paidOn => this.#createRequest(id => this.#api.setPaidStatus(id, paidOn)))
+    );
+  }
   );
 
   setOverdueStatus = this.effect<void>(t$ =>
     t$.pipe(
-      tap(() => this.#updateInvoiceState({ status: 'overdue' })),
+      tap(() => this.#updateInvoiceState({ status: { type: 'overdue' } })),
       tap(() => this.#createRequest(id => this.#api.setOverdueStatus(id)))
     )
   );
@@ -378,14 +376,14 @@ export class InvoiceEditorStore extends ComponentStore<InvoiceEditorState> {
 
   #setupSelectedCustomer() {
     // TODO: refactor
-    
+
     const customerId = toSignal(this.billedTo, { initialValue: null });
-    
+
     const loadCustomerDetails = rxMethod<string>(pipe(switchMap(id =>
       this.#customersApi.getCustomer(id).pipe(tapResponse(
         customer => this.selectedCustomer.set(customer),
         constVoid
-    )))));
+      )))));
 
     effect(
       () => {

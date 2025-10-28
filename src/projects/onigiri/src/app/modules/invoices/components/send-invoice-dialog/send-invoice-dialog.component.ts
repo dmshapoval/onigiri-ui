@@ -25,12 +25,12 @@ import { EMAIL_REGEX, OnigiriIconComponent, isNotNil } from '@oni-shared';
 import { SendInvoiceButtonComponent } from './send-invoice-button.component';
 import { Chips, ChipsModule } from 'primeng/chips';
 import { InputTextModule } from 'primeng/inputtext';
-import { InvoicesApiService } from '../../../../api/invoices-api.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InvoicesApiService } from '@onigiri-api';
 
 @UntilDestroy()
 @Component({

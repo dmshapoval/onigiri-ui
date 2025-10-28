@@ -17,7 +17,6 @@ import {
   startWith,
   switchMap
 } from 'rxjs';
-import { InvoicesApiService } from '../../../api/invoices-api.service';
 import { tapResponse } from '@ngrx/operators';
 
 import { InvoicesStore, TrackingStore } from '@onigiri-store';
@@ -37,6 +36,7 @@ import {
   startOfYear
 } from 'date-fns';
 import { constVoid } from 'fp-ts/es6/function';
+import { InvoicesApiService } from '@onigiri-api';
 
 interface ReportFilters {
   currency: Currency;
@@ -111,7 +111,7 @@ export class DashboardPageComponent implements OnInit {
       exhaustMap(() =>
         this.#invoicesApi.createInvoice().pipe(
           tapResponse(invoice => {
-            this.#invoices.invoiceDraftCreated(invoice);
+            this.#invoices.refreshState();
 
             // TODO: verify
             this.#router.navigate(['./invoices', invoice.id], {

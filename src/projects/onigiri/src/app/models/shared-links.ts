@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
-import { InvoicePaymentOptionDto } from "../api/dtos/invoices";
 import { Currency } from "./common";
+import { InvoicePaymentOptionDto } from "../api-v2/contracts/invoices";
 
 export interface SharedInvoiceLinkItem {
   item: string | null;

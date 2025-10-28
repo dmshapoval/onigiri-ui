@@ -4,8 +4,6 @@ import { InvoiceEditorComponent } from './invoice-editor/invoice-editor.componen
 import { InvoicesPageComponent } from './invoices-page/invoices-page.component';
 import { Invoice } from '../../models/invoice';
 import { inject } from '@angular/core';
-import { InvoicesApiService } from '../../api/invoices-api.service';
-import { catchError, of } from 'rxjs';
 
 // const invoiceResolver: ResolveFn<Invoice | null> = (route, state) => {
 //   return inject(InvoicesApiService)

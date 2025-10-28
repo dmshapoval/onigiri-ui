@@ -13,7 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Dialog } from '@angular/cdk/dialog';
 import { PaymentDetailsDialogComponent } from '../../../invoices/components/payment-details-dialog/payment-details-dialog.component';
-import { TransferInvoicePaymentOptionDto } from '../../../../api/dtos/invoices';
+import { TransferInvoicePaymentOptionDto } from '../../../../api-v2/contracts/invoices';
 import isEmpty from 'lodash/isEmpty';
 import { OnigiriButtonComponent, getCurrentUrlWithExtraQueryParams } from '@oni-shared';
 import { constVoid } from 'fp-ts/es6/function';

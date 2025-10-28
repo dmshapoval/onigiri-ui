@@ -42,14 +42,14 @@
         <!-- <td>{{ entry.no }}</td> -->
         <td>
           @if(entry.customer) {
-          <span class="o-color-grey-1000">{{entry.customer.contactName || '(Not named)'}}</span>
+          <span class="o-color-grey-1000">{{entry.customer}}</span>
           } @else {
           <span class="o-color-grey-500">no client</span>
           }
         </td>
         <td>{{ entry.date | oDate }}</td>
         <td>{{ entry.amount }}</td>
-        <td><invoice-status-chip [status]="entry.status" /></td>
+        <td><invoice-status-chip [status]="entry.status.type" /></td>
         <td>
           <div class="entity-actions">
 

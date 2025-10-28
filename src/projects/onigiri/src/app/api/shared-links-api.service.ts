@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { SharedInvoiceLinkData } from '@onigiri-models';
-import { InvoicePDFRequestResultDto } from './dtos/invoices';
 import { map } from 'rxjs';
+import { InvoicePDFRequestResultDto } from '../api-v2/contracts/invoices';
 
 
 @Injectable({ providedIn: 'root' })

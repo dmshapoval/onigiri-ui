@@ -4,6 +4,7 @@ export * from './subscriptions-api.service';
 export * from '../api-v2/business-entities-api.service';
 export * from '../api-v2/services-api.service';
 export * from '../api-v2/customers-api.service';
+export * from '../api-v2/invoices-api.service';
 export * from './images-api.service';
 export * from './shared-links-api.service';
 export * from './projects-api.service';

@@ -11,8 +11,8 @@ import { ServiceDto, ServiceListItemDto, toService, toServiceDataDto, toServiceL
 export class ServicesApiService {
   private _http = inject(HttpClient);
 
-  getAllServices(): Observable<ServiceListItem[]> {
-    return this._http.get<ServiceListItemDto[]>(`${environment.onigiriApi}/api/services`)
+  getAllServices(includeDeleted: boolean = false): Observable<ServiceListItem[]> {
+    return this._http.get<ServiceListItemDto[]>(`${environment.onigiriApi}/api/services?includeDeleted=${includeDeleted}`)
       .pipe(map(A.map(toServiceListItem)));
   }
 

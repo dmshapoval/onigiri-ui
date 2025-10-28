@@ -49,7 +49,7 @@
     } @else {
 
     <div class="inv__sidebar-actions flex flex-column">
-      @switch (status()) {
+      @switch (status().type) {
 
       @case('draft') {
       <o-button icon="send"

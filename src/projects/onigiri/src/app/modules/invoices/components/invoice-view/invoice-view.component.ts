@@ -13,7 +13,7 @@ import { OnigiriDatePipe } from '../../../../shared/pipes/date';
 import { OnigiriMoneyPipe } from '../../../../shared/pipes/money';
 import { OnigiriImageUrlPipe, isNotNil } from '@oni-shared';
 import { AddressComponent } from '../address.component';
-import { TransferInvoicePaymentOptionDto } from 'projects/onigiri/src/app/api/dtos/invoices';
+import { TransferInvoicePaymentOptionDto } from '../../../../api-v2/contracts/invoices';
 
 @Component({
   selector: 'invoice-view',

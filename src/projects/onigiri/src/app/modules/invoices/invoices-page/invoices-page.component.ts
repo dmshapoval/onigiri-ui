@@ -17,7 +17,6 @@ import { TableModule } from 'primeng/table';
 import { OnigiriButtonComponent, OnigiriIconComponent, OnigiriTemplate, isTruthy } from '@oni-shared';
 import { OnigiriDatePipe } from '@onigiri-shared/pipes/date';
 import { EmptyStatePlaceholderComponent } from '@onigiri-shared/components/empty-state-placeholder/empty-state-placeholder.component';
-import { InvoicesApiService } from '../../../api/invoices-api.service';
 import { LetDirective } from '@ngrx/component';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
@@ -31,6 +30,7 @@ import { InvoiceStatusChipComponent } from './invoice-status-chip.component';
 import { constVoid } from 'fp-ts/es6/function';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Router } from '@angular/router';
+import { InvoicesApiService } from '@onigiri-api';
 
 
 interface DataRecord {
@@ -40,7 +40,7 @@ interface DataRecord {
   date: Date | null;
   dueDate: Date | null;
   amount: string; // {currency}{amount}
-  customer: Customer | null;
+  customer: string | null;
   status: InvoiceStatus;
 }
 
@@ -70,15 +70,12 @@ export class InvoicesPageComponent {
 
   isLoading = signal(true);
 
-  invoicesData = computed(() => buildRecords(
-    this.store.invoices(),[/* this.#customers.customers()*/]) 
-  );
+  invoicesData = computed(() => buildRecords(this.store.invoices()));
 
   constructor() {
     this.#setupTrackingSourcePropagation();
 
-    //this.#customers.getAll();
-    this.store.getAll(() => this.isLoading.set(false));
+    this.#refreshInvoices();
   }
 
 
@@ -90,7 +87,7 @@ export class InvoicesPageComponent {
     exhaustMap(() => this.#invoicesApi.createInvoice().pipe(
       tapResponse(
         invoice => {
-          this.store.invoiceDraftCreated(invoice);
+          this.store.refreshState();
 
           // TODO: verify
           this.#router.navigate(['./invoices', invoice.id], {
@@ -116,7 +113,7 @@ export class InvoicesPageComponent {
         tapResponse(
           invoice => {
 
-            this.store.invoiceDraftCreated(invoice);
+            this.store.refreshState();
             this.#tracking.trackEvent(TRACKING.INVOICE.CREATE);
 
             // TODO: verify
@@ -138,7 +135,7 @@ export class InvoicesPageComponent {
         data: {
           invoiceId: record.id,
           invoiceName: record.title,
-          customer: record.customer?.contactName || null
+          customer: record.customer
         }
       });
 
@@ -146,19 +143,25 @@ export class InvoicesPageComponent {
     })
   ));
 
+  async #refreshInvoices() {
+    this.isLoading.set(true);
+    await this.store.refreshState();
+    this.isLoading.set(false);
+  }
+
   #setupTrackingSourcePropagation() {
-    effect(() => {
-      const hasInvoices = this.invoicesData().length > 0;
+    // effect(() => {
+    //   const hasInvoices = this.store.invoices().length > 0;
 
-      this.#tracking.setTrackingSource(hasInvoices
-        ? 'Invoices Page'
-        : 'Invoices Page: Empty State')
+    //   this.#tracking.setTrackingSource(hasInvoices
+    //     ? 'Invoices Page'
+    //     : 'Invoices Page: Empty State')
 
-    }, { allowSignalWrites: true })
+    // }, { allowSignalWrites: true })
   }
 }
 
-function buildRecords(invoices: InvoiceInfo[], customers: Customer[]) {
+function buildRecords(invoices: InvoiceInfo[]) {
   const result: DataRecord[] = invoices.map(x => ({
     id: x.id,
     no: x.no,
@@ -167,9 +170,7 @@ function buildRecords(invoices: InvoiceInfo[], customers: Customer[]) {
     date: x.date,
     dueDate: x.dueDate,
     amount: `${toCurrencySymbol(x.currency)}${x.amount}`,
-    customer: x.customerId
-      ? customers.find(c => c.id === x.customerId) || null
-      : null,
+    customer: x.customer,
   }));
 
   return result;

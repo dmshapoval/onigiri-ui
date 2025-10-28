@@ -9,16 +9,15 @@ import { OnigiriRefFooterComponent } from '@onigiri-shared/components/onigiri-re
 import { AsyncPipe } from '@angular/common';
 import { DownloadInvoicePDFButtonComponent } from '../components/download-invoice-pdf-button.component';
 import { InvoiceViewComponent } from '../components/invoice-view/invoice-view.component';
-import { InvoicesApiService } from '../../../api/invoices-api.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Dialog } from '@angular/cdk/dialog';
 import { PaymentDetailsDialogComponent } from '../components/payment-details-dialog/payment-details-dialog.component';
 import { tapResponse } from '@ngrx/operators';
 
-import { TransferInvoicePaymentOptionDto } from '../../../api/dtos/invoices';
+import { TransferInvoicePaymentOptionDto } from '../../../api-v2/contracts/invoices';
 import isEmpty from 'lodash/isEmpty';
 import { InvoiceStripePaymentDialogComponent } from '../components/invoice-stripe-payment-dialog/invoice-stripe-payment-dialog.component';
-import { IntegrationsApiService, StripePaymentsApiService } from '@onigiri-api';
+import { IntegrationsApiService, InvoicesApiService, StripePaymentsApiService } from '@onigiri-api';
 import { constVoid } from 'fp-ts/es6/function';
 import { AppNavStore } from '../../../store/app-nav.store';
 

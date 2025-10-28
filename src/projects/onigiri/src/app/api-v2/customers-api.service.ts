@@ -12,8 +12,8 @@ export class CustomersApiService {
   #http = inject(HttpClient);
 
 
-  getAllCustomers() {
-    return this.#http.get<CustomerListItemDto[]>(`${environment.onigiriApi}/api/customers`)
+  getAllCustomers(includeDeleted: boolean = false) {
+    return this.#http.get<CustomerListItemDto[]>(`${environment.onigiriApi}/api/customers?includeDeleted=${includeDeleted}`)
       .pipe(map(A.map(toCustomerListItem)));
   }
 

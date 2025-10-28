@@ -6,15 +6,16 @@ import {
   inject
 } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { InvoiceStatus } from "@onigiri-models";
+import { InvoiceStatus, InvoiceStatusType } from "@onigiri-models";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import { DropdownModule } from "primeng/dropdown";
 import { Observable } from "rxjs";
 import { exhaustiveCheck, CustomControlBase } from "@oni-shared";
+import { match } from "ts-pattern";
 
 interface StatusOption {
   label: string;
-  value: InvoiceStatus;
+  value: InvoiceStatusType;
 }
 
 @UntilDestroy()
@@ -27,12 +28,12 @@ interface StatusOption {
   imports: [ReactiveFormsModule, DropdownModule]
 })
 export class InvoiceStatusSelectorComponent
-  extends CustomControlBase<InvoiceStatus>
+  extends CustomControlBase<InvoiceStatusType>
   implements OnInit
 {
   private _cdr = inject(ChangeDetectorRef);
 
-  innerControl = new FormControl<InvoiceStatus>("draft", { nonNullable: true });
+  innerControl = new FormControl<InvoiceStatusType>("draft", { nonNullable: true });
 
   get selectedStatus() {
     return this.innerControl.value;
@@ -59,7 +60,7 @@ export class InvoiceStatusSelectorComponent
 
   selectedStatusBG: Observable<string>;
 
-  override writeValue(value: InvoiceStatus): void {
+  override writeValue(value: InvoiceStatusType): void {
     this.innerControl.setValue(value || "draft", { emitEvent: false });
     this._cdr.markForCheck();
   }
@@ -74,24 +75,12 @@ export class InvoiceStatusSelectorComponent
     });
   }
 
-  getStatusBGColor(value: InvoiceStatus) {
-    switch (value) {
-      case "draft": {
-        return "var(--color-grey-200)";
-      }
-      case "sent": {
-        return "var(--color-blue-200)";
-      }
-      case "paid": {
-        return "var(--color-green-200)";
-      }
-      case "overdue": {
-        return "var(--color-red-200)";
-      }
-      default: {
-        exhaustiveCheck(value);
-        return "";
-      }
-    }
+  getStatusBGColor(value: InvoiceStatusType) {
+    return match(value)
+      .with("draft", () => "var(--color-grey-200)")
+      .with("sent", () => "var(--color-blue-200)")
+      .with("paid", () => "var(--color-green-200)")
+      .with("overdue", () => "var(--color-red-200)")
+      .exhaustive();
   }
 }
