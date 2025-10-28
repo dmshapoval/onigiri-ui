@@ -22,6 +22,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { constVoid } from 'fp-ts/es6/function';
 import { SkeletonModule } from 'primeng/skeleton';
+import { ServiceCardComponent } from '../service-card/service-card.component';
 
 @UntilDestroy()
 @Component({
@@ -36,7 +37,8 @@ import { SkeletonModule } from 'primeng/skeleton';
     OnigiriIconComponent,
     TableModule,
     EmptyStatePlaceholderComponent,
-    SkeletonModule
+    SkeletonModule,
+    ServiceCardComponent
   ]
 })
 export class ServicesPageComponent {
