@@ -67,6 +67,32 @@ import { InvoiceCardComponent } from '../invoice-card/invoice-card.component';
   ]
 })
 export class InvoicesPageComponent {
+  // selected invoice for mobile actions overlay
+  selectedInvoice = signal<InvoiceInfo | null>(null);
+
+  openMobileMenu(entry: InvoiceInfo) {
+    this.selectedInvoice.set(entry);
+  }
+
+  closeMobileMenu() {
+    this.selectedInvoice.set(null);
+  }
+
+  onEditMobile() {
+    const id = this.selectedInvoice()?.id;
+    if (id) {
+      this.closeMobileMenu();
+      this.onEdit(id);
+    }
+  }
+
+  onDeleteMobile() {
+    const rec = this.selectedInvoice();
+    if (rec) {
+      this.closeMobileMenu();
+      this.onDelete(rec);
+    }
+  }
   #router = inject(Router);
   #invoicesApi = inject(InvoicesApiService);
   #dialogs = inject(Dialog);
@@ -80,6 +106,7 @@ export class InvoicesPageComponent {
   invoicesData = computed(() =>
     buildRecords(this.store.invoices(), this.#customers.customers())
   );
+  customer: any;
 
   constructor() {
     this.#setupTrackingSourcePropagation();

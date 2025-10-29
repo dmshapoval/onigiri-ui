@@ -1,91 +1,251 @@
-<div class="inv-section inv-section--title">
-
-  <div class="logo-wrap">
-
-
-
-    <image-upload [formControl]="logoControl"
-                  placeholder="Add logo" />
-
-
-  </div>
-
-  <div class="field">
-    <label for="invoice_title"
-           class="o-input-lbl">Invoice title</label>
-    <input pInputText
-           id="invoice_title"
-           type="text"
-           [formControl]="titleInput"
-           autocomplete="off"
-           class="w-full o-h-40"
-           placeholder="Invoice" />
-  </div>
-
-  <div class="field">
-    <label for="invoice_number"
-           class="o-input-lbl">Invoice number</label>
-    <input pInputText
-           id="invoice_number"
-           type="text"
-           [formControl]="invoiceNoInput"
-           autocomplete="off"
-           class="w-full o-h-40"
-           placeholder="00001" />
-  </div>
-
-</div>
-
-<div class="inv-section">
-  <invoice-counterparts />
-
-  <div class="grid grid-nogutter o-c-gap-30">
-    <div class="field col">
-      <label for="invoice_date"
-             class="o-input-lbl">Issued On</label>
-      <o-date-input [formControl]="dateInput"
-                    inputId="invoice_date"></o-date-input>
+<div class="desktop">
+  <div class="inv-section inv-section--title">
+    <div class="logo-wrap">
+      <image-upload
+        [formControl]="logoControl"
+        placeholder="Add logo" />
     </div>
 
-    <div class="field col">
-      <label for="invoice_duedate"
-             class="o-input-lbl">Due Date</label>
-      <o-date-input [formControl]="dueDateInput"
-                    inputId="invoice_duedate"></o-date-input>
+    <div class="field">
+      <label
+        for="invoice_title"
+        class="o-input-lbl"
+        >Invoice title</label
+      >
+      <input
+        pInputText
+        id="invoice_title"
+        type="text"
+        [formControl]="titleInput"
+        autocomplete="off"
+        class="w-full o-h-40"
+        placeholder="Invoice" />
+    </div>
+
+    <div class="field">
+      <label
+        for="invoice_number"
+        class="o-input-lbl"
+        >Invoice number</label
+      >
+      <input
+        pInputText
+        id="invoice_number"
+        type="text"
+        [formControl]="invoiceNoInput"
+        autocomplete="off"
+        class="w-full o-h-40"
+        placeholder="00001" />
+    </div>
+  </div>
+
+  <div class="inv-section">
+    <invoice-counterparts />
+
+    <div class="grid grid-nogutter o-c-gap-30">
+      <div class="field col">
+        <label
+          for="invoice_date"
+          class="o-input-lbl"
+          >Issued On</label
+        >
+        <o-date-input
+          [formControl]="dateInput"
+          inputId="invoice_date"></o-date-input>
+      </div>
+
+      <div class="field col">
+        <label
+          for="invoice_duedate"
+          class="o-input-lbl"
+          >Due Date</label
+        >
+        <o-date-input
+          [formControl]="dueDateInput"
+          inputId="invoice_duedate"></o-date-input>
+      </div>
+    </div>
+  </div>
+
+  <div class="inv-section invoice-lines no-padding">
+    <invoice-lines />
+  </div>
+
+  <div class="inv-section no-padding o-pl-40 o-pt-30 o-pb-30">
+    <invoice-number-corrections />
+  </div>
+
+  <div class="inv-section">
+    <h4>Payment methods</h4>
+
+    <div class="o-mt-20">
+      <invoice-payment-options />
+    </div>
+  </div>
+
+  <div class="inv-section inv-section--notes">
+    <div class="w-full">
+      <label
+        for="invoice_notes"
+        class="o-input-lbl"
+        >Notes</label
+      >
+      <textarea
+        rows="4"
+        id="invoice_notes"
+        class="w-full o-scroll"
+        pInputTextarea
+        [formControl]="invoiceNotesInput"
+        autocomplete="off"
+        placeholder="Thank you for your business"></textarea>
     </div>
   </div>
 </div>
-
-<div class="inv-section invoice-lines no-padding">
-  <invoice-lines />
-</div>
-
-<div class="inv-section no-padding o-pl-40 o-pt-30 o-pb-30">
-  <invoice-number-corrections />
-</div>
-
-<div class="inv-section">
-  <h4>Payment methods</h4>
-
-  <div class="o-mt-20">
-    <invoice-payment-options />
+<div class="mobile">
+  <div class="mobile_header">
+    <button
+      class="mobile_header--back"
+      disabled="{{ currentPage() === 1 }}"
+      (click)="previousPage()">
+      <img
+        [src]="currentPage() === 1 ? goBackIcon_disabled : goBackIcon_enabled"
+        alt="" />
+    </button>
+    <div>
+      <div class="mobile_header--content">{{ currentPage() }} of 4</div>
+      <span class="mobile_header--pageName">{{ currentPageName() }}</span>
+    </div>
+    <button
+      class="mobile_header--cancel"
+      (click)="onClose()">
+      <img
+        [src]="closeIcon"
+        [alt]="'Close icon'" />
+    </button>
+  </div>
+  <!-- <div class="pageName_container"></div> -->
+  <div class="pageProgress_container">
+    <span
+      class="pageProgress"
+      style="width: calc(100% / 4 * {{ currentPage() }})"></span>
   </div>
 
-</div>
+  @if(currentPage()===1){
+  <div class="inv-section inv-section--title">
+    <div class="page_title_one">
+      <span class="page_title_one-title">Invoice Details</span
+      ><span class="page_title_one-subtitle"
+        >Give us some details about your invoice</span
+      >
+    </div>
+    <div class="logo-wrap">
+      <div class="drop-file__header">
+        <span class="drop-file__title">From</span>
+        <span class="drop-file__plus"
+          ><img
+            [src]="plusIcon"
+            [alt]="'+'" />
+          Add business details</span
+        >
+      </div>
+      <image-upload
+        [formControl]="logoControl"
+        placeholder="Add logo" />
+    </div>
 
+    <div class="field">
+      <label
+        for="invoice_title"
+        class="o-input-lbl"
+        >Invoice title</label
+      >
+      <input
+        pInputText
+        id="invoice_title"
+        type="text"
+        [formControl]="titleInput"
+        autocomplete="off"
+        class="w-full o-h-40"
+        placeholder="Invoice" />
+    </div>
 
-<div class="inv-section inv-section--notes">
+    <div class="field">
+      <label
+        for="invoice_number"
+        class="o-input-lbl"
+        >Invoice number</label
+      >
+      <input
+        pInputText
+        id="invoice_number"
+        type="text"
+        [formControl]="invoiceNoInput"
+        autocomplete="off"
+        class="w-full o-h-40"
+        placeholder="00001" />
+    </div>
+  </div>
+  }@else {
+  <div class="inv-section">
+    <invoice-counterparts />
 
-  <div class="w-full">
-    <label for="invoice_notes"
-           class="o-input-lbl">Notes</label>
-    <textarea rows="4"
-              id="invoice_notes"
-              class="w-full o-scroll"
-              pInputTextarea
-              [formControl]="invoiceNotesInput"
-              autocomplete="off"
-              placeholder="Thank you for your business"></textarea>
+    <div class="grid grid-nogutter o-c-gap-30">
+      <div class="field col">
+        <label
+          for="invoice_date"
+          class="o-input-lbl"
+          >Issued On</label
+        >
+        <o-date-input
+          [formControl]="dateInput"
+          inputId="invoice_date"></o-date-input>
+      </div>
+
+      <div class="field col">
+        <label
+          for="invoice_duedate"
+          class="o-input-lbl"
+          >Due Date</label
+        >
+        <o-date-input
+          [formControl]="dueDateInput"
+          inputId="invoice_duedate"></o-date-input>
+      </div>
+    </div>
   </div>
 
+  <div class="inv-section invoice-lines no-padding">
+    <invoice-lines />
+  </div>
+
+  <div class="inv-section no-padding o-pl-40 o-pt-30 o-pb-30">
+    <invoice-number-corrections />
+  </div>
+
+  <div class="inv-section">
+    <h4>Payment methods</h4>
+
+    <div class="o-mt-20">
+      <invoice-payment-options />
+    </div>
+  </div>
+
+  <div class="inv-section inv-section--notes">
+    <div class="w-full">
+      <label
+        for="invoice_notes"
+        class="o-input-lbl"
+        >Notes</label
+      >
+      <textarea
+        rows="4"
+        id="invoice_notes"
+        class="w-full o-scroll"
+        pInputTextarea
+        [formControl]="invoiceNotesInput"
+        autocomplete="off"
+        placeholder="Thank you for your business"></textarea>
+    </div>
+  </div>
+  }
 </div>

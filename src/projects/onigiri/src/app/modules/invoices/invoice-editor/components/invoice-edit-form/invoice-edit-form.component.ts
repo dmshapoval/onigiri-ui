@@ -1,23 +1,28 @@
-import { ChangeDetectionStrategy, Component, OnInit, effect, inject, signal } from '@angular/core';
-import { BusinessesApiService, } from '@onigiri-api';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  signal
+} from '@angular/core';
+import { BusinessesApiService } from '@onigiri-api';
 import {
   BusinessInfoStore,
   CustomersStore,
-  TrackingStore,
+  TrackingStore
 } from '@onigiri-store';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { filter, Observable } from 'rxjs';
-import {
-  concatMap,
-  tap
-} from 'rxjs';
+import { exhaustMap, filter, Observable, pipe, take } from 'rxjs';
+import { concatMap, tap } from 'rxjs';
 import { Customer, InvoiceData } from '@onigiri-models';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { constVoid } from 'fp-ts/es6/function';
 
 import { InvoiceEditorStore } from '../../invoice-editor.store';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { OnigiriButtonComponent, OnigiriIconComponent, } from '@oni-shared';
+import { OnigiriButtonComponent, OnigiriIconComponent } from '@oni-shared';
 import { ImageUploadComponent } from '@onigiri-shared/components/image-upload/image-upload.component';
 import { InvoiceCounterpartsComponent } from '../invoice-counterparts/invoice-counterparts.component';
 import { InvoiceLinesEditorComponent } from '../invoice-lines/invoice-lines.component';
@@ -38,7 +43,7 @@ import { CurrencySelectorComponent } from '@onigiri-shared/components/currency-s
 import { InvoicePaymentOptionsComponent } from '../invoice-payment-options/invoice-payment-options.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SkeletonModule } from 'primeng/skeleton';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -48,18 +53,43 @@ import { SkeletonModule } from 'primeng/skeleton';
   styleUrls: ['./invoice-edit-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    OnigiriButtonComponent, ImageUploadComponent,
-    SelectButtonModule, ReactiveFormsModule, AsyncPipe,
-    InputTextModule, InputTextareaModule, InvoiceStatusSelectorComponent,
-    InvoiceCounterpartsComponent, ProjectSelectorComponent,
-    InvoiceLinesEditorComponent, ShareLinkDialogComponent,
-    InvoiceNumberCorrectionsComponent, SkeletonModule,
-    DownloadInvoicePDFButtonComponent, OnigiriDateInputComponent,
-    CurrencySelectorComponent, CustomerNamePipe, OnigiriIconComponent,
+    OnigiriButtonComponent,
+    ImageUploadComponent,
+    SelectButtonModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+    InputTextModule,
+    InputTextareaModule,
+    InvoiceStatusSelectorComponent,
+    InvoiceCounterpartsComponent,
+    ProjectSelectorComponent,
+    InvoiceLinesEditorComponent,
+    ShareLinkDialogComponent,
+    InvoiceNumberCorrectionsComponent,
+    SkeletonModule,
+    DownloadInvoicePDFButtonComponent,
+    OnigiriDateInputComponent,
+    CurrencySelectorComponent,
+    CustomerNamePipe,
+    OnigiriIconComponent,
     InvoicePaymentOptionsComponent
   ]
 })
 export class InvoiceEditFormComponent implements OnInit {
+  closeIcon: string = '../../../../../../assets/Close.svg';
+  goBackIcon_enabled: string = '../../../../../../assets/ArrowBackEnabled.svg';
+  goBackIcon_disabled: string =
+    '../../../../../../assets/ArrowBackDisabled.svg';
+  plusIcon: string = '../../../../../../assets/Plus.svg';
+
+  isDisabled = signal(false);
+
+  setDisabled = computed(() => {
+    if (this.currentPage() === 1) {
+      return true;
+    }
+    return false;
+  });
 
   #businesses = inject(BusinessInfoStore);
   #customers = inject(CustomersStore);
@@ -67,7 +97,8 @@ export class InvoiceEditFormComponent implements OnInit {
 
   #accountApi = inject(BusinessesApiService);
   editorStore = inject(InvoiceEditorStore);
-
+  #route = inject(ActivatedRoute);
+  #router = inject(Router);
 
   constructor() {
     // NOTES: needed here as rxMethod uses injector
@@ -80,79 +111,116 @@ export class InvoiceEditFormComponent implements OnInit {
 
   titleInput = new FormControl<string | null>(null, { updateOn: 'blur' });
   invoiceNoInput = new FormControl<string | null>(null, { updateOn: 'blur' });
-  invoiceNotesInput = new FormControl<string | null>(null, { updateOn: 'blur' });
-  paymentDetailsInput = new FormControl<string | null>(null, { updateOn: 'blur' });
+  invoiceNotesInput = new FormControl<string | null>(null, {
+    updateOn: 'blur'
+  });
+  paymentDetailsInput = new FormControl<string | null>(null, {
+    updateOn: 'blur'
+  });
   dateInput = new FormControl<Date | null>(null);
   dueDateInput = new FormControl<Date | null>(null);
 
-
   selectedCustomer = signal<Customer | null>(null);
 
+  currentPage = signal<number>(1);
+  currentPageName = computed(() => {
+    switch (this.currentPage()) {
+      case 1:
+        return 'Add information';
+      case 2:
+        return 'Recipient';
+      case 3:
+        return 'Services & Payments';
+      case 4:
+        return 'Total Due';
+      default:
+        return 0;
+    }
+  });
+
+  previousPage = () => {
+    this.currentPage.set(this.currentPage() - 1);
+  };
 
   ngOnInit(): void {
     this.#tracking.setTrackingSource('Invoice details');
   }
 
   #setupBusinessDetailsChangeHandler() {
+    effect(
+      () => {
+        const logo = this.#businesses.logo();
+        if (logo !== this.logoControl.value) {
+          this.logoControl.setValue(logo);
+        }
+      },
+      { allowSignalWrites: true }
+    );
 
-    effect(() => {
-      const logo = this.#businesses.logo();
-      if (logo !== this.logoControl.value) {
-        this.logoControl.setValue(logo);
-      }
-    }, { allowSignalWrites: true });
-
-
-    // logo update handler 
+    // logo update handler
     this.logoControl.valueChanges
       .pipe(
         filter(imageId => imageId !== this.#businesses.logo()),
         concatMap(imageId => {
-          return this.#accountApi.updateLogo(imageId).pipe(
-            tapResponse(
-              () => this.#businesses.logoUpdated(imageId),
-              constVoid
-            )
-          );
+          return this.#accountApi
+            .updateLogo(imageId)
+            .pipe(
+              tapResponse(
+                () => this.#businesses.logoUpdated(imageId),
+                constVoid
+              )
+            );
         }),
-        untilDestroyed(this))
+        untilDestroyed(this)
+      )
       .subscribe();
   }
+  onClose = rxMethod<void>(
+    pipe(
+      exhaustMap(() =>
+        this.editorStore.pendingRequests.pipe(
+          filter(x => x === 0),
+          take(1)
+        )
+      ),
+      tap(() => {
+        const returnTo =
+          this.#route.snapshot.queryParams['rtn_to'] || '/invoices';
+        this.#router.navigateByUrl(returnTo);
+      })
+    )
+  );
 
   #setupChangeHandlers() {
-
-    const createChangeHandler = <T>(changes: Observable<T>, handler: (x: T) => void) => {
+    const createChangeHandler = <T>(
+      changes: Observable<T>,
+      handler: (x: T) => void
+    ) => {
       return rxMethod<T>(tap(handler))(changes);
-    }
+    };
 
-    createChangeHandler(
-      this.titleInput.valueChanges,
-      v => this.editorStore.updateTitle(v)
+    createChangeHandler(this.titleInput.valueChanges, v =>
+      this.editorStore.updateTitle(v)
     );
 
-    createChangeHandler(
-      this.invoiceNoInput.valueChanges,
-      v => this.editorStore.updateNo(v)
+    createChangeHandler(this.invoiceNoInput.valueChanges, v =>
+      this.editorStore.updateNo(v)
     );
 
-    createChangeHandler(
-      this.dateInput.valueChanges,
-      v => this.editorStore.updateDate(v)
+    createChangeHandler(this.dateInput.valueChanges, v =>
+      this.editorStore.updateDate(v)
     );
 
-    createChangeHandler(
-      this.dueDateInput.valueChanges,
-      v => this.editorStore.updateDueDate(v)
+    createChangeHandler(this.dueDateInput.valueChanges, v =>
+      this.editorStore.updateDueDate(v)
     );
 
-    createChangeHandler(
-      this.invoiceNotesInput.valueChanges,
-      v => this.editorStore.updateNotes(v)
+    createChangeHandler(this.invoiceNotesInput.valueChanges, v =>
+      this.editorStore.updateNotes(v)
     );
 
-    createChangeHandler(
-      this.paymentDetailsInput.valueChanges,
-      v => this.editorStore.updatePaymentDetails(v)
+    createChangeHandler(this.paymentDetailsInput.valueChanges, v =>
+      this.editorStore.updatePaymentDetails(v)
     );
 
     const clearFormValues = () => {
@@ -162,7 +230,7 @@ export class InvoiceEditFormComponent implements OnInit {
       this.paymentDetailsInput.setValue(null, { emitEvent: false });
       this.dateInput.setValue(null, { emitEvent: false });
       this.dueDateInput.setValue(null, { emitEvent: false });
-    }
+    };
 
     const updateControlValues = (data: InvoiceData) => {
       this.titleInput.setValue(data.title, { emitEvent: false });
@@ -170,34 +238,31 @@ export class InvoiceEditFormComponent implements OnInit {
       this.invoiceNotesInput.setValue(data.notes, { emitEvent: false });
       this.dateInput.setValue(data.date, { emitEvent: false });
       this.dueDateInput.setValue(data.dueDate, { emitEvent: false });
-    }
+    };
 
     this.editorStore.state$
       .pipe(untilDestroyed(this))
-      .subscribe(state => state.invoice
-        ? updateControlValues(state.invoice)
-        : clearFormValues()
+      .subscribe(state =>
+        state.invoice ? updateControlValues(state.invoice) : clearFormValues()
       );
   }
 
-
-
   #setupSelectedCustomer() {
     // TODO: refactor
-    const customerId = toSignal(this.editorStore.billedTo, { initialValue: null });
-    effect(() => {
-      const cId = customerId();
+    const customerId = toSignal(this.editorStore.billedTo, {
+      initialValue: null
+    });
+    effect(
+      () => {
+        const cId = customerId();
 
-      const custromer = cId
-        ? this.#customers.customers().find(x => x.id === cId) || null
-        : null;
+        const custromer = cId
+          ? this.#customers.customers().find(x => x.id === cId) || null
+          : null;
 
-      this.selectedCustomer.set(custromer);
-    }, { allowSignalWrites: true })
+        this.selectedCustomer.set(custromer);
+      },
+      { allowSignalWrites: true }
+    );
   }
-
 }
-
-
-
-

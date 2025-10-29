@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnigiriDatePipe } from '@onigiri-shared/pipes/date';
-import { Customer } from '@onigiri-models';
+import { Customer, Invoice, InvoiceInfo } from '@onigiri-models';
 
 @Component({
   selector: 'invoice-card',
@@ -18,13 +18,10 @@ import { Customer } from '@onigiri-models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InvoiceCardComponent {
-  @Input() customer: Customer | null = null;
-  @Input() date: Date | null = null;
-  @Input() entry: any | null = null;
+  @Input() invoice: InvoiceInfo | null;
+  @Input() date: Date | null;
+  @Input() entry: any | null;
   @Input() showActions = false;
   @Output() clickMore = new EventEmitter<string>();
-  ngOnInit() {
-    console.log('Customer:', this.customer);
-  }
   moreIcon: string = '../../../../assets/more 1.svg';
 }

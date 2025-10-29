@@ -4,8 +4,20 @@
 
 $invoice-nav-width: 280px;
 
-.inv {
+@media screen and (max-width: 1199px) {
+  .inv__main {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .inv__main-topbar {
+    display: none;
+  }
+  .hide {
+    display: none !important;
+  }
+}
 
+.inv {
   &__main {
     min-height: 100vh;
     margin-right: $invoice-nav-width;
@@ -22,7 +34,6 @@ $invoice-nav-width: 280px;
     top: 0;
     right: 0;
     bottom: 0;
-
 
     padding: 0 25px;
     background-color: var(--color-grey-100);

@@ -8,9 +8,7 @@
     </div>
     <div class="client-card__field">
       <span class="client-card__label">COMPANY</span>
-      <span class="client-card__value">{{
-        customer.companyName || '-'
-      }}</span>
+      <span class="client-card__value">{{ customer.companyName || '-' }}</span>
     </div>
   </div>
   <div class="client-card__row">
@@ -22,12 +20,10 @@
       <span class="client-card__label">COUNTRY</span>
       <span class="client-card__value">{{ customer.country || '-' }}</span>
     </div>
+    @if(showActions) {
+    <div class="client-card__actions">
+      <ng-content select="[actions]"></ng-content>
+    </div>
+    }
   </div>
-  @if(showActions) {
-  <div class="client-card__actions">
-    <ng-content select="[actions]"></ng-content>
-  </div>
-  }
 </div>
-
-

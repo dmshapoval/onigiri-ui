@@ -76,15 +76,53 @@
     <ng-container *ngFor="let entry of data; trackBy: trackById">
       <invoice-card
         (clickMore)="onEdit($event)"
-        [customer]="entry.customer"
+        [invoice]="entry"
         [entry]="entry"
         [date]="entry.date"
         [showActions]="true">
+        <span
+          actions
+          class="client-card__dots"
+          (click)="openMobileMenu(entry)"
+          >⋯</span
+        >
       </invoice-card>
     </ng-container>
   </div>
 
-  } @else {
+  @if(selectedInvoice()) {
+  <div
+    class="mobile-menu-overlay"
+    (click)="closeMobileMenu()">
+    <div
+      class="mobile-menu"
+      (click)="$event.stopPropagation()">
+      <invoice-card
+        [invoice]="selectedInvoice()"
+        [entry]="selectedInvoice()!"
+        [showActions]="false"></invoice-card>
+
+      <div class="mobile-menu__actions mobile-menu__actions--invoice">
+        <button class="mobile-menu__button mobile-menu__button--copy">
+          <o-icon key="copy" />
+          Copy
+        </button>
+        <button
+          class="mobile-menu__button mobile-menu__button--delete"
+          (click)="onDeleteMobile()">
+          <o-icon key="trash" />
+          Delete
+        </button>
+      </div>
+      <button
+        class="mobile-menu__button mobile-menu__button--edit"
+        (click)="onEditMobile()">
+        <o-icon key="edit" />
+        Edit
+      </button>
+    </div>
+  </div>
+  } } @else {
 
   <empty-state-placeholder
     title="Create your first invoice"

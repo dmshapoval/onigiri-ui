@@ -74,7 +74,7 @@
     color: var(--color-green-800);
     font-weight: 400;
   }
-  .client-card__status {
+  .client-card__status-draft {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -86,6 +86,46 @@
     font-size: 8px;
     font-weight: 700;
   }
+
+  .client-card__status-sent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60px;
+    height: 20px;
+    text-align: center;
+    border-radius: 16px;
+    background-color: var(--color-blue-200);
+    font-size: 8px;
+    font-weight: 700;
+  }
+
+  .client-card__status-paid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60px;
+    height: 20px;
+    text-align: center;
+    border-radius: 16px;
+    background-color: var(--color-green-200);
+    font-size: 8px;
+    font-weight: 700;
+  }
+
+  .client-card__status-overdue {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60px;
+    height: 20px;
+    text-align: center;
+    border-radius: 16px;
+    background-color: var(--color-red-200);
+    font-size: 8px;
+    font-weight: 700;
+  }
+
   .client-card__first-line {
     display: flex;
     justify-content: space-between;
@@ -112,5 +152,10 @@
     font-weight: 400;
     font-size: 16px;
     color: var(--color-grey-1000);
+  }
+  .client-card__last-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }

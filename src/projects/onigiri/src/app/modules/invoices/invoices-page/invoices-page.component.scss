@@ -6,6 +6,18 @@
 .mobile-cards {
   display: none;
 }
+.mobile-menu__actions--invoice {
+  display: flex !important;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.client-card__dots {
+  font-size: 40px;
+  color: var(--color-grey-800);
+  display: block;
+  height: fit-content !important;
+}
 
 .sample-img {
   background-color: white;
@@ -17,9 +29,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  // .mobile-cards {
-  //   display: block;
-  // }
 
   img {
     scale: 1.075;
@@ -36,26 +45,124 @@
 }
 
 @media (max-width: 1199px) {
+  .mobile-cards {
+    display: block;
+  }
   .entities-table {
     display: none;
   }
-  .mobile-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 15px;
+}
+
+@media (max-width: 1199px) {
+  .client-card__dots {
+    font-size: 28px;
+    color: var(--color-grey-800);
+    cursor: pointer;
+    line-height: 1;
+    display: block;
   }
 
-  @media screen and (max-width: 1050px) {
-    .mobile-cards {
-      grid-template-columns: 1fr 1fr;
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0.5);
     }
   }
-  @media screen and (max-width: 600px) {
-    .mobile-cards {
-      grid-template-columns: 1fr;
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
     }
   }
-  // .invoice-card {
-  //   display: block;
-  // }
+
+  .mobile-menu {
+    background-color: white;
+    border-radius: 16px 16px 0 0;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease-out;
+    background-color: var(--color-grey-100);
+
+    invoice-card {
+      display: block;
+      margin-bottom: 10px;
+
+      .client-card__value--name {
+        cursor: default;
+      }
+    }
+
+    &__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    &__button {
+      width: 100%;
+      height: 40px;
+      border: none;
+      border-radius: 5px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: opacity 0.2s;
+
+      &:active {
+        opacity: 0.8;
+      }
+
+      &--delete {
+        background-color: var(--color-red-800);
+        color: white;
+      }
+
+      &--edit {
+        background-color: #7fb539;
+        color: white;
+      }
+    }
+
+    &__button-icon {
+      font-size: 16px;
+    }
+  }
+
+  /* invoice-specific layout: place actions in a row and make buttons auto-width */
+  .mobile-menu__actions--invoice {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-menu__actions--invoice .mobile-menu__button {
+    width: auto !important;
+    flex: 1 1 auto !important;
+  }
 }

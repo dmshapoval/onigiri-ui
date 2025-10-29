@@ -1,7 +1,10 @@
 <div class="invoice-card">
   <div class="client-card__row">
     <div class="client-card__first-line">
-      <span class="client-card__status">
+      <span
+        class="client-card__status-{{
+          entry?.status?.toLowerCase() || 'draft'
+        }}">
         {{ entry?.status || 'DRAFT' }}
       </span>
       <span class="client-card__entity-name">
@@ -17,22 +20,14 @@
     <div class="client-meta">
       <span class="client-meta__label">CUSTOMER</span>
       <div class="client-meta__email">{{ entry?.customer?.email || '-' }}</div>
-      <!-- <div class="client-country-phone">
-        <span>{{ customer?.country || '-' }}</span>
-        <span>{{ customer?.phone || '-' }}</span>
-      </div> -->
-      <!-- <div class="invoice-date">{{ date ? (date | oDate) : '-' }}</div> -->
     </div>
-    <span>{{ entry?.total }}</span>
   </div>
-  <div
-    class="client-card__actions"
-    *ngIf="showActions">
-    <ng-content select="[actions]"></ng-content>
+  <div class="client-card__last-line">
+    <span>{{ entry?.amount }}</span>
+    <ng-content select="[actions]">
+      <div
+        class="client-card__actions"
+        *ngIf="showActions"></div>
+    </ng-content>
   </div>
-  <img
-    class="threeDotsMoreIcon"
-    [src]="moreIcon"
-    [alt]="'More'"
-    (click)="clickMore.emit('' + entry?.id)" />
 </div>
