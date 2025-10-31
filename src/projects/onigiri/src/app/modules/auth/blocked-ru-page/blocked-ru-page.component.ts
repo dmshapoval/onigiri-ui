@@ -9,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styles: [`
     :host {
       display: block;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100dvh;
       background-image: url(../../../assets/ru_fuckoff.jpg);
       background-position: center;
       background-repeat: no-repeat;

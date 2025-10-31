@@ -19,7 +19,7 @@
 .o-dialog {
 
   overflow-y: scroll;
-  max-height: 100vh;
+  max-height: 100dvh;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {

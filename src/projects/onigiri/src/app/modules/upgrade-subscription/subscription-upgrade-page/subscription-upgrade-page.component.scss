@@ -2,9 +2,9 @@ $pageWidth: 1200px;
 
 :host {
   display: flex;
-  width: 100vw;
+  width: 100%;
   min-width: $pageWidth;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--color-grey-200);
   justify-content: center;
 }

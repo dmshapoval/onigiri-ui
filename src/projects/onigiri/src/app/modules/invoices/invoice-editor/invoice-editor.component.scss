@@ -19,7 +19,7 @@ $invoice-nav-width: 280px;
 
 .inv {
   &__main {
-    min-height: 100vh;
+    min-height: 100dvh;
     margin-right: $invoice-nav-width;
     padding: 40px 35px 40px 25px;
     background-color: var(--color-grey-400);

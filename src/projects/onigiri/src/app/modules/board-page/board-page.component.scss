@@ -15,11 +15,11 @@ $nav-width: 280px;
 
 main {
   transition: transform 0.3s;
-  width: 100vw;
+  width: 100%;
 
   &.with-nav {
     transform: translateX(280px);
-    width: calc(100vw - #{$nav-width});
+    width: calc(100% - #{$nav-width});
   }
 }
 
@@ -47,7 +47,7 @@ main {
   top: 0;
   bottom: 0;
   left: 0;
-  height: 100vh;
+  height: 100dvh;
   background-color: var(--color-grey-100);
   padding: 44px 25px 30px;
 
@@ -167,11 +167,11 @@ main {
   }
 
   main {
-    width: 100vw;
+    width: 100%;
     transform: none !important;
     padding-bottom: 80px; /* keep content above bottom nav */
     &.with-nav {
-      width: 100vw;
+      width: 100%;
       transform: none;
       padding-bottom: 80px;
     }
