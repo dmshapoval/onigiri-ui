@@ -95,32 +95,75 @@
     class="mobile-menu-overlay"
     (click)="closeMobileMenu()">
     <div
-      class="mobile-menu"
-      (click)="$event.stopPropagation()">
-      <invoice-card
-        [invoice]="selectedInvoice()"
-        [entry]="selectedInvoice()!"
-        [showActions]="false"></invoice-card>
+          class="mobile-menu"
+          (click)="$event.stopPropagation()">
+    @switch (invoiceDeleteStage()) {
+      @case (1) {
+        
+          <invoice-card
+            [invoice]="selectedInvoice()"
+            [entry]="selectedInvoice()!"
+            [showActions]="false"></invoice-card>
+    
+          <div class="mobile-menu__actions mobile-menu__actions--invoice">
+            <button class="mobile-menu__button mobile-menu__button--copy">
+              <o-icon key="copy" />
+              Copy
+            </button>
+            <button
+              class="mobile-menu__button mobile-menu__button--delete"
+              (click)="invoiceDeleteStage.set(2)">
+              <o-icon key="trash" />
+              Delete
+            </button>
+          </div>
+          <button
+            class="mobile-menu__button mobile-menu__button--edit"
+            (click)="onEditMobile()">
+            <o-icon key="edit" />
+            Edit
+          </button>
+      }
+      @case (2) {
+        <div class="o-dialog__body">
 
-      <div class="mobile-menu__actions mobile-menu__actions--invoice">
-        <button class="mobile-menu__button mobile-menu__button--copy">
-          <o-icon key="copy" />
-          Copy
-        </button>
-        <button
-          class="mobile-menu__button mobile-menu__button--delete"
-          (click)="onDeleteMobile()">
-          <o-icon key="trash" />
-          Delete
-        </button>
-      </div>
-      <button
-        class="mobile-menu__button mobile-menu__button--edit"
-        (click)="onEditMobile()">
-        <o-icon key="edit" />
-        Edit
-      </button>
+    <div class="o-dialog__header">
+      <h2 class="o-dialog__header-title">
+        You’re going to delete
+
+        @if(selectedInvoice()) {
+        <span class="font-extrabold">{{selectedInvoice()?.no}}</span>
+        } @else {
+        invoice
+        }
+
+        @if(authAccountName()) {
+        made for <span class="font-extrabold">{{authAccountName()}}</span>
+        }
+      </h2>
+      <p class="o-dialog__header-caption o-color-grey-1000">
+        You won’t be able to restore it. Please be sure that you want to delete it otherwise it would be lost forever
+      </p>
     </div>
+
+    <!-- <div class="o-dialog__content o-mt-40">
+
+    
+
+    </div> -->
+
+    <div style="display: flex;justify-content: space-between;" class="o-dialog__footer--warning">
+
+      <o-button (onClick)="closeMobileMenu()" secondary width="100%"
+                >Cancel</o-button>
+
+      <o-button  danger (onClick)="onConfirm(''+(selectedInvoice()?.id))" width="100%" 
+                >Delete</o-button>
+    </div>
+  </div>
+      }
+    }
+      </div>
   </div>
   } } @else {
 

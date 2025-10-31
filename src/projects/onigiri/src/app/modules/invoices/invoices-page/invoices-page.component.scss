@@ -76,6 +76,24 @@
     animation: fadeIn 0.3s ease-out;
   }
 
+  .o-dialog__body {
+    padding: 0 !important;
+  }
+
+  .o-dialog__footer--warning {
+    display: flex;
+    gap: 12px;
+    /* target custom button component used in templates */
+    o-button, o-button::shadow, o-button * {
+      flex: 1 1 0;
+      min-width: 0; /* allow shrinking in flexbox */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+
   @keyframes fadeIn {
     from {
       background-color: rgba(0, 0, 0, 0);

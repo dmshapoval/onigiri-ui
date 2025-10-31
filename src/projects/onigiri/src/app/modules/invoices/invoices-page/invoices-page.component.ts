@@ -42,6 +42,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { Router } from '@angular/router';
 import { InvoiceCardComponent } from '../invoice-card/invoice-card.component';
 
+import {AccountStore} from "../../../store/account.store";
 @UntilDestroy()
 @Component({
   selector: 'app-invoices-page',
@@ -69,6 +70,7 @@ import { InvoiceCardComponent } from '../invoice-card/invoice-card.component';
 export class InvoicesPageComponent {
   // selected invoice for mobile actions overlay
   selectedInvoice = signal<InvoiceInfo | null>(null);
+  invoiceDeleteStage = signal<number>(1)
 
   openMobileMenu(entry: InvoiceInfo) {
     this.selectedInvoice.set(entry);
@@ -76,6 +78,7 @@ export class InvoicesPageComponent {
 
   closeMobileMenu() {
     this.selectedInvoice.set(null);
+    this.invoiceDeleteStage.set(1);
   }
 
   onEditMobile() {
@@ -98,15 +101,24 @@ export class InvoicesPageComponent {
   #dialogs = inject(Dialog);
   #customers = inject(CustomersStore);
   #tracking = inject(TrackingStore);
-
+  #account = inject(AccountStore);
   store = inject(InvoicesStore);
+
+  handleDelete = this.store.invoiceDeleted
+
+  #store = inject(InvoicesStore);
+  invoiceName: string | null;
+  customer: string | null;
+  invoiceId: string | null;
+
+  authAccountName = this.#account.name;
 
   isLoading = signal(true);
 
   invoicesData = computed(() =>
     buildRecords(this.store.invoices(), this.#customers.customers())
   );
-  customer: any;
+
 
   constructor() {
     this.#setupTrackingSourcePropagation();
@@ -114,8 +126,27 @@ export class InvoicesPageComponent {
     this.#customers.getAll();
     this.store.getAll(() => this.isLoading.set(false));
   }
+  
 
   ngOnInit(): void {}
+
+
+    onConfirm = (invoiceId: string) => {
+      // perform API delete and update store on success
+      this.#invoicesApi.deleteInvoice(invoiceId).pipe(
+        tapResponse(
+          () => {
+            this.store.invoiceDeleted(invoiceId);
+            this.closeMobileMenu();
+            this.invoiceDeleteStage.set(1);
+          },
+          () => {
+            // refresh list on error
+            this.store.getAll();
+          }
+        )
+      ).subscribe();
+    }
 
   onCreate = rxMethod<void>(
     pipe(
