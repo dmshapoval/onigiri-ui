@@ -22,7 +22,7 @@
 
   border: 1px solid var(--color-grey-450);
   border-radius: var(--border-radius);
-  background: #FFF;
+  background: #fff;
 
   &__section {
     flex: 1;
@@ -42,8 +42,6 @@
     &-bottom {
       height: 40px;
     }
-
-
   }
 
   .subscription-name {
@@ -52,5 +50,38 @@
 
   .subscription-price {
     margin-bottom: 36px;
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .flex.align-items-center {
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start;
+    gap: 18px;
+  }
+
+  .period-selector {
+    margin-left: 0 !important;
+    width: 100%;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    align-items: center !important;
+
+    &__lbl {
+      font-size: 16px !important;
+      font-weight: bold !important;
+    }
+  }
+
+  .products {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+    margin-top: 18px;
+
+    > div {
+      width: 100% !important;
+    }
   }
 }

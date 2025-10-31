@@ -1,35 +1,36 @@
 <div class="payment-details">
   <div class="payment-details__header">
-    <h2 style="margin-bottom: 10px;">Payment Details</h2>
-    <p class="o-text-main">Here you could setup default payment options for invoices you make for your clients</p>
+    <h2 style="margin-bottom: 10px">Payment Details</h2>
+    <p class="o-text-main">
+      Here you could setup default payment options for invoices you make for
+      your clients
+    </p>
   </div>
 
-  <div class="grid grid-nogutter o-c-gap-30">
-
+  <div class="grid grid-nogutter o-c-gap-30 payment-details__grid">
     <div class="col">
       <div class="payment">
-
         <div class="payment__header">
           <div class="payment__header-icon">
-            <svg width="30"
-                 height="30"
-                 version="2.0">
+            <svg
+              width="30"
+              height="30"
+              version="2.0">
               <use xlink:href="#bank_transfer_icon"></use>
             </svg>
           </div>
-
 
           <h4>Bank transfer</h4>
         </div>
 
         <div class="payment__body">
-          <textarea style="height: 130px;"
-                    class="w-full"
-                    pInputTextarea
-                    [formControl]="paymentDefaultsControl"
-                    placeholder="Include payment details here. For example bank transfer details or PayPal"></textarea>
+          <textarea
+            style="height: 130px"
+            class="w-full"
+            pInputTextarea
+            [formControl]="paymentDefaultsControl"
+            placeholder="Include payment details here. For example bank transfer details or PayPal"></textarea>
         </div>
-
       </div>
     </div>
 
@@ -37,11 +38,11 @@
       <div class="payment payment--stripe flex flex-column">
         <div class="payment__header">
           <div class="payment__header-icon">
-            <svg width="40"
-                 height="40"
-                 version="2.0"
-                 style="border-radius: 5px;">
-
+            <svg
+              width="40"
+              height="40"
+              version="2.0"
+              style="border-radius: 5px">
               <use xlink:href="#stripe_icon"></use>
             </svg>
           </div>
@@ -49,41 +50,49 @@
           <h4>Stripe</h4>
         </div>
 
-        <div class="payment__body flex-1 flex flex-column justify-content-between">
+        <div
+          class="payment__body flex-1 flex flex-column justify-content-between">
           <p class="o-text-main">
-            Connect Stripe and accept Cards, Google & Apple Pay. Only standard Stripe processing fees apply. <a
-               class="o-color-green-800"
-               href="https://docs.stripe.com/connect">Learn more at Stripe.</a>
+            Connect Stripe and accept Cards, Google & Apple Pay. Only standard
+            Stripe processing fees apply.
+            <a
+              class="o-color-green-800"
+              href="https://docs.stripe.com/connect"
+              >Learn more at Stripe.</a
+            >
           </p>
 
           @if(account.integrations().stripe) {
 
           <div class="relative w-full">
-            <o-button secondary
-                      (onClick)="disconnectStripe()"
-                      [disabled]="processingStripeRequest()"
-                      [showLoader]="processingStripeRequest()"
-                      class="w-full">
+            <o-button
+              secondary
+              (onClick)="disconnectStripe()"
+              [disabled]="processingStripeRequest()"
+              [showLoader]="processingStripeRequest()"
+              class="w-full">
               Disconnect
             </o-button>
 
             @if(showDisconnectError()) {
-            <div class="absolute text-xs o-color-red-600 w-full text-center"
-                 style="bottom: -18px;">Failed to disconnect Stripe. Please to contact administrator.</div>
+            <div
+              class="absolute text-xs o-color-red-600 w-full text-center"
+              style="bottom: -18px">
+              Failed to disconnect Stripe. Please to contact administrator.
+            </div>
             }
           </div>
 
-
           } @else {
 
-          <o-button (onClick)="connectStripe()"
-                    [disabled]="processingStripeRequest()"
-                    [showLoader]="processingStripeRequest()">
+          <o-button
+            (onClick)="connectStripe()"
+            [disabled]="processingStripeRequest()"
+            [showLoader]="processingStripeRequest()">
             Connect
           </o-button>
 
           }
-
         </div>
       </div>
     </div>

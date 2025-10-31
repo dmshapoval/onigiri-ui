@@ -26,7 +26,6 @@
     opacity: 0.4;
   }
 
-
   &__prices {
     width: 100%;
     margin-bottom: 20px;
@@ -41,7 +40,7 @@
 
   &__features {
     margin-top: 30px;
-    border-top: 1px solid #D9D9D9;
+    border-top: 1px solid #d9d9d9;
     padding-top: 30px;
 
     &-list {
@@ -54,5 +53,15 @@
         list-style: disc;
       }
     }
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  :host {
+    width: 100%;
+  }
+
+  .product {
+    padding: 20px 18px;
   }
 }
