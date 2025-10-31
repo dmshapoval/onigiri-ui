@@ -137,9 +137,9 @@
         invoice
         }
 
-        @if(authAccountName()) {
-        made for <span class="font-extrabold">{{authAccountName()}}</span>
-        }
+  @if(selectedInvoice()) {
+  made for <span class="font-extrabold">{{contactName(selectedInvoice()) || '(Not named)'}}</span>
+  }
       </h2>
       <p class="o-dialog__header-caption o-color-grey-1000">
         You won’t be able to restore it. Please be sure that you want to delete it otherwise it would be lost forever
@@ -158,7 +158,7 @@
                 >Cancel</o-button>
 
       <o-button  danger (onClick)="onConfirm(''+(selectedInvoice()?.id))" width="100%" 
-                >Delete</o-button>
+                ><o-icon key="trash" />Delete</o-button>
     </div>
   </div>
       }

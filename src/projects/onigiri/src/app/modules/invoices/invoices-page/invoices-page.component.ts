@@ -119,6 +119,17 @@ export class InvoicesPageComponent {
     buildRecords(this.store.invoices(), this.#customers.customers())
   );
 
+  // accept null because templates may pass selectedInvoice() which can be null
+  // support both shapes: invoice may already contain `customer` object (from buildRecords)
+  contactName = (invoice: InvoiceInfo | any | null): string | null => {
+    if (!invoice) return null;
+
+    // if invoice already contains a customer object (as in mobile card entries), use it
+    const maybeCustomer = invoice.customer ?? this.#customers.customers().find((c: any) => c.id === invoice.customerId);
+
+    return maybeCustomer ? maybeCustomer.contactName : null;
+  }
+
 
   constructor() {
     this.#setupTrackingSourcePropagation();
